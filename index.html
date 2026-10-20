@@ -19,6 +19,14 @@
   <!-- Dynamic Celestial Canvas Background -->
   <canvas id="celestial-canvas" aria-hidden="true"></canvas>
 
+  <!-- Aceternity Dot Grid Pattern with Elliptical Radial Mask -->
+  <div class="bg-grid-pattern" aria-hidden="true"></div>
+
+  <!-- Aceternity Lamp / Moonlight Ceiling Glow -->
+  <div class="aceternity-lamp-container" aria-hidden="true">
+    <div class="aceternity-lamp-glow"></div>
+  </div>
+
   <!-- Ambient Glow Elements -->
   <div class="ambient-glow glow-top" aria-hidden="true"></div>
   <div class="ambient-glow glow-bottom" aria-hidden="true"></div>
@@ -55,7 +63,7 @@
           </svg>
           <span class="status-text" id="engine-status-text">Open AI Engine Ready</span>
         </div>
-        <button id="btn-quick-sleep" class="btn btn-primary btn-sloth-sleep" aria-label="Activate Instant Sloth Bedtime Mode">
+        <button id="btn-quick-sleep" class="btn btn-primary btn-sloth-sleep btn-shimmer" aria-label="Activate Instant Sloth Bedtime Mode">
           <span class="btn-icon">✨</span>
           <span>Instant Sloth Mode</span>
         </button>
@@ -67,7 +75,7 @@
   <main class="main-content" id="main-content">
     
     <!-- Hero / Sloth Meditation & Breathing Banner -->
-    <section class="sloth-breathing-section glass-panel" aria-labelledby="breathing-heading">
+    <section class="sloth-breathing-section glass-panel border-beam spotlight-card" aria-labelledby="breathing-heading">
       <div class="breathing-content">
         <div class="breathing-visualizer-container">
           <div class="breathing-circle-outer"></div>
@@ -104,7 +112,7 @@
     <div class="experience-grid">
       
       <!-- Left Column: Storyteller & Story Generator -->
-      <section class="story-column glass-panel" aria-labelledby="story-heading">
+      <section class="story-column glass-panel spotlight-card" aria-labelledby="story-heading">
         <div class="panel-header">
           <div class="panel-title-wrap">
             <span class="panel-icon">📖</span>
@@ -137,7 +145,7 @@
 
         <!-- Story Action Bar -->
         <div class="story-action-bar">
-          <button id="btn-generate-story" class="btn btn-primary" aria-label="Generate New Sleep Tale with Local AI">
+          <button id="btn-generate-story" class="btn btn-primary btn-shimmer" aria-label="Generate New Sleep Tale with Local AI">
             <span class="btn-icon">🪄</span>
             <span>Generate Sleep Tale</span>
           </button>
@@ -189,7 +197,7 @@
       </section>
 
       <!-- Right Column: Generative Procedural Web Audio Soundscape Engine -->
-      <section class="soundscape-column glass-panel" aria-labelledby="soundscape-heading">
+      <section class="soundscape-column glass-panel spotlight-card" aria-labelledby="soundscape-heading">
         <div class="panel-header">
           <div class="panel-title-wrap">
             <span class="panel-icon">🎵</span>
@@ -198,7 +206,7 @@
               <p class="panel-subtitle">Synthesized mathematically via Web Audio — Zero MP3s, Zero Network</p>
             </div>
           </div>
-          <button id="btn-master-play" class="btn btn-primary btn-play-all" aria-label="Play or Pause Soundscape Engine">
+          <button id="btn-master-play" class="btn btn-primary btn-play-all btn-shimmer" aria-label="Play or Pause Soundscape Engine">
             <span class="play-icon" id="master-play-icon">▶</span>
             <span id="master-play-text">Start Soundscape</span>
           </button>
@@ -377,7 +385,7 @@
     </div>
 
     <!-- Bottom Open Innovation & Diagnostics Drawer (Expandable) -->
-    <section class="open-innovation-section glass-panel" aria-labelledby="open-tech-heading">
+    <section class="open-innovation-section glass-panel spotlight-card" aria-labelledby="open-tech-heading">
       <div class="section-toggle-header" id="btn-toggle-diagnostics">
         <div class="toggle-title-wrap">
           <span class="tech-icon">🛡️</span>

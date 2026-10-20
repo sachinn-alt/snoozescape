@@ -560,4 +560,31 @@ document.addEventListener("DOMContentLoaded", () => {
       if (defaultPreset) defaultPreset.click();
     });
   }
+
+  /* =========================================================================
+     9. Aceternity & Skiper UI Spotlight & Border-Beam Animation Physics
+     ========================================================================= */
+  // Aceternity Spotlight cursor tracking on all spotlight cards
+  const spotlightCards = document.querySelectorAll(".spotlight-card, .sound-layer-card");
+  spotlightCards.forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    });
+  });
+
+  // Border Beam rotating angle animation
+  let beamAngle = 0;
+  function animateBorderBeam() {
+    beamAngle = (beamAngle + 1.2) % 360;
+    const borderBeams = document.querySelectorAll(".border-beam");
+    borderBeams.forEach(b => {
+      b.style.setProperty("--beam-angle", `${beamAngle}deg`);
+    });
+    requestAnimationFrame(animateBorderBeam);
+  }
+  animateBorderBeam();
 });

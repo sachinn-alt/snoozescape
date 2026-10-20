@@ -90,6 +90,41 @@ body {
   pointer-events: none;
 }
 
+/* Aceternity Dot Matrix Pattern with Radial Mask */
+.bg-grid-pattern {
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 80% 65% at 50% 30%, #000 40%, transparent 95%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 30%, #000 40%, transparent 95%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Aceternity Lamp / Hero Aurora Ceiling Glow */
+.aceternity-lamp-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 440px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.aceternity-lamp-glow {
+  width: 800px;
+  height: 250px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(245, 183, 38, 0.24) 0%, rgba(99, 102, 241, 0.16) 45%, transparent 75%);
+  filter: blur(60px);
+}
+
 /* Ambient Radial Glows */
 .ambient-glow {
   position: fixed;
@@ -354,11 +389,11 @@ body {
   gap: 2rem;
 }
 
-/* Glassmorphism Panel */
+/* Glassmorphism Panel & Aceternity Spotlight Card */
 .glass-panel {
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -366,7 +401,97 @@ body {
 }
 
 .glass-panel:hover {
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Aceternity Spotlight Card with Cursor Tracker */
+.spotlight-card {
+  position: relative;
+  background: rgba(13, 17, 32, 0.72) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 32px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.35s ease !important;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(550px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(245, 183, 38, 0.12), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.spotlight-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(245, 183, 38, 0.3) !important;
+  box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(245, 183, 38, 0.15) !important;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+.spotlight-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Aceternity / Skiper UI Animated Border Beam */
+.border-beam {
+  position: relative;
+  overflow: hidden;
+}
+
+.border-beam::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from var(--beam-angle, 0deg), transparent 70%, var(--accent-amber) 85%, var(--accent-cyan) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Aceternity Shimmer Button */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(110deg, #10b981 0%, #059669 35%, #6ee7b7 50%, #059669 65%, #10b981 100%) !important;
+  background-size: 200% 100% !important;
+  animation: aceternity-shimmer 4s ease-in-out infinite;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.35) !important;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease !important;
+}
+
+.btn-shimmer:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 35px rgba(16, 185, 129, 0.5) !important;
+}
+
+@keyframes aceternity-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.btn-primary.btn-shimmer:not(.btn-sloth-sleep) {
+  background: linear-gradient(110deg, #f59e0b 0%, #ea580c 35%, #fef08a 50%, #ea580c 65%, #f59e0b 100%) !important;
+  background-size: 200% 100% !important;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.35) !important;
+}
+
+.btn-primary.btn-shimmer:not(.btn-sloth-sleep):hover {
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.5) !important;
 }
 
 /* ==========================================================================
@@ -768,28 +893,33 @@ body {
 }
 
 .preset-chip {
-  padding: 0.35rem 0.8rem;
+  padding: 0.42rem 0.95rem;
   border-radius: var(--radius-full);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   border: 1px solid var(--border-medium);
-  background: var(--bg-card);
+  background: rgba(18, 22, 40, 0.6);
+  backdrop-filter: blur(14px);
   color: var(--text-secondary);
   cursor: pointer;
   white-space: nowrap;
-  transition: all var(--transition-fast);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
 }
 
 .preset-chip:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
+  transform: translateY(-2px) scale(1.06);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .preset-chip.active {
-  background: rgba(245, 183, 38, 0.18);
+  transform: scale(1.04);
+  background: rgba(245, 183, 38, 0.2);
   border-color: var(--accent-amber);
   color: var(--accent-amber);
-  box-shadow: 0 0 12px rgba(245, 183, 38, 0.25);
+  box-shadow: 0 0 18px rgba(245, 183, 38, 0.35);
 }
 
 .mixer-card {
@@ -841,16 +971,20 @@ body {
 }
 
 .sound-layer-card {
-  background: rgba(10, 13, 24, 0.6);
-  border: 1px solid var(--border-subtle);
+  background: rgba(10, 13, 24, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-md);
-  padding: 0.9rem 1.1rem;
-  transition: all var(--transition-fast);
+  padding: 0.95rem 1.15rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s ease, background 0.25s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .sound-layer-card:hover {
-  border-color: var(--border-medium);
-  background: rgba(18, 22, 40, 0.8);
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(18, 22, 40, 0.85);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.2);
 }
 
 .layer-header {
