@@ -118,6 +118,14 @@ npx serve -l 3000 .
 # Open http://localhost:3000
 ```
 
+## 📱 Offline PWA & Mobile-Ready
+
+SnoozeScape is a full-featured **Progressive Web App (PWA)**:
+- **100% Offline Service Worker (`sw.js`):** Pre-caches the entire application bundle (styles, logic, mathematical audio synthesizer, AI engine, and vector icons). Runs in full Airplane Mode with zero network connectivity.
+- **Installable on iOS & Android:** Add directly to your smartphone home screen with standalone display, custom splash screen (`#07080f`), and sleep shortcuts.
+- **Mobile Floating Action Dock:** Inspired by Skiper UI, featuring thumb-friendly controls for instant sleep mode, soundscape toggles, 4-7-8 breathing meditation, and bedtime tales.
+- **Aceternity UI Design System:** Dynamic dot-matrix grid with radial moonlight masks, ceiling lamp ambient glow, spotlight cursor tracking, and continuous border-beam physics.
+
 ---
 
 ## ☁️ Deploy to Render (1-Click)

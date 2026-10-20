@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SnoozeScape">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  
   <title>SnoozeScape 🦥 — 100% Offline Ambient Bedtime AI & Soundscape Companion</title>
   <meta name="description" content="An open-source, private, 100% offline bedtime storyteller and procedural soundscape generator built for International Sloth Day and the Hacktoberfest Slow and Steady Challenge.">
   <meta name="keywords" content="open source AI, local inference, bedtime story, soundscape, WebGPU, transformers.js, sloth, sleep companion">
-  <meta name="theme-color" content="#0a0c14">
+  <meta name="theme-color" content="#07080f">
   
   <!-- Modern Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,6 +72,10 @@
           </svg>
           <span class="status-text" id="engine-status-text">Open AI Engine Ready</span>
         </div>
+        <button id="btn-pwa-install" class="btn btn-secondary btn-sm pwa-install-btn hidden" aria-label="Install App as Offline PWA">
+          <span class="btn-icon">📲</span>
+          <span>Install App</span>
+        </button>
         <button id="btn-quick-sleep" class="btn btn-primary btn-sloth-sleep btn-shimmer" aria-label="Activate Instant Sloth Bedtime Mode">
           <span class="btn-icon">✨</span>
           <span>Instant Sloth Mode</span>
@@ -468,6 +481,26 @@
       </div>
     </div>
   </footer>
+
+  <!-- Mobile Floating Action Dock (Touch-Optimized for Handhelds) -->
+  <nav class="mobile-action-dock" aria-label="Mobile Quick Sloth Controls">
+    <button id="btn-mobile-sloth" class="mobile-dock-btn mobile-dock-btn-primary" aria-label="Instant Sloth Bedtime Mode">
+      <span class="dock-icon">🦥</span>
+      <span class="dock-label">Sloth Mode</span>
+    </button>
+    <button id="btn-mobile-sound" class="mobile-dock-btn" aria-label="Toggle Soundscape">
+      <span class="dock-icon" id="mobile-sound-icon">▶</span>
+      <span class="dock-label" id="mobile-sound-label">Sound</span>
+    </button>
+    <button id="btn-mobile-breathe" class="mobile-dock-btn" aria-label="Guided Breathing">
+      <span class="dock-icon">🫧</span>
+      <span class="dock-label">Breathe</span>
+    </button>
+    <button id="btn-mobile-story" class="mobile-dock-btn" aria-label="Bedtime Story">
+      <span class="dock-icon">📖</span>
+      <span class="dock-label">Story</span>
+    </button>
+  </nav>
 
   <!-- Audio Synthesis & Local AI Scripts -->
   <script src="audio-engine.js"></script>

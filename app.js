@@ -248,14 +248,23 @@ document.addEventListener("DOMContentLoaded", () => {
      4. Audio Engine Master & Layer Wiring
      ========================================================================= */
   function updateMasterPlayButton(isPlaying) {
+    const mobileSoundIcon = document.getElementById("mobile-sound-icon");
+    const mobileSoundLabel = document.getElementById("mobile-sound-label");
+    const btnMobileSound = document.getElementById("btn-mobile-sound");
     if (isPlaying) {
       btnMasterPlay.classList.add("playing");
       masterPlayIcon.textContent = "⏸";
       masterPlayText.textContent = "Pause Soundscape";
+      if (mobileSoundIcon) mobileSoundIcon.textContent = "⏸";
+      if (mobileSoundLabel) mobileSoundLabel.textContent = "Pause";
+      if (btnMobileSound) btnMobileSound.classList.add("is-playing");
     } else {
       btnMasterPlay.classList.remove("playing");
       masterPlayIcon.textContent = "▶";
       masterPlayText.textContent = "Start Soundscape";
+      if (mobileSoundIcon) mobileSoundIcon.textContent = "▶";
+      if (mobileSoundLabel) mobileSoundLabel.textContent = "Sound";
+      if (btnMobileSound) btnMobileSound.classList.remove("is-playing");
     }
   }
 
@@ -587,4 +596,119 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(animateBorderBeam);
   }
   animateBorderBeam();
+
+  /* =========================================================================
+     10. PWA Service Worker & Install Prompt Controller
+     ========================================================================= */
+  let deferredPrompt = null;
+  const btnPwaInstall = document.getElementById("btn-pwa-install");
+
+  // Register Service Worker for 100% Offline Access
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("./sw.js")
+        .then((reg) => {
+          console.log("[PWA] Service Worker registered successfully:", reg.scope);
+        })
+        .catch((err) => {
+          console.warn("[PWA] Service Worker registration failed:", err);
+        });
+    });
+  }
+
+  // Check if already running as standalone PWA
+  const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  if (!isStandalone && btnPwaInstall) {
+    // Show install button so mobile and desktop users know it's a PWA
+    btnPwaInstall.classList.remove("hidden");
+  }
+
+  // Handle PWA Install Prompt (Chromium / Android)
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (btnPwaInstall && !isStandalone) {
+      btnPwaInstall.classList.remove("hidden");
+    }
+  });
+
+  if (btnPwaInstall) {
+    btnPwaInstall.addEventListener("click", async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+          btnPwaInstall.classList.add("hidden");
+        }
+        deferredPrompt = null;
+      } else {
+        // Fallback instructions for iOS Safari or other browsers
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          alert("📲 To install SnoozeScape on iPhone/iPad:\n\n1. Tap the Share button (square with arrow) at the bottom.\n2. Scroll down and tap 'Add to Home Screen'.\n3. Enjoy 100% offline bedtime soundscapes!");
+        } else {
+          alert("📲 To install SnoozeScape as an Offline App:\n\n• In Chrome/Edge: Click the install icon (⊕) on the right side of the address bar.\n• On Android: Tap the menu (⋮) > 'Install app' or 'Add to Home screen'.");
+        }
+      }
+    });
+  }
+
+  window.addEventListener("appinstalled", () => {
+    if (btnPwaInstall) btnPwaInstall.classList.add("hidden");
+    console.log("[PWA] SnoozeScape installed to home screen!");
+  });
+
+  // Handle PWA shortcut action query params (e.g. ?action=sloth-mode)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("action") === "sloth-mode") {
+      setTimeout(() => {
+        if (btnQuickSleep) {
+          btnQuickSleep.click();
+          console.log("[PWA] Triggered Instant Sloth Mode from shortcut");
+        }
+      }, 600);
+    }
+  } catch (err) {
+    console.warn("[PWA] Shortcut parsing error:", err);
+  }
+
+  /* =========================================================================
+     11. Mobile Floating Action Dock Wiring
+     ========================================================================= */
+  const btnMobileSloth = document.getElementById("btn-mobile-sloth");
+  const btnMobileSound = document.getElementById("btn-mobile-sound");
+  const mobileSoundIcon = document.getElementById("mobile-sound-icon");
+  const btnMobileBreathe = document.getElementById("btn-mobile-breathe");
+  const btnMobileStory = document.getElementById("btn-mobile-story");
+
+  if (btnMobileSloth && btnQuickSleep) {
+    btnMobileSloth.addEventListener("click", () => {
+      btnQuickSleep.click();
+    });
+  }
+
+  if (btnMobileSound && btnMasterPlay) {
+    btnMobileSound.addEventListener("click", () => {
+      btnMasterPlay.click();
+      if (mobileSoundIcon) {
+        mobileSoundIcon.textContent = window.snoozeAudio.isPlaying ? "⏸" : "▶";
+      }
+    });
+  }
+
+  if (btnMobileBreathe) {
+    btnMobileBreathe.addEventListener("click", () => {
+      const el = document.getElementById("breathing-heading");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
+  if (btnMobileStory) {
+    btnMobileStory.addEventListener("click", () => {
+      const el = document.getElementById("story-heading");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 });

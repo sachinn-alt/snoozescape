@@ -120,7 +120,11 @@ SnoozeScape contains **zero audio files**. Every sound wave is calculated on the
 - **Canopy Wind:** Resonant bandpass filter modulated by a 0.12Hz sinusoidal LFO, producing gentle forest wind gusts.
 - **Ocean Swell:** 0.08Hz infrasonic LFO modulating gain and frequency, mimicking the natural 12-second rhythm of breaking ocean tides.
 
-### 3. Sloth Pacing & Auto-Fade
+### 3. 100% Offline PWA & Mobile Action Dock
+SnoozeScape is equipped with a full Progressive Web App manifest and pre-caching Service Worker (`sw.js`). It can be added to your mobile home screen (iOS and Android) for instantaneous bedtime access in Airplane Mode. 
+On mobile handhelds, SnoozeScape renders a Skiper UI-inspired **Floating Action Dock** anchored with safe-area insets (`env(safe-area-inset-bottom)`), providing thumb-friendly triggers for instant sleep mode, audio toggles, and calming 4-7-8 breathing pacers.
+
+### 4. Sloth Pacing & Auto-Fade
 The audio engine includes a progressive exponential fader. Over 15, 30, 45, or 60 minutes, the audio imperceptibly eases down to silence while CSS transitions smoothly dim the screen brightness to pitch black.
 
 ---

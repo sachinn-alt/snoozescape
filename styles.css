@@ -1379,8 +1379,28 @@ body {
   color: var(--text-primary);
 }
 
+/* PWA Install Button */
+.pwa-install-btn {
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #c7d2fe;
+}
+
+.pwa-install-btn:hover {
+  background: rgba(99, 102, 241, 0.3);
+  border-color: #818cf8;
+}
+
+.pwa-install-btn.hidden {
+  display: none !important;
+}
+
+.mobile-action-dock {
+  display: none;
+}
+
 /* ==========================================================================
-   Responsive Adaptations
+   Responsive Adaptations & Mobile Touch Ergonomics
    ========================================================================== */
 
 @media (max-width: 1024px) {
@@ -1404,6 +1424,41 @@ body {
 }
 
 @media (max-width: 768px) {
+  /* Safe Area Support & Bottom Spacing for Floating Dock */
+  body {
+    padding-bottom: calc(75px + env(safe-area-inset-bottom, 20px));
+  }
+
+  .app-header {
+    padding-top: max(0.85rem, env(safe-area-inset-top, 10px));
+    padding-left: max(1rem, env(safe-area-inset-left, 10px));
+    padding-right: max(1rem, env(safe-area-inset-right, 10px));
+  }
+
+  .main-content {
+    padding: 1.25rem 1rem 3rem;
+    gap: 1.5rem;
+  }
+
+  /* Sloth Breathing Circle scaling for small screens */
+  .breathing-content {
+    gap: 1.5rem;
+  }
+  .breathing-visualizer-container {
+    width: 140px;
+    height: 140px;
+  }
+  .breathing-circle-inner {
+    width: 90px;
+    height: 90px;
+  }
+  .breathing-sloth {
+    font-size: 2.2rem;
+  }
+  .breathing-title {
+    font-size: 1.45rem;
+  }
+
   .sound-layers-grid {
     grid-template-columns: 1fr;
   }
@@ -1418,11 +1473,149 @@ body {
 
   .header-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 0.75rem;
   }
 
   .header-status-group {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+
+  .presets-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .presets-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .preset-chips {
+    flex-wrap: nowrap;
+    min-width: max-content;
+  }
+
+  /* Mobile Floating Action Dock (Skiper UI inspired) */
+  .mobile-action-dock {
+    display: flex;
+    position: fixed;
+    bottom: max(12px, env(safe-area-inset-bottom, 12px));
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 24px);
+    max-width: 440px;
+    background: rgba(13, 17, 32, 0.88);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-full);
+    padding: 6px 8px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 0 0 25px rgba(245, 183, 38, 0.15);
+    z-index: 1000;
+    align-items: center;
+    justify-content: space-around;
+    gap: 4px;
+  }
+
+  .mobile-dock-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 0.68rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    flex: 1;
+    min-height: 48px;
+  }
+
+  .mobile-dock-btn .dock-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .mobile-dock-btn:hover,
+  .mobile-dock-btn:active {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-dock-btn-primary {
+    background: linear-gradient(135deg, var(--accent-amber), var(--accent-orange));
+    color: #1a0f02 !important;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(245, 183, 38, 0.35);
+  }
+
+  .mobile-dock-btn.is-playing {
+    color: var(--accent-amber);
+    background: rgba(245, 183, 38, 0.18);
+    box-shadow: 0 0 14px rgba(245, 183, 38, 0.35);
+    border: 1px solid rgba(245, 183, 38, 0.4);
+  }
+
+  /* Touch Slider Targets */
+  .range-slider {
+    height: 8px;
+  }
+  .range-slider::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+  }
+
+  .story-action-bar {
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .voice-controls-mini {
+    width: 100%;
+    margin-left: 0;
     justify-content: space-between;
+    margin-top: 0.25rem;
+  }
+
+  .voice-controls-mini .mini-slider {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    gap: 0.75rem;
+  }
+  .brand-name {
+    font-size: 1.25rem;
+  }
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .sloth-emoji {
+    font-size: 1.5rem;
+  }
+  .header-status-group {
+    gap: 0.5rem;
+  }
+  .status-pill {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.6rem;
+  }
+  .btn-sloth-sleep {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.85rem;
   }
 }
