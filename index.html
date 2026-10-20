@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnoozeScape 🦥 — 100% Offline Ambient Bedtime AI & Soundscape Companion</title>
+  <meta name="description" content="An open-source, private, 100% offline bedtime storyteller and procedural soundscape generator built for International Sloth Day and the Hacktoberfest Slow and Steady Challenge.">
+  <meta name="keywords" content="open source AI, local inference, bedtime story, soundscape, WebGPU, transformers.js, sloth, sleep companion">
+  <meta name="theme-color" content="#0a0c14">
+  
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-midnight">
+  <!-- Dynamic Celestial Canvas Background -->
+  <canvas id="celestial-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient Glow Elements -->
+  <div class="ambient-glow glow-top" aria-hidden="true"></div>
+  <div class="ambient-glow glow-bottom" aria-hidden="true"></div>
+
+  <!-- Sleep Mode Overlay for Gradual Dimming -->
+  <div id="sleep-dim-overlay" class="sleep-dim-overlay" aria-hidden="true"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <span class="sloth-emoji">🦥</span>
+          <div class="moon-halo"></div>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title-row">
+            <h1 class="brand-name">SnoozeScape</h1>
+            <span class="badge badge-sloth">Sloth Edition</span>
+          </div>
+          <p class="brand-tagline">100% Offline Bedtime AI & Generative Soundscapes</p>
+        </div>
+      </div>
+
+      <!-- Live Offline & Status Badges -->
+      <div class="header-status-group">
+        <div class="status-pill status-offline" id="network-pill" title="Runs completely offline on your local device">
+          <span class="status-dot"></span>
+          <span class="status-text" id="network-status-text">100% Offline Mode</span>
+        </div>
+        <div class="status-pill status-engine" id="engine-pill" title="In-Browser Open-Weight AI via WebGPU/WASM">
+          <svg class="engine-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+          </svg>
+          <span class="status-text" id="engine-status-text">Open AI Engine Ready</span>
+        </div>
+        <button id="btn-quick-sleep" class="btn btn-primary btn-sloth-sleep" aria-label="Activate Instant Sloth Bedtime Mode">
+          <span class="btn-icon">✨</span>
+          <span>Instant Sloth Mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Experience Grid -->
+  <main class="main-content" id="main-content">
+    
+    <!-- Hero / Sloth Meditation & Breathing Banner -->
+    <section class="sloth-breathing-section glass-panel" aria-labelledby="breathing-heading">
+      <div class="breathing-content">
+        <div class="breathing-visualizer-container">
+          <div class="breathing-circle-outer"></div>
+          <div class="breathing-circle-inner" id="breathing-indicator">
+            <span class="breathing-sloth" aria-hidden="true">🦥</span>
+          </div>
+          <div class="breathing-stars" aria-hidden="true"></div>
+        </div>
+        <div class="breathing-text-area">
+          <div class="section-eyebrow">
+            <span class="sparkle">✦</span>
+            <span>Slow and Steady — Channel Your Inner Sloth</span>
+          </div>
+          <h2 id="breathing-heading" class="breathing-title">Breathe, Unwind, and Let AI Do The Rest</h2>
+          <p class="breathing-description" id="breathing-guide-text">
+            Inhale gently as the halo expands. Hold... and exhale as it settles. Sloths move at 0.15 mph and never stress about open tabs.
+          </p>
+          <div class="breathing-controls">
+            <button id="btn-toggle-breathing" class="btn btn-secondary btn-sm" aria-label="Toggle Guided Breathing Pacer">
+              <span id="breathing-btn-icon">⏸</span>
+              <span id="breathing-btn-label">Pause Breathing Guide</span>
+            </button>
+            <div class="sloth-timer-badge">
+              <span class="timer-icon">⏳</span>
+              <span>Sleep Drift Timer: </span>
+              <strong id="timer-display">30 min</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Column Interactive Workspace -->
+    <div class="experience-grid">
+      
+      <!-- Left Column: Storyteller & Story Generator -->
+      <section class="story-column glass-panel" aria-labelledby="story-heading">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-icon">📖</span>
+            <div>
+              <h2 id="story-heading" class="panel-title">Open-Source Bedtime Storyteller</h2>
+              <p class="panel-subtitle">Generates original calming tales & progressive sleep inductions offline</p>
+            </div>
+          </div>
+          <div class="story-quick-tags">
+            <span class="tag-label">Theme:</span>
+            <select id="story-theme-select" class="custom-select" aria-label="Select Bedtime Story Theme">
+              <option value="rainforest">🌿 Sloth Sanctuary in the Clouds</option>
+              <option value="train">🚂 Midnight Sleeper Through the Highlands</option>
+              <option value="library">📚 The Lost Starlit Library</option>
+              <option value="ocean">🌊 Bioluminescent Tide Pools</option>
+              <option value="cabin">🪵 Pine Cabin Fireplace in Winter</option>
+              <option value="custom">✨ Custom Sloth Prompt...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Custom Prompt Input (Collapsible) -->
+        <div id="custom-prompt-wrap" class="custom-prompt-wrap hidden">
+          <label for="custom-prompt-input" class="input-label">Tell the local AI what you'd like to dream about:</label>
+          <div class="input-group">
+            <input type="text" id="custom-prompt-input" class="text-input" placeholder="e.g. Floating on a giant lotus leaf under purple aurora borealis...">
+            <button id="btn-apply-custom" class="btn btn-secondary">Apply</button>
+          </div>
+        </div>
+
+        <!-- Story Action Bar -->
+        <div class="story-action-bar">
+          <button id="btn-generate-story" class="btn btn-primary" aria-label="Generate New Sleep Tale with Local AI">
+            <span class="btn-icon">🪄</span>
+            <span>Generate Sleep Tale</span>
+          </button>
+          
+          <button id="btn-narrate-story" class="btn btn-secondary" aria-label="Narrate Story Aloud with Soft Bedtime Voice">
+            <span class="btn-icon" id="narrate-icon">🔊</span>
+            <span id="narrate-label">Read Aloud (Voice)</span>
+          </button>
+
+          <button id="btn-copy-story" class="btn btn-ghost" title="Copy story to clipboard" aria-label="Copy story text">
+            <span>📋</span>
+          </button>
+
+          <div class="voice-controls-mini">
+            <label for="voice-rate-slider" class="mini-label" title="Pacing">Pacing: <span id="rate-value">0.8x</span></label>
+            <input type="range" id="voice-rate-slider" class="range-slider mini-slider" min="0.5" max="1.1" step="0.05" value="0.8" aria-label="Narration Speed">
+          </div>
+        </div>
+
+        <!-- Story Display Screen -->
+        <div class="story-display-card" id="story-display-container">
+          <div class="story-meta-row">
+            <span class="story-chapter-tag" id="story-chapter-tag">Chapter 1: The High Canopy Slumber</span>
+            <div class="story-badges">
+              <span class="badge-mini" id="model-badge">Model: SmolLM2 / Local Open-Weights</span>
+              <span class="badge-mini" id="latency-badge">Latency: 0ms (Offline)</span>
+            </div>
+          </div>
+          <article class="story-prose" id="story-text" tabindex="0" aria-label="Bedtime story text">
+            <!-- Default relaxing starter story -->
+            <p class="story-paragraph highlightable" data-p="1">
+              High above the misty valleys of Monteverde, nestled in the gentle fork of a moss-draped cecropia branch, Sloan the sloth took a slow, deliberate breath. The air smelled of damp fern leaves and night-blooming jasmine, cool against the skin.
+            </p>
+            <p class="story-paragraph highlightable" data-p="2">
+              Down below, the jungle was quiet. The rushing canopy rivers had settled into a steady, rhythmic murmur that matched the tempo of his heartbeat. One beat. Two beats. There were no deadlines in the forest crown, no unread notifications, no hurried meetings. The world moved only as fast as the moon chose to rise.
+            </p>
+            <p class="story-paragraph highlightable" data-p="3">
+              Sloan hooked his curved claws securely around the fragrant bark, feeling the grounded weight of the giant tree underneath him. With every gentle exhale, the remaining tension in his shoulders melted away like sea foam on warm sand. The canopy leaves whispered a soft lullaby above, folding over him like a velvet quilt woven with emerald starlight.
+            </p>
+            <p class="story-paragraph highlightable" data-p="4">
+              Close your eyes now. Feel the slow rhythm of the wind. Your thoughts are feather-light, drifting lazily into the quiet indigo night, where you have nothing to do, nowhere to rush, and all the time in the world to sleep.
+            </p>
+          </article>
+          <div class="story-loading-indicator hidden" id="story-loading-indicator">
+            <div class="spinner"></div>
+            <p id="loading-status-text">Channeling sloth wisdom with local weights...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Generative Procedural Web Audio Soundscape Engine -->
+      <section class="soundscape-column glass-panel" aria-labelledby="soundscape-heading">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-icon">🎵</span>
+            <div>
+              <h2 id="soundscape-heading" class="panel-title">Procedural Soundscape Synth</h2>
+              <p class="panel-subtitle">Synthesized mathematically via Web Audio — Zero MP3s, Zero Network</p>
+            </div>
+          </div>
+          <button id="btn-master-play" class="btn btn-primary btn-play-all" aria-label="Play or Pause Soundscape Engine">
+            <span class="play-icon" id="master-play-icon">▶</span>
+            <span id="master-play-text">Start Soundscape</span>
+          </button>
+        </div>
+
+        <!-- Soundscape Presets -->
+        <div class="presets-bar">
+          <span class="presets-label">Lazy Presets:</span>
+          <div class="preset-chips" role="radiogroup" aria-label="Soundscape Presets">
+            <button class="preset-chip active" data-preset="sloth-sanctuary" role="radio" aria-checked="true">
+              🦥 Sloth Sanctuary
+            </button>
+            <button class="preset-chip" data-preset="rainy-cabin" role="radio" aria-checked="false">
+              🌧️ Rainy Cabin
+            </button>
+            <button class="preset-chip" data-preset="midnight-ocean" role="radio" aria-checked="false">
+              🌊 Midnight Waves
+            </button>
+            <button class="preset-chip" data-preset="deep-binaural" role="radio" aria-checked="false">
+              🧘 Theta Sleep Wave
+            </button>
+          </div>
+        </div>
+
+        <!-- Master Volume & Soundscape Visualizer -->
+        <div class="mixer-card">
+          <div class="mixer-master-row">
+            <div class="master-vol-wrap">
+              <span class="mixer-label">Master Volume:</span>
+              <input type="range" id="master-volume-slider" class="range-slider" min="0" max="1" step="0.01" value="0.75" aria-label="Master Sound Volume">
+              <span class="vol-percentage" id="master-vol-display">75%</span>
+            </div>
+            <!-- Audio Spectrum Mini Visualizer -->
+            <canvas id="audio-visualizer-canvas" class="mini-spectrum-canvas" width="120" height="32" aria-hidden="true"></canvas>
+          </div>
+
+          <!-- Sound Layer Sliders (6 Procedural Generators) -->
+          <div class="sound-layers-grid">
+            
+            <!-- Layer 1: Binaural Delta/Theta Sleep Beats -->
+            <div class="sound-layer-card" id="layer-binaural">
+              <div class="layer-header">
+                <div class="layer-title-wrap">
+                  <span class="layer-emoji">🧠</span>
+                  <div>
+                    <h3 class="layer-name">Binaural Delta Beats</h3>
+                    <span class="layer-sub">4.5 Hz Deep Sleep Frequency</span>
+                  </div>
+                </div>
+                <button class="layer-toggle-btn active" data-layer="binaural" aria-label="Toggle Binaural Beats">ON</button>
+              </div>
+              <div class="layer-slider-row">
+                <input type="range" class="range-slider layer-slider" data-layer="binaural" min="0" max="1" step="0.01" value="0.45" aria-label="Binaural Beats Volume">
+                <span class="layer-vol-val">45%</span>
+              </div>
+            </div>
+
+            <!-- Layer 2: Nocturnal Rain -->
+            <div class="sound-layer-card" id="layer-rain">
+              <div class="layer-header">
+                <div class="layer-title-wrap">
+                  <span class="layer-emoji">🌧️</span>
+                  <div>
+                    <h3 class="layer-name">Nocturnal Rain</h3>
+                    <span class="layer-sub">Filtered Gentle Precipitation</span>
+                  </div>
+                </div>
+                <button class="layer-toggle-btn active" data-layer="rain" aria-label="Toggle Rain">ON</button>
+              </div>
+              <div class="layer-slider-row">
+                <input type="range" class="range-slider layer-slider" data-layer="rain" min="0" max="1" step="0.01" value="0.60" aria-label="Rain Volume">
+                <span class="layer-vol-val">60%</span>
+              </div>
+            </div>
+
+            <!-- Layer 3: Warm Fireplace Crackle -->
+            <div class="sound-layer-card" id="layer-fire">
+              <div class="layer-header">
+                <div class="layer-title-wrap">
+                  <span class="layer-emoji">🔥</span>
+                  <div>
+                    <h3 class="layer-name">Cozy Fireplace</h3>
+                    <span class="layer-sub">Procedural Wood Sparkle</span>
+                  </div>
+                </div>
+                <button class="layer-toggle-btn active" data-layer="fire" aria-label="Toggle Fireplace">ON</button>
+              </div>
+              <div class="layer-slider-row">
+                <input type="range" class="range-slider layer-slider" data-layer="fire" min="0" max="1" step="0.01" value="0.35" aria-label="Fireplace Volume">
+                <span class="layer-vol-val">35%</span>
+              </div>
+            </div>
+
+            <!-- Layer 4: Deep Brown Noise Wave -->
+            <div class="sound-layer-card" id="layer-brown">
+              <div class="layer-header">
+                <div class="layer-title-wrap">
+                  <span class="layer-emoji">🪐</span>
+                  <div>
+                    <h3 class="layer-name">Deep Brown Noise</h3>
+                    <span class="layer-sub">Sub-Bass Masking Rumble</span>
+                  </div>
+                </div>
+                <button class="layer-toggle-btn active" data-layer="brown" aria-label="Toggle Brown Noise">ON</button>
+              </div>
+              <div class="layer-slider-row">
+                <input type="range" class="range-slider layer-slider" data-layer="brown" min="0" max="1" step="0.01" value="0.50" aria-label="Brown Noise Volume">
+                <span class="layer-vol-val">50%</span>
+              </div>
+            </div>
+
+            <!-- Layer 5: Canopy Night Breeze -->
+            <div class="sound-layer-card" id="layer-wind">
+              <div class="layer-header">
+                <div class="layer-title-wrap">
+                  <span class="layer-emoji">🍃</span>
+                  <div>
+                    <h3 class="layer-name">Canopy Breeze</h3>
+                    <span class="layer-sub">Modulated Forest Wind</span>
+                  </div>
+                </div>
+                <button class="layer-toggle-btn active" data-layer="wind" aria-label="Toggle Wind">ON</button>
+              </div>
+              <div class="layer-slider-row">
+                <input type="range" class="range-slider layer-slider" data-layer="wind" min="0" max="1" step="0.01" value="0.40" aria-label="Wind Volume">
+                <span class="layer-vol-val">40%</span>
+              </div>
+            </div>
+
+            <!-- Layer 6: Oceanic Rhythmic Swell -->
+            <div class="sound-layer-card" id="layer-ocean">
+              <div class="layer-header">
+                <div class="layer-title-wrap">
+                  <span class="layer-emoji">🌊</span>
+                  <div>
+                    <h3 class="layer-name">Ocean Swell</h3>
+                    <span class="layer-sub">Slow Tidal Infrasound</span>
+                  </div>
+                </div>
+                <button class="layer-toggle-btn" data-layer="ocean" aria-label="Toggle Ocean">OFF</button>
+              </div>
+              <div class="layer-slider-row">
+                <input type="range" class="range-slider layer-slider" data-layer="ocean" min="0" max="1" step="0.01" value="0.00" aria-label="Ocean Volume">
+                <span class="layer-vol-val">0%</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Sloth Sleep Timer & Fade Out Settings -->
+        <div class="sleep-timer-card">
+          <div class="timer-card-header">
+            <span class="timer-title-icon">🦥</span>
+            <div>
+              <h3 class="timer-card-title">Sloth Auto-Fade Timer</h3>
+              <p class="timer-card-sub">Audio gently diminishes to silence as you fall asleep</p>
+            </div>
+          </div>
+          <div class="timer-duration-buttons">
+            <button class="btn-timer" data-mins="15">15 min</button>
+            <button class="btn-timer active" data-mins="30">30 min</button>
+            <button class="btn-timer" data-mins="45">45 min</button>
+            <button class="btn-timer" data-mins="60">60 min</button>
+            <button class="btn-timer" data-mins="0">Infinite</button>
+          </div>
+          <div class="fade-out-status">
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" id="timer-progress-fill" style="width: 100%;"></div>
+            </div>
+            <span class="fade-desc" id="fade-status-text">Timer active: 30 minutes remaining</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Bottom Open Innovation & Diagnostics Drawer (Expandable) -->
+    <section class="open-innovation-section glass-panel" aria-labelledby="open-tech-heading">
+      <div class="section-toggle-header" id="btn-toggle-diagnostics">
+        <div class="toggle-title-wrap">
+          <span class="tech-icon">🛡️</span>
+          <div>
+            <h2 id="open-tech-heading" class="toggle-title">Why Open-Source AI Matters for SnoozeScape</h2>
+            <p class="toggle-sub">Private local inference, airplane mode freedom, and zero cloud surveillance</p>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btn-expand-diagnostics" aria-expanded="false" aria-controls="diagnostics-body">
+          <span id="expand-icon">▼</span> Details
+        </button>
+      </div>
+
+      <div class="diagnostics-content" id="diagnostics-body">
+        <div class="comparison-grid">
+          
+          <!-- Closed Cloud Voice/AI -->
+          <div class="comparison-card card-closed">
+            <div class="card-badge badge-closed">Closed Cloud APIs (OpenAI / ElevenLabs)</div>
+            <h3 class="card-heading">The Closed-Source Approach</h3>
+            <ul class="comparison-list">
+              <li>❌ <strong>Requires Constant Wi-Fi:</strong> Nightstand laptop emits radio signals and risks disconnections.</li>
+              <li>❌ <strong>Intimate Data Harvested:</strong> Bedtime thoughts, emotional state, and sleep hours are logged on third-party servers.</li>
+              <li>❌ <strong>Subscription & Rate Limits:</strong> Wake up to billing surprise or get cut off mid-story by 429 quota exhaustion.</li>
+              <li>❌ <strong>Heavy Carbon & Network Footprint:</strong> Streams megabytes of audio every night across power-hungry data centers.</li>
+            </ul>
+          </div>
+
+          <!-- SnoozeScape Open Source -->
+          <div class="comparison-card card-open">
+            <div class="card-badge badge-open">Open-Source AI & WebGPU Core</div>
+            <h3 class="card-heading">The SnoozeScape Sloth Approach</h3>
+            <ul class="comparison-list">
+              <li>✅ <strong>100% Airplane Mode:</strong> Shut down Wi-Fi, silence notifications, sleep without EMF or midnight pings.</li>
+              <li>✅ <strong>Absolute Bedroom Privacy:</strong> Zero bytes leave your machine. Your sleep patterns belong only to you.</li>
+              <li>✅ <strong>Mathematical Audio Synthesis:</strong> All 6 soundscapes are synthesized mathematically with Web Audio—zero asset downloads.</li>
+              <li>✅ <strong>Free & Hackable Forever:</strong> Powered by open-weights (SmolLM2 / Transformers.js) with zero recurring token fees.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- System Diagnostics Table -->
+        <div class="engine-metrics-bar">
+          <div class="metric-item">
+            <span class="metric-label">Execution Environment:</span>
+            <span class="metric-val" id="diag-env">Browser Client (Local CPU/WebGPU)</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Network Outbound Calls:</span>
+            <span class="metric-val text-success" id="diag-network">0 Requests (100% Offline)</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Audio Synth Engine:</span>
+            <span class="metric-val" id="diag-audio">Web Audio Native (6 Synthesizers)</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Open Source Model:</span>
+            <span class="metric-val" id="diag-model">Hugging Face Transformers.js / Local Weights</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Application Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p class="footer-copy">
+        Crafted with 🦥 slothful devotion for <strong>International Sloth Day</strong> &amp; the 
+        <a href="https://dev.to/challenges/hacktoberfest-week3-2026-10-19" target="_blank" rel="noopener noreferrer">Hacktoberfest Open-Source AI Challenge (Week 3: Slow and Steady)</a>.
+      </p>
+      <div class="footer-links">
+        <span class="mit-license">MIT Open Source</span>
+        <span>•</span>
+        <a href="#diagnostics-body" id="footer-privacy-link">Privacy Manifesto</a>
+        <span>•</span>
+        <button id="btn-reset-app" class="footer-btn-link">Reset Defaults</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Audio Synthesis & Local AI Scripts -->
+  <script src="audio-engine.js"></script>
+  <script src="ai-engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
