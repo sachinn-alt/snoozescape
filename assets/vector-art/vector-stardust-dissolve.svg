@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Background and Glow Gradients -->
+    <linearGradient id="stardust-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#0f172a" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#2e1065" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <linearGradient id="trail-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#c084fc" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#f5b726" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <linearGradient id="gold-star-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#f5b726"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+
+    <radialGradient id="nebula-radial" cx="70%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#6366f1" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Filters for Glow Effect -->
+    <filter id="celestial-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="soft-shimmer" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ambient Backdrop Glow -->
+  <rect width="400" height="120" rx="14" fill="url(#stardust-bg)"/>
+  <circle cx="280" cy="60" r="55" fill="url(#nebula-radial)"/>
+
+  <!-- Left: Concentrated worry energy transmuting into light -->
+  <g transform="translate(45, 60)">
+    <!-- Swirling core particles -->
+    <circle cx="0" cy="0" r="16" fill="rgba(139, 92, 246, 0.15)" stroke="rgba(167, 139, 250, 0.4)" stroke-width="1.2" stroke-dasharray="3 3"/>
+    <circle cx="0" cy="0" r="9" fill="rgba(192, 132, 252, 0.25)"/>
+    <circle cx="0" cy="0" r="3.5" fill="#f5b726" filter="url(#soft-shimmer)"/>
+    
+    <!-- Energy orbital rings -->
+    <ellipse cx="0" cy="0" rx="26" ry="10" transform="rotate(-25)" fill="none" stroke="rgba(167, 139, 250, 0.3)" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="24" ry="9" transform="rotate(35)" fill="none" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1"/>
+  </g>
+
+  <!-- Flowing Stardust Particle Trails -->
+  <path d="M 65 58 C 110 40, 160 85, 215 50 C 265 20, 320 70, 370 45" fill="none" stroke="url(#trail-grad)" stroke-width="2.2" stroke-linecap="round" filter="url(#celestial-glow)"/>
+  <path d="M 70 64 C 120 75, 175 35, 230 68 C 285 95, 335 40, 385 62" fill="none" stroke="url(#trail-grad)" stroke-width="1.2" stroke-opacity="0.6" stroke-linecap="round" stroke-dasharray="4 4"/>
+  <path d="M 80 52 C 135 30, 190 70, 245 42 C 295 18, 345 55, 380 35" fill="none" stroke="rgba(56, 189, 248, 0.45)" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- Celestial Stardust Sparkles & Stars -->
+  <!-- 4-point stars -->
+  <g transform="translate(145, 42) scale(0.9)" filter="url(#soft-shimmer)">
+    <path d="M 0 -8 Q 1 -1 8 0 Q 1 1 0 8 Q -1 1 -8 0 Q -1 -1 0 -8 Z" fill="url(#gold-star-grad)"/>
+  </g>
+
+  <g transform="translate(225, 75) scale(0.75)" filter="url(#soft-shimmer)">
+    <path d="M 0 -8 Q 1 -1 8 0 Q 1 1 0 8 Q -1 1 -8 0 Q -1 -1 0 -8 Z" fill="#e0e7ff"/>
+  </g>
+
+  <g transform="translate(290, 32) scale(1.1)" filter="url(#celestial-glow)">
+    <path d="M 0 -10 Q 1.5 -1.5 10 0 Q 1.5 1.5 0 10 Q -1.5 1.5 -10 0 Q -1.5 -1.5 0 -10 Z" fill="url(#gold-star-grad)"/>
+    <circle cx="0" cy="0" r="1.5" fill="#ffffff"/>
+  </g>
+
+  <g transform="translate(345, 68) scale(0.85)" filter="url(#soft-shimmer)">
+    <path d="M 0 -8 Q 1 -1 8 0 Q 1 1 0 8 Q -1 1 -8 0 Q -1 -1 0 -8 Z" fill="#c084fc"/>
+  </g>
+
+  <g transform="translate(372, 38) scale(0.65)" filter="url(#soft-shimmer)">
+    <path d="M 0 -7 Q 1 -1 7 0 Q 1 1 0 7 Q -1 1 -7 0 Q -1 -1 0 -7 Z" fill="#fef08a"/>
+  </g>
+
+  <!-- Dispersed Stardust Points -->
+  <circle cx="115" cy="50" r="1.8" fill="#f5b726" opacity="0.9"/>
+  <circle cx="130" cy="70" r="1.2" fill="#c4b5fd" opacity="0.8"/>
+  <circle cx="170" cy="38" r="2.2" fill="#ffffff" opacity="0.95" filter="url(#soft-shimmer)"/>
+  <circle cx="190" cy="78" r="1.5" fill="#38bdf8" opacity="0.75"/>
+  <circle cx="210" cy="48" r="1.3" fill="#fef08a" opacity="0.9"/>
+  <circle cx="250" cy="30" r="1.8" fill="#e9d5ff" opacity="0.85"/>
+  <circle cx="265" cy="85" r="2.0" fill="#f5b726" opacity="0.8" filter="url(#soft-shimmer)"/>
+  <circle cx="310" cy="65" r="1.6" fill="#38bdf8" opacity="0.9"/>
+  <circle cx="330" cy="35" r="1.2" fill="#ffffff" opacity="0.85"/>
+  <circle cx="360" cy="88" r="1.5" fill="#c084fc" opacity="0.75"/>
+  <circle cx="388" cy="54" r="2.0" fill="#f5b726" opacity="0.95" filter="url(#soft-shimmer)"/>
+
+  <!-- Crescent Dream Accent in Far Right -->
+  <path d="M 360 22 A 10 10 0 0 0 354 38 A 12 12 0 0 1 360 22 Z" fill="#fef08a" opacity="0.5"/>
+</svg>

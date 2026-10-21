@@ -269,20 +269,19 @@
       <div class="header-status-group">
         <div class="status-pill status-offline" id="network-pill" title="Runs completely offline on your local device">
           <span class="status-dot"></span>
+          <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-shield"></use></svg>
           <span class="status-text" id="network-status-text">100% Offline Mode</span>
         </div>
         <div class="status-pill status-engine" id="engine-pill" title="In-Browser Open-Weight AI via WebGPU/WASM">
-          <svg class="engine-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
-          </svg>
+          <svg class="iconly-icon iconly-icon-xs" style="color: #38bdf8;" aria-hidden="true"><use href="#iconly-discovery"></use></svg>
           <span class="status-text" id="engine-status-text">Open AI Engine Ready</span>
         </div>
         <button id="btn-pwa-install" class="btn btn-secondary btn-sm pwa-install-btn hidden" aria-label="Install App as Offline PWA">
-          <span class="btn-icon">📲</span>
+          <svg class="iconly-icon iconly-icon-sm" aria-hidden="true"><use href="#iconly-download"></use></svg>
           <span>Install App</span>
         </button>
         <button id="btn-quick-sleep" class="btn btn-primary btn-sloth-sleep btn-shimmer" aria-label="Activate Instant Sloth Bedtime Mode">
-          <span class="btn-icon">✨</span>
+          <svg class="iconly-icon iconly-icon-sm" aria-hidden="true"><use href="#iconly-star"></use></svg>
           <span>Instant Sloth Mode</span>
         </button>
       </div>
@@ -298,7 +297,7 @@
         <div class="breathing-visualizer-container">
           <div class="breathing-circle-outer"></div>
           <div class="breathing-circle-inner" id="breathing-indicator">
-            <span class="breathing-sloth" aria-hidden="true">🦥</span>
+            <img src="assets/vector-art/vector-sloth-moon.svg" class="breathing-vector-art" alt="Peaceful sleeping sloth on moon" aria-hidden="true">
           </div>
           <div class="breathing-stars" aria-hidden="true"></div>
         </div>
@@ -359,6 +358,11 @@
               <option value="custom">✨ Custom Sloth Prompt...</option>
             </select>
           </div>
+        </div>
+
+        <!-- Bento Box Vector Art: Dream Nebula -->
+        <div class="bento-art-banner bento-art-story" aria-hidden="true">
+          <img src="assets/vector-art/vector-dream-nebula.svg" class="bento-vector-art" alt="" aria-hidden="true">
         </div>
 
         <!-- Custom Prompt Input (Collapsible) -->
@@ -447,6 +451,11 @@
           </button>
         </div>
 
+        <!-- Bento Box Vector Art: Acoustic Waves -->
+        <div class="bento-art-banner bento-art-sound" aria-hidden="true">
+          <img src="assets/vector-art/vector-sound-waves.svg" class="bento-vector-art" alt="" aria-hidden="true">
+        </div>
+
         <!-- Soundscape Presets & Interactive Mix Tools -->
         <div class="presets-bar">
           <div class="presets-scroll-wrap">
@@ -500,7 +509,7 @@
             <div class="sound-layer-card" id="layer-binaural">
               <div class="layer-header">
                 <div class="layer-title-wrap">
-                  <span class="layer-emoji"><svg class="iconly-icon iconly-icon-md" style="color: #a78bfa;" aria-hidden="true"><use href="#iconly-activity"></use></svg></span>
+                  <div class="layer-icon-badge" style="background: rgba(167, 139, 250, 0.12); border-color: rgba(167, 139, 250, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #a78bfa;" aria-hidden="true"><use href="#iconly-activity"></use></svg></div>
                   <div>
                     <h3 class="layer-name">Binaural Delta Beats</h3>
                     <span class="layer-sub">4.5 Hz Deep Sleep Frequency</span>
@@ -518,7 +527,7 @@
             <div class="sound-layer-card" id="layer-rain">
               <div class="layer-header">
                 <div class="layer-title-wrap">
-                  <span class="layer-emoji"><svg class="iconly-icon iconly-icon-md" style="color: #38bdf8;" aria-hidden="true"><use href="#iconly-filter"></use></svg></span>
+                  <div class="layer-icon-badge" style="background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #38bdf8;" aria-hidden="true"><use href="#iconly-filter"></use></svg></div>
                   <div>
                     <h3 class="layer-name">Nocturnal Rain</h3>
                     <span class="layer-sub">Filtered Gentle Precipitation</span>
@@ -536,7 +545,7 @@
             <div class="sound-layer-card" id="layer-fire">
               <div class="layer-header">
                 <div class="layer-title-wrap">
-                  <span class="layer-emoji"><svg class="iconly-icon iconly-icon-md" style="color: #f97316;" aria-hidden="true"><use href="#iconly-discovery"></use></svg></span>
+                  <div class="layer-icon-badge" style="background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #f97316;" aria-hidden="true"><use href="#iconly-discovery"></use></svg></div>
                   <div>
                     <h3 class="layer-name">Cozy Fireplace</h3>
                     <span class="layer-sub">Procedural Wood Sparkle</span>
@@ -554,7 +563,7 @@
             <div class="sound-layer-card" id="layer-brown">
               <div class="layer-header">
                 <div class="layer-title-wrap">
-                  <span class="layer-emoji"><svg class="iconly-icon iconly-icon-md" style="color: #cbd5e1;" aria-hidden="true"><use href="#iconly-volume"></use></svg></span>
+                  <div class="layer-icon-badge" style="background: rgba(203, 213, 225, 0.1); border-color: rgba(203, 213, 225, 0.25);"><svg class="iconly-icon iconly-icon-md" style="color: #cbd5e1;" aria-hidden="true"><use href="#iconly-volume"></use></svg></div>
                   <div>
                     <h3 class="layer-name">Deep Brown Noise</h3>
                     <span class="layer-sub">Sub-Bass Masking Rumble</span>
@@ -572,7 +581,7 @@
             <div class="sound-layer-card" id="layer-wind">
               <div class="layer-header">
                 <div class="layer-title-wrap">
-                  <span class="layer-emoji"><svg class="iconly-icon iconly-icon-md" style="color: #2dd4bf;" aria-hidden="true"><use href="#iconly-category"></use></svg></span>
+                  <div class="layer-icon-badge" style="background: rgba(45, 212, 191, 0.12); border-color: rgba(45, 212, 191, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #2dd4bf;" aria-hidden="true"><use href="#iconly-category"></use></svg></div>
                   <div>
                     <h3 class="layer-name">Canopy Breeze</h3>
                     <span class="layer-sub">Modulated Forest Wind</span>
@@ -590,7 +599,7 @@
             <div class="sound-layer-card" id="layer-ocean">
               <div class="layer-header">
                 <div class="layer-title-wrap">
-                  <span class="layer-emoji"><svg class="iconly-icon iconly-icon-md" style="color: #60a5fa;" aria-hidden="true"><use href="#iconly-swap"></use></svg></span>
+                  <div class="layer-icon-badge" style="background: rgba(96, 165, 250, 0.12); border-color: rgba(96, 165, 250, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #60a5fa;" aria-hidden="true"><use href="#iconly-swap"></use></svg></div>
                   <div>
                     <h3 class="layer-name">Ocean Swell</h3>
                     <span class="layer-sub">Slow Tidal Infrasound</span>
@@ -650,6 +659,11 @@
             <p class="sanctuary-sub">Interactive binaural brainwave tuner, worry-to-stardust release, and circadian sleep cycle calculator</p>
           </div>
         </div>
+      </div>
+
+      <!-- Bento Box Vector Art: Harmonic Neuro Frequencies -->
+      <div class="bento-art-banner bento-art-neurolab" aria-hidden="true">
+        <img src="assets/vector-art/vector-neurolab-frequencies.svg" class="bento-vector-art" alt="" aria-hidden="true">
       </div>
 
       <div class="sanctuary-grid">
@@ -714,6 +728,11 @@
           <h3 class="card-title">Dissolve Daily Worries into Stardust</h3>
           <p class="card-desc">Empty your mind before sleep. Type what's lingering, and watch it dissolve into celestial stardust.</p>
 
+          <!-- Bento Inner Vector Art: Stardust Dissolution -->
+          <div class="bento-art-inner bento-art-stardust" aria-hidden="true">
+            <img src="assets/vector-art/vector-stardust-dissolve.svg" class="bento-inner-vector" alt="" aria-hidden="true">
+          </div>
+
           <div class="worry-input-wrap">
             <textarea id="worry-text-input" class="worry-textarea" placeholder="e.g. Stress about tomorrow's presentation, busy thoughts, unfinished tasks..." rows="3" aria-label="Bedtime thought to release"></textarea>
             <div class="worry-actions">
@@ -753,6 +772,12 @@
             <div class="clock-desc">Sleep occurs in 90-minute REM cycles. Waking between cycles prevents morning grogginess.</div>
           </div>
         </div>
+
+        <!-- Bento Inner Vector Art: Circadian Architecture -->
+        <div class="bento-art-inner bento-art-circadian" aria-hidden="true">
+          <img src="assets/vector-art/vector-circadian-clock.svg" class="bento-circadian-vector" alt="" aria-hidden="true">
+        </div>
+
         <div class="cycle-times-grid" id="cycle-times-grid">
           <!-- Populated by JS based on current bedtime -->
         </div>
@@ -780,7 +805,7 @@
   <!-- Mobile Floating Action Dock (Touch-Optimized for Handhelds) -->
   <nav class="mobile-action-dock" aria-label="Mobile Quick Sloth Controls">
     <button id="btn-mobile-sloth" class="mobile-dock-btn mobile-dock-btn-primary" aria-label="Instant Sloth Bedtime Mode">
-      <span class="dock-icon">🦥</span>
+      <span class="dock-icon"><img src="assets/vector-art/vector-sloth-moon.svg" class="mobile-sloth-vector" alt="" aria-hidden="true"></span>
       <span class="dock-label">Sloth Mode</span>
     </button>
     <button id="btn-mobile-sound" class="mobile-dock-btn" aria-label="Toggle Soundscape">
@@ -802,8 +827,8 @@
   </nav>
 
   <!-- Audio Synthesis & Local AI Scripts -->
-  <script src="audio-engine.js?v=1.0.4"></script>
-  <script src="ai-engine.js?v=1.0.4"></script>
-  <script src="app.js?v=1.0.4"></script>
+  <script src="audio-engine.js?v=1.0.6"></script>
+  <script src="ai-engine.js?v=1.0.6"></script>
+  <script src="app.js?v=1.0.6"></script>
 </body>
 </html>

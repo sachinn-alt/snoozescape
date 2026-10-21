@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" fill="none" class="bento-vector-art" aria-hidden="true">
+  <defs>
+    <linearGradient id="bookGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f5b726" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+    <linearGradient id="dreamAura" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.3" />
+      <stop offset="60%" stop-color="#6366f1" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="treeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Dream Nebula Aura -->
+  <circle cx="160" cy="70" r="85" fill="url(#dreamAura)" />
+
+  <!-- Background Pine Silhouette Horizon -->
+  <g fill="url(#treeGrad)" opacity="0.6">
+    <!-- Tree 1 -->
+    <path d="M40 120 L50 85 L45 85 L53 65 L48 65 L55 45 L62 65 L57 65 L65 85 L60 85 L70 120 Z" />
+    <!-- Tree 2 -->
+    <path d="M75 120 L83 95 L79 95 L86 78 L82 78 L88 62 L94 78 L90 78 L97 95 L93 95 L101 120 Z" opacity="0.4" />
+    <!-- Tree 3 -->
+    <path d="M225 120 L233 92 L229 92 L236 75 L232 75 L238 58 L244 75 L240 75 L247 92 L243 92 L251 120 Z" opacity="0.4" />
+    <!-- Tree 4 -->
+    <path d="M255 120 L265 82 L260 82 L268 62 L263 62 L270 42 L277 62 L272 62 L280 82 L275 82 L285 120 Z" />
+  </g>
+
+  <!-- Glowing Bedtime Story Open Book -->
+  <g transform="translate(130, 48)">
+    <!-- Book Aura -->
+    <ellipse cx="30" cy="25" rx="36" ry="18" fill="#f5b726" opacity="0.15" />
+
+    <!-- Left Page -->
+    <path d="M30 35 C15 32 3 35 2 24 C2 14 14 12 30 16 Z" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.2" />
+    <path d="M8 20 C14 18 22 18 26 21 M8 24 C14 22 22 22 26 25" stroke="#f5b726" stroke-width="1" stroke-linecap="round" opacity="0.75" />
+
+    <!-- Right Page -->
+    <path d="M30 35 C45 32 57 35 58 24 C58 14 46 12 30 16 Z" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.2" />
+    <path d="M34 21 C38 18 46 18 52 20 M34 25 C38 22 46 22 52 24" stroke="#f5b726" stroke-width="1" stroke-linecap="round" opacity="0.75" />
+
+    <!-- Spine Ribbon -->
+    <path d="M30 16 L30 38" stroke="#f5b726" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <!-- Golden Stardust Emanating from Book -->
+  <g fill="#fef08a">
+    <circle cx="160" cy="38" r="2.2" opacity="0.95" />
+    <circle cx="145" cy="28" r="1.5" opacity="0.8" />
+    <circle cx="178" cy="25" r="1.8" opacity="0.85" />
+    <circle cx="132" cy="18" r="1.2" opacity="0.7" />
+    <circle cx="190" cy="16" r="1.4" opacity="0.75" />
+    <circle cx="162" cy="12" r="2" opacity="0.9" />
+  </g>
+
+  <!-- Sparkle Cross Stars -->
+  <path d="M162 6 L162 18 M156 12 L168 12" stroke="#f5b726" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
+  <path d="M125 32 L125 40 M121 36 L129 36" stroke="#38bdf8" stroke-width="1" stroke-linecap="round" opacity="0.7" />
+  <path d="M198 30 L198 38 M194 34 L202 34" stroke="#c084fc" stroke-width="1" stroke-linecap="round" opacity="0.7" />
+</svg>

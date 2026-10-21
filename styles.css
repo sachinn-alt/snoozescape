@@ -736,10 +736,177 @@ button:hover .iconly-icon {
 
 .experience-grid {
   display: grid;
-  grid-template-columns: 1.15fr 0.95fr;
+  grid-template-columns: 1.08fr 0.92fr;
   gap: 2rem;
-  align-items: start;
+  align-items: stretch;
 }
+
+.story-column,
+.soundscape-column {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-medium);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.story-column:hover,
+.soundscape-column:hover {
+  border-color: rgba(245, 183, 38, 0.35);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 35px rgba(245, 183, 38, 0.08);
+}
+
+/* ==========================================================================
+   Bento Box Vector Art Banners & Inner Illustrations
+   ========================================================================== */
+
+.bento-art-banner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(15, 23, 42, 0.4) 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.85rem 1.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.bento-art-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bento-art-story::before {
+  background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 75%);
+}
+
+.bento-art-sound::before {
+  background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.12) 0%, transparent 75%);
+}
+
+.bento-art-neurolab::before {
+  background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.14) 0%, transparent 75%);
+}
+
+.bento-vector-art {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  max-height: 90px;
+  display: block;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.5));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-art-banner:hover .bento-vector-art {
+  transform: scale(1.035);
+}
+
+/* Bento Inner Vector Art (Inside Bento Cards) */
+.bento-art-inner {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.28);
+  position: relative;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.bento-art-inner:hover {
+  border-color: rgba(167, 139, 250, 0.35);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.bento-art-stardust {
+  padding: 0.55rem 0.85rem;
+}
+
+.bento-inner-vector {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  max-height: 85px;
+  display: block;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.4));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-art-inner:hover .bento-inner-vector,
+.bento-art-inner:hover .bento-circadian-vector {
+  transform: scale(1.025);
+}
+
+.bento-art-circadian {
+  padding: 0.65rem 1rem;
+  background: rgba(11, 15, 25, 0.7);
+  border-color: rgba(139, 92, 246, 0.22);
+}
+
+.bento-circadian-vector {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  max-height: 98px;
+  display: block;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.5));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Breathing Vector Art Center */
+.breathing-vector-art {
+  width: 95px;
+  height: 95px;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.6));
+  animation: float-gentle 6s ease-in-out infinite alternate;
+}
+
+.mobile-sloth-vector {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display: block;
+}
+
+@keyframes float-gentle {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-3px) rotate(1deg); }
+  100% { transform: translateY(2px) rotate(-1deg); }
+}
+
+/* Layer Icon Badge */
+.layer-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.sound-layer-card:hover .layer-icon-badge {
+  transform: scale(1.08);
+}
+
 
 /* Panel Header */
 .panel-header {
@@ -875,7 +1042,11 @@ button:hover .iconly-icon {
 .story-display-card {
   padding: 1.75rem;
   position: relative;
-  min-height: 400px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 420px;
 }
 
 .story-meta-row {
@@ -961,7 +1132,9 @@ button:hover .iconly-icon {
   color: var(--text-secondary);
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 1.25rem;
+  flex: 1;
   transition: font-size 0.2s ease;
 }
 
@@ -1188,14 +1361,19 @@ button:hover .iconly-icon {
 .sound-layers-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
 .sound-layer-card {
   background: rgba(10, 13, 24, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-md);
   padding: 0.95rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 104px;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s ease, background 0.25s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -1212,7 +1390,7 @@ button:hover .iconly-icon {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.65rem;
 }
 
 .layer-title-wrap {
@@ -1265,6 +1443,7 @@ button:hover .iconly-icon {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-top: auto;
 }
 
 .layer-vol-val {
@@ -1415,14 +1594,21 @@ button:hover .iconly-icon {
    ========================================================================== */
 
 .sanctuary-lab-section {
-  padding: 2.25rem 2rem;
+  padding: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
   border: 1px solid rgba(139, 92, 246, 0.28);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(139, 92, 246, 0.08);
+  border-top: 1px solid rgba(167, 139, 250, 0.4);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 40px rgba(139, 92, 246, 0.08);
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .sanctuary-header {
-  margin-bottom: 2rem;
+  padding: 1.75rem 2rem 1.35rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .sanctuary-title-wrap {
@@ -1469,18 +1655,22 @@ button:hover .iconly-icon {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  padding: 1.75rem 2rem;
+  margin-bottom: 0;
+  align-items: stretch;
 }
 
 .sanctuary-card {
   background: rgba(15, 23, 42, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  padding: 1.5rem 1.75rem;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 1.15rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
@@ -1794,12 +1984,12 @@ button:hover .iconly-icon {
 /* Circadian Sleep Cycle Guide Bar */
 .sleep-cycles-bar {
   background: rgba(10, 14, 26, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+  border-radius: 0;
+  padding: 1.5rem 2rem 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.15rem;
 }
 
 .cycle-clock-wrap {
@@ -2012,10 +2202,41 @@ button:hover .iconly-icon {
 
   .sanctuary-grid {
     grid-template-columns: 1fr;
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .sanctuary-header {
+    padding: 1.25rem 1rem 1rem;
+  }
+
+  .sleep-cycles-bar {
+    padding: 1.25rem 1rem 1.35rem;
+  }
+
+  .bento-art-banner {
+    padding: 0.65rem 1rem;
+  }
+
+  .bento-vector-art {
+    max-height: 70px;
+  }
+
+  .bento-art-inner {
+    padding: 0.4rem 0.65rem;
+  }
+
+  .bento-inner-vector {
+    max-height: 65px;
+  }
+
+  .bento-circadian-vector {
+    max-height: 75px;
   }
 
   .cycle-times-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
   }
 
 
