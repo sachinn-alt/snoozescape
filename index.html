@@ -106,10 +106,19 @@
           <p class="breathing-description" id="breathing-guide-text">
             Inhale gently as the halo expands. Hold... and exhale as it settles. Sloths move at 0.15 mph and never stress about open tabs.
           </p>
+          <div class="breathing-modes-bar" role="radiogroup" aria-label="Breathing Patterns">
+            <button class="mode-chip active" data-mode="4-7-8" role="radio" aria-checked="true" title="4s Inhale, 7s Hold, 8s Exhale (Sleep induction)">🦥 4-7-8 Sleep</button>
+            <button class="mode-chip" data-mode="4-4-4" role="radio" aria-checked="false" title="4s Inhale, 4s Hold, 4s Exhale, 4s Hold (Box calm)">📦 Box Calm</button>
+            <button class="mode-chip" data-mode="4-6" role="radio" aria-checked="false" title="4s Inhale, 6s Exhale (Ocean flow)">🌊 4-6 Flow</button>
+          </div>
           <div class="breathing-controls">
             <button id="btn-toggle-breathing" class="btn btn-secondary btn-sm" aria-label="Toggle Guided Breathing Pacer">
               <span id="breathing-btn-icon">⏸</span>
               <span id="breathing-btn-label">Pause Breathing Guide</span>
+            </button>
+            <button id="btn-toggle-chime" class="btn btn-ghost btn-sm" aria-label="Toggle Solfeggio Breathing Audio Chime" title="Acoustic Solfeggio Chime at phase transitions">
+              <span id="chime-btn-icon">🔇</span>
+              <span id="chime-btn-label">Chime Off</span>
             </button>
             <div class="sloth-timer-badge">
               <span class="timer-icon">⏳</span>
@@ -152,6 +161,9 @@
           <label for="custom-prompt-input" class="input-label">Tell the local AI what you'd like to dream about:</label>
           <div class="input-group">
             <input type="text" id="custom-prompt-input" class="text-input" placeholder="e.g. Floating on a giant lotus leaf under purple aurora borealis...">
+            <button id="btn-surprise-prompt" class="btn btn-ghost" title="Roll a random relaxing dream theme" aria-label="Surprise dream prompt">
+              <span>🎲 Surprise Me</span>
+            </button>
             <button id="btn-apply-custom" class="btn btn-secondary">Apply</button>
           </div>
         </div>
@@ -182,6 +194,11 @@
         <div class="story-display-card" id="story-display-container">
           <div class="story-meta-row">
             <span class="story-chapter-tag" id="story-chapter-tag">Chapter 1: The High Canopy Slumber</span>
+            <div class="story-reading-tools" role="toolbar" aria-label="Text Reading Tools">
+              <button id="btn-font-smaller" class="tool-btn" title="Decrease font size" aria-label="Smaller text">A-</button>
+              <button id="btn-font-larger" class="tool-btn" title="Increase font size" aria-label="Larger text">A+</button>
+              <button id="btn-toggle-candlelight" class="tool-btn" title="Toggle Amber Candlelight night reading tint" aria-label="Candlelight night tint">🕯️</button>
+            </div>
             <div class="story-badges">
               <span class="badge-mini" id="model-badge">Model: SmolLM2 / Local Open-Weights</span>
               <span class="badge-mini" id="latency-badge">Latency: 0ms (Offline)</span>
@@ -225,21 +242,31 @@
           </button>
         </div>
 
-        <!-- Soundscape Presets -->
+        <!-- Soundscape Presets & Interactive Mix Tools -->
         <div class="presets-bar">
-          <span class="presets-label">Lazy Presets:</span>
-          <div class="preset-chips" role="radiogroup" aria-label="Soundscape Presets">
-            <button class="preset-chip active" data-preset="sloth-sanctuary" role="radio" aria-checked="true">
-              🦥 Sloth Sanctuary
+          <div class="presets-scroll-wrap">
+            <span class="presets-label">Presets:</span>
+            <div class="preset-chips" role="radiogroup" aria-label="Soundscape Presets">
+              <button class="preset-chip active" data-preset="sloth-sanctuary" role="radio" aria-checked="true">
+                🦥 Sloth Sanctuary
+              </button>
+              <button class="preset-chip" data-preset="rainy-cabin" role="radio" aria-checked="false">
+                🌧️ Rainy Cabin
+              </button>
+              <button class="preset-chip" data-preset="midnight-ocean" role="radio" aria-checked="false">
+                🌊 Midnight Waves
+              </button>
+              <button class="preset-chip" data-preset="deep-binaural" role="radio" aria-checked="false">
+                🧘 Theta Sleep Wave
+              </button>
+            </div>
+          </div>
+          <div class="preset-quick-actions">
+            <button id="btn-random-mix" class="btn btn-ghost btn-xs" title="Generate random harmonious blend of ambient layers" aria-label="Randomize Sound Mix">
+              <span>🎲 Random Mix</span>
             </button>
-            <button class="preset-chip" data-preset="rainy-cabin" role="radio" aria-checked="false">
-              🌧️ Rainy Cabin
-            </button>
-            <button class="preset-chip" data-preset="midnight-ocean" role="radio" aria-checked="false">
-              🌊 Midnight Waves
-            </button>
-            <button class="preset-chip" data-preset="deep-binaural" role="radio" aria-checked="false">
-              🧘 Theta Sleep Wave
+            <button id="btn-tibetan-bowl" class="btn btn-ghost btn-xs" title="Ring resonant 432Hz bronze singing bowl" aria-label="Ring 432Hz Tibetan Singing Bowl">
+              <span>🔔 432Hz Bell</span>
             </button>
           </div>
         </div>
@@ -252,8 +279,13 @@
               <input type="range" id="master-volume-slider" class="range-slider" min="0" max="1" step="0.01" value="0.75" aria-label="Master Sound Volume">
               <span class="vol-percentage" id="master-vol-display">75%</span>
             </div>
-            <!-- Audio Spectrum Mini Visualizer -->
-            <canvas id="audio-visualizer-canvas" class="mini-spectrum-canvas" width="120" height="32" aria-hidden="true"></canvas>
+            <!-- Audio Spectrum Mini Visualizer with Interactive Mode Switcher -->
+            <div class="visualizer-container" id="visualizer-container" title="Click to cycle visualizer mode (Bars / Sine Wave / Ripple Rings)">
+              <canvas id="audio-visualizer-canvas" class="mini-spectrum-canvas" width="130" height="34" aria-hidden="true"></canvas>
+              <button id="btn-vis-mode" class="vis-mode-tag" aria-label="Cycle Audio Visualizer Style">
+                <span id="vis-mode-icon">📊</span> <span id="vis-mode-name">Bars</span>
+              </button>
+            </div>
           </div>
 
           <!-- Sound Layer Sliders (6 Procedural Generators) -->
@@ -490,6 +522,10 @@
     <button id="btn-mobile-sound" class="mobile-dock-btn" aria-label="Toggle Soundscape">
       <span class="dock-icon" id="mobile-sound-icon">▶</span>
       <span class="dock-label" id="mobile-sound-label">Sound</span>
+    </button>
+    <button id="btn-mobile-bowl" class="mobile-dock-btn" aria-label="Ring 432Hz Tibetan Singing Bowl">
+      <span class="dock-icon">🔔</span>
+      <span class="dock-label">Bowl</span>
     </button>
     <button id="btn-mobile-breathe" class="mobile-dock-btn" aria-label="Guided Breathing">
       <span class="dock-icon">🫧</span>

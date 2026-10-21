@@ -29,6 +29,9 @@ class SnoozeAudioEngine {
     this.fadeDurationMs = 30 * 60 * 1000; // 30 minutes default
     this.fadeStartTime = null;
     this.fadeTimerInterval = null;
+
+    // Interactive Chime & Bowl state
+    this.chimeEnabled = false;
   }
 
   /**
@@ -472,6 +475,103 @@ class SnoozeAudioEngine {
         if (this.onTimerComplete) this.onTimerComplete();
       }
     }, 1000);
+  }
+
+  /**
+   * Synthesizes a resonant 432Hz Tibetan Bronze Singing Bowl chime
+   * with natural physical acoustic overtones and exponential ring-down.
+   */
+  playTibetanBowl(baseFreq = 432, duration = 4.5) {
+    this.initContext();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const bowlGain = this.ctx.createGain();
+    bowlGain.gain.setValueAtTime(0.001, now);
+    bowlGain.gain.exponentialRampToValueAtTime(0.35, now + 0.04);
+    bowlGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    bowlGain.connect(this.masterGain);
+
+    // Overtones for bronze singing bowl physical simulation
+    const harmonics = [
+      { ratio: 1.0, gain: 0.7, detune: 0 },
+      { ratio: 2.01, gain: 0.25, detune: 1.5 },
+      { ratio: 3.02, gain: 0.12, detune: -1.2 },
+      { ratio: 4.67, gain: 0.05, detune: 2.3 }
+    ];
+
+    harmonics.forEach(h => {
+      const osc = this.ctx.createOscillator();
+      const hGain = this.ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(baseFreq * h.ratio, now);
+      osc.detune.setValueAtTime(h.detune, now);
+      hGain.gain.setValueAtTime(h.gain, now);
+
+      osc.connect(hGain);
+      hGain.connect(bowlGain);
+
+      osc.start(now);
+      osc.stop(now + duration);
+    });
+
+    setTimeout(() => {
+      try { bowlGain.disconnect(); } catch (e) {}
+    }, (duration + 0.5) * 1000);
+  }
+
+  /**
+   * Plays a delicate breathing transition tone (solfeggio inspired)
+   */
+  playBreathingChime(phase) {
+    if (!this.chimeEnabled) return;
+    this.initContext();
+    if (!this.ctx) return;
+
+    let freq = 528; // Inhale: 528 Hz (Calm / Healing)
+    if (phase === 'hold') freq = 396;   // Hold: 396 Hz (Stability)
+    if (phase === 'exhale') freq = 285; // Exhale: 285 Hz (Restoration)
+
+    const now = this.ctx.currentTime;
+    const chimeGain = this.ctx.createGain();
+    chimeGain.gain.setValueAtTime(0.001, now);
+    chimeGain.gain.exponentialRampToValueAtTime(0.14, now + 0.05);
+    chimeGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+    chimeGain.connect(this.masterGain);
+
+    const osc = this.ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, now);
+    osc.connect(chimeGain);
+    osc.start(now);
+    osc.stop(now + 1.8);
+
+    setTimeout(() => {
+      try { chimeGain.disconnect(); } catch (e) {}
+    }, 2000);
+  }
+
+  /**
+   * Randomizes a balanced, cozy ambient blend with smooth slider transitions
+   */
+  randomizeMix() {
+    const keys = Object.keys(this.layers);
+    const newMix = {};
+
+    // Select 3 to 5 active layers
+    const numActive = Math.floor(Math.random() * 3) + 3;
+    const shuffled = [...keys].sort(() => 0.5 - Math.random());
+    const activeKeys = new Set(shuffled.slice(0, numActive));
+
+    keys.forEach(k => {
+      const active = activeKeys.has(k);
+      const vol = active ? Math.round((Math.random() * 0.55 + 0.20) * 100) / 100 : 0.0;
+      this.layers[k].active = active;
+      this.setLayerVolume(k, vol);
+      newMix[k] = { active, vol };
+    });
+
+    return newMix;
   }
 }
 

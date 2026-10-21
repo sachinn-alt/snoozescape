@@ -79,6 +79,52 @@ document.addEventListener("DOMContentLoaded", () => {
     const starCount = Math.floor((width * height) / 4500);
     let stars = [];
     let shootingStars = [];
+    let stardustParticles = [];
+    let pointerX = -1000;
+    let pointerY = -1000;
+    let pointerActive = false;
+
+    // Track mouse / touch pointer for interactive constellations
+    window.addEventListener("pointermove", (e) => {
+      pointerX = e.clientX;
+      pointerY = e.clientY;
+      pointerActive = true;
+
+      // Spawn subtle stardust trail
+      if (Math.random() > 0.4) {
+        stardustParticles.push({
+          x: pointerX + (Math.random() * 12 - 6),
+          y: pointerY + (Math.random() * 12 - 6),
+          size: Math.random() * 1.8 + 0.6,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: -Math.random() * 0.8 - 0.2,
+          opacity: 0.8,
+          color: Math.random() > 0.5 ? "#f5b726" : "#38bdf8"
+        });
+      }
+    });
+
+    window.addEventListener("pointerleave", () => {
+      pointerActive = false;
+    });
+
+    // Click anywhere in celestial sky to summon shooting star
+    window.addEventListener("click", (e) => {
+      // Ignore interactive clicks on buttons/inputs
+      if (e.target.closest("button, input, select, .preset-chip, .tool-btn")) return;
+      spawnShootingStar(e.clientX, e.clientY);
+    });
+
+    function spawnShootingStar(originX, originY) {
+      shootingStars.push({
+        x: originX || Math.random() * width * 0.8,
+        y: originY || Math.random() * height * 0.3,
+        length: Math.random() * 90 + 50,
+        speed: Math.random() * 8 + 6,
+        angle: Math.PI / 4 + (Math.random() * 0.3 - 0.15),
+        opacity: 1
+      });
+    }
 
     function createStars() {
       stars = [];
@@ -96,22 +142,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
     createStars();
 
-    // Spawn occasional gentle shooting star
+    // Spontaneous gentle shooting star
     setInterval(() => {
       if (Math.random() > 0.3) {
-        shootingStars.push({
-          x: Math.random() * width * 0.8,
-          y: Math.random() * height * 0.3,
-          length: Math.random() * 80 + 40,
-          speed: Math.random() * 6 + 4,
-          angle: Math.PI / 4 + (Math.random() * 0.2 - 0.1),
-          opacity: 1
-        });
+        spawnShootingStar();
       }
     }, 7000);
 
     function animateStars() {
       ctx.clearRect(0, 0, width, height);
+
+      // Render Interactive Constellation Lines Near Cursor
+      if (pointerActive) {
+        const nearbyStars = [];
+        for (let i = 0; i < stars.length; i++) {
+          const dx = stars[i].x - pointerX;
+          const dy = stars[i].y - pointerY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 110) {
+            nearbyStars.push(stars[i]);
+            // Line from star to pointer
+            const alpha = (1 - dist / 110) * 0.35;
+            ctx.strokeStyle = `rgba(245, 183, 38, ${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(pointerX, pointerY);
+            ctx.stroke();
+          }
+        }
+
+        // Connect nearby stars with each other to form celestial asterisms
+        for (let i = 0; i < nearbyStars.length; i++) {
+          for (let j = i + 1; j < nearbyStars.length; j++) {
+            const dx = nearbyStars[i].x - nearbyStars[j].x;
+            const dy = nearbyStars[i].y - nearbyStars[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 90) {
+              const alpha = (1 - dist / 90) * 0.25;
+              ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
+              ctx.lineWidth = 0.6;
+              ctx.beginPath();
+              ctx.moveTo(nearbyStars[i].x, nearbyStars[i].y);
+              ctx.lineTo(nearbyStars[j].x, nearbyStars[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
 
       // Render Stars
       stars.forEach(star => {
@@ -125,11 +203,29 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.fill();
       });
 
+      // Render Stardust particles
+      for (let i = stardustParticles.length - 1; i >= 0; i--) {
+        const p = stardustParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.opacity -= 0.015;
+
+        if (p.opacity <= 0) {
+          stardustParticles.splice(i, 1);
+        } else {
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.opacity;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
       // Render Shooting Stars
       for (let i = shootingStars.length - 1; i >= 0; i--) {
         const s = shootingStars[i];
         ctx.strokeStyle = "rgba(255, 255, 255, " + s.opacity + ")";
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.6;
         ctx.beginPath();
         ctx.moveTo(s.x, s.y);
         ctx.lineTo(
@@ -140,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         s.x += Math.cos(s.angle) * s.speed;
         s.y += Math.sin(s.angle) * s.speed;
-        s.opacity -= 0.015;
+        s.opacity -= 0.018;
 
         if (s.opacity <= 0) {
           shootingStars.splice(i, 1);
@@ -157,23 +253,56 @@ document.addEventListener("DOMContentLoaded", () => {
   initCelestialCanvas();
 
   /* =========================================================================
-     2. Guided Sloth Breathing Pacer (4-7-8 Relaxation Cycle)
+     2. Guided Sloth Breathing Pacer (Selectable Patterns & Acoustic Chimes)
      ========================================================================= */
+  const BREATHING_MODES = {
+    "4-7-8": {
+      name: "4-7-8 Sleep",
+      phases: [
+        { phase: "inhale", text: "Inhale slowly and deeply as the halo expands... (4s)", duration: 4000 },
+        { phase: "hold", text: "Hold gently in serene stillness... (7s)", duration: 7000 },
+        { phase: "exhale", text: "Exhale completely, releasing all physical tension... (8s)", duration: 8000 }
+      ]
+    },
+    "4-4-4": {
+      name: "Box Calm",
+      phases: [
+        { phase: "inhale", text: "Inhale gently (4s)...", duration: 4000 },
+        { phase: "hold", text: "Hold calmness (4s)...", duration: 4000 },
+        { phase: "exhale", text: "Smooth exhale (4s)...", duration: 4000 },
+        { phase: "hold", text: "Peaceful pause (4s)...", duration: 4000 }
+      ]
+    },
+    "4-6": {
+      name: "Ocean Flow",
+      phases: [
+        { phase: "inhale", text: "Inhale rising tide (4s)...", duration: 4000 },
+        { phase: "exhale", text: "Slow ocean exhale (6s)...", duration: 6000 }
+      ]
+    }
+  };
+
+  let currentModeKey = "4-7-8";
+  let breathingPhaseIdx = 0;
+
   function startBreathingGuide() {
-    let phase = 0; // 0: Inhale, 1: Hold, 2: Exhale
-    const phases = [
-      { text: "Inhale slowly and deeply as the halo expands... (4s)", duration: 4000 },
-      { text: "Hold gently in serene stillness... (7s)", duration: 7000 },
-      { text: "Exhale completely, releasing all effort... (8s)", duration: 8000 }
-    ];
+    clearTimeout(breathingInterval);
+    const modeConfig = BREATHING_MODES[currentModeKey] || BREATHING_MODES["4-7-8"];
+    breathingPhaseIdx = 0;
 
     function runCycle() {
       if (!breathingActive) return;
-      const current = phases[phase];
+      const current = modeConfig.phases[breathingPhaseIdx];
       if (breathingGuideText) {
         breathingGuideText.textContent = current.text;
       }
-      phase = (phase + 1) % phases.length;
+
+      // Play soft acoustic Solfeggio chime if enabled
+      if (window.snoozeAudio && window.snoozeAudio.chimeEnabled) {
+        window.snoozeAudio.playBreathingChime(current.phase);
+      }
+
+      breathingPhaseIdx = (breathingPhaseIdx + 1) % modeConfig.phases.length;
       breathingInterval = setTimeout(runCycle, current.duration);
     }
 
@@ -181,6 +310,48 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   startBreathingGuide();
+
+  // Mode Selection Chips
+  const modeChips = document.querySelectorAll(".mode-chip");
+  modeChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      modeChips.forEach(c => {
+        c.classList.remove("active");
+        c.setAttribute("aria-checked", "false");
+      });
+      chip.classList.add("active");
+      chip.setAttribute("aria-checked", "true");
+      currentModeKey = chip.dataset.mode;
+      startBreathingGuide();
+    });
+  });
+
+  // Acoustic Breathing Chime Toggle
+  const btnToggleChime = document.getElementById("btn-toggle-chime");
+  const chimeBtnIcon = document.getElementById("chime-btn-icon");
+  const chimeBtnLabel = document.getElementById("chime-btn-label");
+  if (btnToggleChime) {
+    btnToggleChime.addEventListener("click", () => {
+      window.snoozeAudio.chimeEnabled = !window.snoozeAudio.chimeEnabled;
+      if (window.snoozeAudio.chimeEnabled) {
+        chimeBtnIcon.textContent = "🔔";
+        chimeBtnLabel.textContent = "Chime On";
+        btnToggleChime.classList.add("active");
+        window.snoozeAudio.playBreathingChime("inhale");
+      } else {
+        chimeBtnIcon.textContent = "🔇";
+        chimeBtnLabel.textContent = "Chime Off";
+        btnToggleChime.classList.remove("active");
+      }
+    });
+  }
+
+  // Tap-to-pause / Tap-to-sync on the breathing circle itself
+  if (breathingIndicator) {
+    breathingIndicator.addEventListener("click", () => {
+      if (btnToggleBreathing) btnToggleBreathing.click();
+    });
+  }
 
   if (btnToggleBreathing) {
     btnToggleBreathing.addEventListener("click", () => {
@@ -201,13 +372,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================================================================
-     3. Audio Spectrum Visualizer
+     3. Audio Spectrum Visualizer (Multi-Mode: Bars / Wave / Ripples)
      ========================================================================= */
+  let visualizerMode = 0; // 0: Bars, 1: Wave, 2: Ripples
+  const VIS_MODES = [
+    { icon: "📊", name: "Bars" },
+    { icon: "〰️", name: "Wave" },
+    { icon: "🫧", name: "Ripples" }
+  ];
+
+  const btnVisMode = document.getElementById("btn-vis-mode");
+  const visModeIcon = document.getElementById("vis-mode-icon");
+  const visModeName = document.getElementById("vis-mode-name");
+  const visContainer = document.getElementById("visualizer-container");
+
+  function cycleVisualizerMode() {
+    visualizerMode = (visualizerMode + 1) % VIS_MODES.length;
+    const mode = VIS_MODES[visualizerMode];
+    if (visModeIcon) visModeIcon.textContent = mode.icon;
+    if (visModeName) visModeName.textContent = mode.name;
+  }
+
+  if (btnVisMode) btnVisMode.addEventListener("click", (e) => { e.stopPropagation(); cycleVisualizerMode(); });
+  if (visContainer) visContainer.addEventListener("click", cycleVisualizerMode);
+
   function initAudioVisualizer() {
     if (!visualizerCanvas) return;
     const ctx = visualizerCanvas.getContext("2d");
     const width = visualizerCanvas.width;
     const height = visualizerCanvas.height;
+
+    let rippleRadius = 0;
 
     function drawSpectrum() {
       requestAnimationFrame(drawSpectrum);
@@ -220,22 +415,71 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const bufferLength = window.snoozeAudio.analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-      window.snoozeAudio.analyser.getByteFrequencyData(dataArray);
+      if (visualizerMode === 0) {
+        // Mode 0: Spectrum Frequency Bars
+        const bufferLength = window.snoozeAudio.analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        window.snoozeAudio.analyser.getByteFrequencyData(dataArray);
 
-      const barWidth = (width / bufferLength) * 1.5;
-      let x = 0;
+        const barWidth = (width / bufferLength) * 1.5;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = (dataArray[i] / 255) * height;
+          const grad = ctx.createLinearGradient(0, height, 0, 0);
+          grad.addColorStop(0, "#f5b726");
+          grad.addColorStop(1, "#38bdf8");
 
-      for (let i = 0; i < bufferLength; i++) {
-        const barHeight = (dataArray[i] / 255) * height;
-        const grad = ctx.createLinearGradient(0, height, 0, 0);
+          ctx.fillStyle = grad;
+          ctx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
+          x += barWidth;
+        }
+      } else if (visualizerMode === 1) {
+        // Mode 1: Liquid Sine Oscilloscope Wave
+        const bufferLength = window.snoozeAudio.analyser.fftSize;
+        const timeArray = new Uint8Array(bufferLength);
+        window.snoozeAudio.analyser.getByteTimeDomainData(timeArray);
+
+        ctx.lineWidth = 2;
+        const grad = ctx.createLinearGradient(0, 0, width, 0);
         grad.addColorStop(0, "#f5b726");
-        grad.addColorStop(1, "#38bdf8");
+        grad.addColorStop(0.5, "#38bdf8");
+        grad.addColorStop(1, "#f5b726");
+        ctx.strokeStyle = grad;
+        ctx.beginPath();
 
-        ctx.fillStyle = grad;
-        ctx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
-        x += barWidth;
+        const sliceWidth = width / bufferLength;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const v = timeArray[i] / 128.0;
+          const y = (v * height) / 2;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+          x += sliceWidth;
+        }
+        ctx.stroke();
+      } else if (visualizerMode === 2) {
+        // Mode 2: Concentric Nebula Pulse Rings
+        const bufferLength = window.snoozeAudio.analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        window.snoozeAudio.analyser.getByteFrequencyData(dataArray);
+
+        let sum = 0;
+        for (let i = 0; i < bufferLength; i++) sum += dataArray[i];
+        const avg = sum / bufferLength;
+        const pulseFactor = avg / 255;
+
+        rippleRadius = (rippleRadius + 0.6) % (width / 2.5);
+
+        ctx.strokeStyle = `rgba(245, 183, 38, ${Math.max(0.1, 0.7 - rippleRadius / (width / 2.5))})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(width / 2, height / 2, rippleRadius + pulseFactor * 8, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.strokeStyle = `rgba(56, 189, 248, ${Math.max(0.1, pulseFactor * 0.8)})`;
+        ctx.beginPath();
+        ctx.arc(width / 2, height / 2, Math.max(3, pulseFactor * 12), 0, Math.PI * 2);
+        ctx.stroke();
       }
     }
 
@@ -352,14 +596,148 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Randomize Cozy Mix
+  const btnRandomMix = document.getElementById("btn-random-mix");
+  if (btnRandomMix) {
+    btnRandomMix.addEventListener("click", () => {
+      const newMix = window.snoozeAudio.randomizeMix();
+      presetChips.forEach(c => c.classList.remove("active"));
+
+      // Update UI sliders and toggle buttons
+      layerCards.forEach(card => {
+        const layerKey = card.id.replace("layer-", "");
+        const cfg = newMix[layerKey];
+        if (cfg) {
+          const slider = card.querySelector(".layer-slider");
+          const toggleBtn = card.querySelector(".layer-toggle-btn");
+          const valDisplay = card.querySelector(".layer-vol-val");
+
+          if (slider) slider.value = cfg.vol;
+          if (valDisplay) valDisplay.textContent = Math.round(cfg.vol * 100) + "%";
+          if (toggleBtn) {
+            toggleBtn.textContent = cfg.active ? "ON" : "OFF";
+            toggleBtn.classList.toggle("active", cfg.active);
+          }
+        }
+      });
+
+      // Start audio if not currently playing
+      if (!window.snoozeAudio.isPlaying && btnMasterPlay) {
+        btnMasterPlay.click();
+      }
+    });
+  }
+
+  // 432Hz Tibetan Bronze Singing Bowl Trigger
+  const btnTibetanBowl = document.getElementById("btn-tibetan-bowl");
+  const btnMobileBowl = document.getElementById("btn-mobile-bowl");
+
+  function triggerSingingBowl(btn) {
+    window.snoozeAudio.playTibetanBowl(432, 4.5);
+    if (btn) {
+      btn.style.transform = "scale(0.92)";
+      setTimeout(() => { btn.style.transform = ""; }, 200);
+    }
+  }
+
+  if (btnTibetanBowl) btnTibetanBowl.addEventListener("click", () => triggerSingingBowl(btnTibetanBowl));
+  if (btnMobileBowl) btnMobileBowl.addEventListener("click", () => triggerSingingBowl(btnMobileBowl));
+
   /* =========================================================================
-     5. Story Generation & Narration
+     5. Story Generation, Surprise Generator & Paragraph Interaction
      ========================================================================= */
-  // Initial story paragraphs cache
+  // Paragraph Click-to-Read Wiring
+  function wireParagraphClicks() {
+    const paragraphs = storyText.querySelectorAll(".story-paragraph");
+    paragraphs.forEach((p, idx) => {
+      p.onclick = () => {
+        window.snoozeAI.stopNarration();
+        narrateIcon.textContent = "⏸";
+        narrateLabel.textContent = "Pause Voice";
+        btnNarrateStory.classList.remove("btn-secondary");
+        btnNarrateStory.classList.add("btn-primary");
+
+        const remainingParagraphs = currentStoryParagraphs.slice(idx);
+        window.snoozeAI.narrateStory(
+          remainingParagraphs,
+          (offsetIdx) => {
+            const actualIdx = idx + offsetIdx;
+            paragraphs.forEach((para, i) => {
+              if (i === actualIdx) {
+                para.classList.add("speaking-now");
+                para.scrollIntoView({ behavior: "smooth", block: "nearest" });
+              } else {
+                para.classList.remove("speaking-now");
+              }
+            });
+          },
+          () => {
+            resetNarrateButton();
+          }
+        );
+      };
+    });
+  }
+
+  // Initial story paragraphs cache & click wiring
   function cacheCurrentParagraphs() {
     currentStoryParagraphs = Array.from(storyText.querySelectorAll(".story-paragraph")).map(p => p.textContent.trim());
+    wireParagraphClicks();
   }
   cacheCurrentParagraphs();
+
+  // Surprise Prompt Inspiration Generator
+  const surpriseDreamThemes = [
+    "A cozy wooden sleeper train softly rattling across the misty highlands of Scotland under a violet moon...",
+    "Floating on a giant emerald water lily leaf across a silent bioluminescent mangrove lagoon...",
+    "A sleepy sloth tending a nocturnal greenhouse filled with glowing silver moonflowers...",
+    "A warm cedarwood cabin library with a crackling hearth while soft snow falls outside the frosted glass...",
+    "An ancient stone lighthouse keeper watching gentle ocean swells lap against warm pebble shores in the calm night...",
+    "Drifting in a wicker hot-air balloon above silent lavender fields illuminated by celestial constellations...",
+    "A mossy forest teahouse where rain drips steadily from bamboo eaves into quiet stone reflecting basins..."
+  ];
+
+  const btnSurprisePrompt = document.getElementById("btn-surprise-prompt");
+  if (btnSurprisePrompt) {
+    btnSurprisePrompt.addEventListener("click", () => {
+      const randomPrompt = surpriseDreamThemes[Math.floor(Math.random() * surpriseDreamThemes.length)];
+      customPromptInput.value = randomPrompt;
+      storyThemeSelect.value = "custom";
+      customPromptWrap.classList.remove("hidden");
+      generateBedtimeStory();
+    });
+  }
+
+  // Story Reading Tools (Font Resizing & Candlelight Mode)
+  let currentStoryFontSize = 1.05; // rem
+  const btnFontSmaller = document.getElementById("btn-font-smaller");
+  const btnFontLarger = document.getElementById("btn-font-larger");
+  const btnToggleCandlelight = document.getElementById("btn-toggle-candlelight");
+
+  if (btnFontSmaller) {
+    btnFontSmaller.addEventListener("click", () => {
+      if (currentStoryFontSize > 0.85) {
+        currentStoryFontSize = Math.max(0.80, currentStoryFontSize - 0.1);
+        storyText.style.fontSize = `${currentStoryFontSize}rem`;
+      }
+    });
+  }
+
+  if (btnFontLarger) {
+    btnFontLarger.addEventListener("click", () => {
+      if (currentStoryFontSize < 1.45) {
+        currentStoryFontSize = Math.min(1.50, currentStoryFontSize + 0.1);
+        storyText.style.fontSize = `${currentStoryFontSize}rem`;
+      }
+    });
+  }
+
+  if (btnToggleCandlelight) {
+    btnToggleCandlelight.addEventListener("click", () => {
+      storyDisplayContainer.classList.toggle("candlelight-mode");
+      btnToggleCandlelight.classList.toggle("active");
+    });
+  }
 
   if (storyThemeSelect) {
     storyThemeSelect.addEventListener("change", (e) => {
@@ -397,6 +775,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const p = document.createElement("p");
         p.className = "story-paragraph highlightable";
         p.dataset.p = i + 1;
+        p.title = "Click to listen from this paragraph";
         p.textContent = pText;
         storyText.appendChild(p);
       });
