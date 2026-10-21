@@ -82,8 +82,8 @@ class SnoozeAudioEngine {
      ========================================================================= */
   startBinauralLayer() {
     const l = this.layers.binaural;
-    const baseFreq = 196.0; // G3 soothing fundamental carrier
-    const beatFreq = 4.5;   // 4.5 Hz Delta/Theta wave sleep induction
+    const baseFreq = this.binauralCarrierFreq || 196.0; // Fundamental carrier pitch
+    const beatFreq = this.binauralBeatFreq || 4.5;      // Delta/Theta wave sleep induction
 
     // Gain node for layer
     l.gainNode = this.ctx.createGain();
@@ -118,7 +118,7 @@ class SnoozeAudioEngine {
       oscRight.connect(l.gainNode);
     }
 
-    // Soft sub-harmonic drone for organic warmth (98 Hz)
+    // Soft sub-harmonic drone for organic warmth
     const subOsc = this.ctx.createOscillator();
     subOsc.type = 'sine';
     subOsc.frequency.setValueAtTime(baseFreq / 2, this.ctx.currentTime);
@@ -132,6 +132,24 @@ class SnoozeAudioEngine {
     subOsc.start();
 
     l.nodes = { oscLeft, oscRight, subOsc, gainNode: l.gainNode };
+  }
+
+  setBinauralFrequencies(beatFreq, carrierFreq = null) {
+    if (carrierFreq) this.binauralCarrierFreq = carrierFreq;
+    if (beatFreq) this.binauralBeatFreq = beatFreq;
+
+    const base = this.binauralCarrierFreq || 196.0;
+    const diff = this.binauralBeatFreq || 4.5;
+    const l = this.layers.binaural;
+
+    if (this.ctx && l.nodes && l.nodes.oscLeft && l.nodes.oscRight) {
+      const now = this.ctx.currentTime;
+      l.nodes.oscLeft.frequency.setTargetAtTime(base, now, 0.2);
+      l.nodes.oscRight.frequency.setTargetAtTime(base + diff, now, 0.2);
+      if (l.nodes.subOsc) {
+        l.nodes.subOsc.frequency.setTargetAtTime(base / 2, now, 0.2);
+      }
+    }
   }
 
   /* =========================================================================

@@ -4,7 +4,7 @@
  * Cache-First with Stale-While-Revalidate strategy for static assets.
  */
 
-const CACHE_NAME = "snoozescape-v1.0.2";
+const CACHE_NAME = "snoozescape-v1.0.3";
 
 const PRECACHE_ASSETS = [
   "./",
@@ -51,7 +51,7 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
         // Fetch fresh copy in background if network is available
         fetch(event.request).then((networkResponse) => {

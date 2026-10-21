@@ -1077,6 +1077,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const btnMobileBowl = document.getElementById("btn-mobile-bowl");
+  if (btnMobileBowl) {
+    btnMobileBowl.addEventListener("click", () => {
+      if (window.snoozeAudio) {
+        window.snoozeAudio.playTibetanBowl(432, 5.0);
+      }
+      const rect = btnMobileBowl.getBoundingClientRect();
+      if (typeof triggerStardustBurst === "function") {
+        triggerStardustBurst(rect.left + rect.width / 2, rect.top, 45);
+      }
+    });
+  }
+
   if (btnMobileBreathe) {
     btnMobileBreathe.addEventListener("click", () => {
       const el = document.getElementById("breathing-heading");
@@ -1090,4 +1103,333 @@ document.addEventListener("DOMContentLoaded", () => {
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
+
+  /* =========================================================================
+     12. Celestial Sky Canvas & Stardust Particles Engine
+     ========================================================================= */
+  const celestialCanvas = document.getElementById("celestial-canvas");
+  let starCtx = null;
+  let canvasWidth = 0;
+  let canvasHeight = 0;
+  const stars = [];
+  const stardustParticles = [];
+
+  if (celestialCanvas) {
+    starCtx = celestialCanvas.getContext("2d");
+
+    function resizeCelestialCanvas() {
+      canvasWidth = window.innerWidth;
+      canvasHeight = window.innerHeight;
+      celestialCanvas.width = canvasWidth;
+      celestialCanvas.height = canvasHeight;
+
+      // Seed ambient stars
+      stars.length = 0;
+      const count = Math.min(130, Math.floor((canvasWidth * canvasHeight) / 10000));
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvasWidth,
+          y: Math.random() * canvasHeight,
+          radius: Math.random() * 1.4 + 0.5,
+          alpha: Math.random() * 0.7 + 0.2,
+          speed: Math.random() * 0.008 + 0.003,
+          phase: Math.random() * Math.PI * 2,
+          color: Math.random() > 0.4 ? "rgba(255, 255, 255," : (Math.random() > 0.5 ? "rgba(167, 139, 250," : "rgba(245, 183, 38,")
+        });
+      }
+    }
+
+    resizeCelestialCanvas();
+    window.addEventListener("resize", resizeCelestialCanvas);
+
+    function animateCelestialSky() {
+      if (!starCtx) return;
+      starCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      // Render ambient background stars
+      const nowTime = Date.now();
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        const pulse = 0.5 + 0.5 * Math.sin(nowTime * s.speed + s.phase);
+        const currentAlpha = s.alpha * (0.4 + 0.6 * pulse);
+
+        starCtx.beginPath();
+        starCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        starCtx.fillStyle = s.color + currentAlpha + ")";
+        starCtx.fill();
+      }
+
+      // Render dynamic stardust burst particles
+      for (let i = stardustParticles.length - 1; i >= 0; i--) {
+        const p = stardustParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy -= 0.035; // gentle upward buoyancy
+        p.vx *= 0.985;
+        p.alpha -= p.fadeSpeed;
+        p.size *= 0.992;
+
+        if (p.alpha <= 0 || p.size <= 0.1) {
+          stardustParticles.splice(i, 1);
+          continue;
+        }
+
+        starCtx.save();
+        starCtx.beginPath();
+        starCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        starCtx.fillStyle = p.color.replace("__A__", p.alpha.toFixed(3));
+        starCtx.shadowBlur = p.glow;
+        starCtx.shadowColor = p.glowColor;
+        starCtx.fill();
+        starCtx.restore();
+      }
+
+      requestAnimationFrame(animateCelestialSky);
+    }
+
+    requestAnimationFrame(animateCelestialSky);
+  }
+
+  function triggerStardustBurst(originX, originY, count = 70) {
+    if (!celestialCanvas) return;
+    const colors = [
+      { fill: "rgba(245, 183, 38, __A__)", glow: "rgba(245, 183, 38, 0.8)", glowColor: "#f5b726" },
+      { fill: "rgba(167, 139, 250, __A__)", glow: "rgba(167, 139, 250, 0.8)", glowColor: "#a78bfa" },
+      { fill: "rgba(56, 189, 248, __A__)", glow: "rgba(56, 189, 248, 0.8)", glowColor: "#38bdf8" },
+      { fill: "rgba(255, 255, 255, __A__)", glow: "rgba(255, 255, 255, 0.9)", glowColor: "#ffffff" }
+    ];
+
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 4.2 + 0.8;
+      const col = colors[Math.floor(Math.random() * colors.length)];
+      stardustParticles.push({
+        x: originX + (Math.random() - 0.5) * 40,
+        y: originY + (Math.random() - 0.5) * 20,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.2,
+        size: Math.random() * 3.2 + 1.2,
+        alpha: 1.0,
+        fadeSpeed: Math.random() * 0.012 + 0.007,
+        color: col.fill,
+        glow: Math.random() * 12 + 6,
+        glowColor: col.glowColor
+      });
+    }
+  }
+
+  /* =========================================================================
+     13. Sleep Neuro-Lab: Binaural Brainwave Tuning Station
+     ========================================================================= */
+  let currentBeatHz = 2.5;
+  let currentCarrierHz = 196.0;
+
+  const bwChips = document.querySelectorAll(".bw-chip");
+  const bwSlider = document.getElementById("brainwave-slider");
+  const bwSliderDisplay = document.getElementById("bw-slider-display");
+  const liveHzReadout = document.getElementById("live-hz-readout");
+  const carrierButtons = document.querySelectorAll(".carrier-btn");
+
+  function getBrainwaveBandName(hz) {
+    if (hz < 4.0) return "Delta";
+    if (hz < 8.0) return "Theta";
+    if (hz < 12.0) return "Alpha";
+    return "Beta";
+  }
+
+  function updateBrainwaveUI(hz, stateName = null) {
+    const band = stateName || getBrainwaveBandName(hz);
+    if (bwSliderDisplay) {
+      bwSliderDisplay.textContent = `${hz.toFixed(2)} Hz`;
+    }
+    if (liveHzReadout) {
+      liveHzReadout.textContent = `${hz.toFixed(2)} Hz ${band}`;
+    }
+    if (bwSlider && Math.abs(parseFloat(bwSlider.value) - hz) > 0.05) {
+      bwSlider.value = hz;
+    }
+  }
+
+  // Chip selection
+  bwChips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      bwChips.forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+
+      const hz = parseFloat(chip.dataset.hz);
+      const name = chip.dataset.name;
+      currentBeatHz = hz;
+
+      updateBrainwaveUI(hz, name);
+
+      if (window.snoozeAudio) {
+        window.snoozeAudio.setBinauralFrequencies(currentBeatHz, currentCarrierHz);
+      }
+    });
+  });
+
+  // Slider fine-tuning
+  if (bwSlider) {
+    bwSlider.addEventListener("input", (e) => {
+      const hz = parseFloat(e.target.value);
+      currentBeatHz = hz;
+
+      // Update chip highlights if matching
+      bwChips.forEach((chip) => {
+        const chipHz = parseFloat(chip.dataset.hz);
+        if (Math.abs(chipHz - hz) < 0.15) {
+          chip.classList.add("active");
+        } else {
+          chip.classList.remove("active");
+        }
+      });
+
+      updateBrainwaveUI(hz);
+
+      if (window.snoozeAudio) {
+        window.snoozeAudio.setBinauralFrequencies(currentBeatHz, currentCarrierHz);
+      }
+    });
+  }
+
+  // Carrier harmonic frequency buttons
+  carrierButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      carrierButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      currentCarrierHz = parseFloat(btn.dataset.carrier);
+
+      if (window.snoozeAudio) {
+        window.snoozeAudio.setBinauralFrequencies(currentBeatHz, currentCarrierHz);
+      }
+    });
+  });
+
+  /* =========================================================================
+     14. Bedtime Mind Release (Dissolve Worries into Stardust)
+     ========================================================================= */
+  const worryInput = document.getElementById("worry-text-input");
+  const btnDissolveWorry = document.getElementById("btn-dissolve-worry");
+  const btnClearWorry = document.getElementById("btn-clear-worry");
+  const affirmationText = document.getElementById("affirmation-text");
+  const intentionChips = document.querySelectorAll(".intention-chip");
+
+  const bedtimeAffirmations = [
+    "Your day is complete. Everything you did was enough. Tomorrow has its own light.",
+    "You do not have to solve tomorrow tonight. Let the quiet darkness hold you safely.",
+    "Every breath releases the weight of today. You are safe, warm, and free to rest.",
+    "The universe takes over while you sleep. Give yourself full permission to let go.",
+    "Peace begins where striving stops. Sink into the effortless stillness of this moment.",
+    "Thoughts are just passing clouds across the night sky. Sleep in the vast stillness beneath them.",
+    "Breathe out the tension of doing; breathe in the gentle peace of simply being."
+  ];
+
+  if (btnDissolveWorry) {
+    btnDissolveWorry.addEventListener("click", () => {
+      // 1. Calculate origin for stardust particles
+      const rect = btnDissolveWorry.getBoundingClientRect();
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
+
+      // 2. Trigger rich stardust burst into celestial sky
+      triggerStardustBurst(originX, originY, 85);
+
+      // 3. Play resonant 432Hz Tibetan bronze bowl chime
+      if (window.snoozeAudio) {
+        window.snoozeAudio.playTibetanBowl(432, 5.0);
+      }
+
+      // 4. Animate textarea dissolution
+      if (worryInput) {
+        worryInput.classList.add("dissolving");
+      }
+
+      // 5. Select a new comforting bedtime affirmation
+      if (affirmationText) {
+        affirmationText.style.opacity = "0";
+        setTimeout(() => {
+          const currentIndex = bedtimeAffirmations.indexOf(affirmationText.textContent);
+          let newIndex = Math.floor(Math.random() * bedtimeAffirmations.length);
+          if (newIndex === currentIndex) {
+            newIndex = (newIndex + 1) % bedtimeAffirmations.length;
+          }
+          affirmationText.textContent = bedtimeAffirmations[newIndex];
+          affirmationText.style.opacity = "1";
+        }, 400);
+      }
+
+      // 6. Reset textarea after dissolution completes
+      setTimeout(() => {
+        if (worryInput) {
+          worryInput.value = "";
+          worryInput.classList.remove("dissolving");
+          worryInput.placeholder = "Your thoughts have dissolved into stardust. Sleep peacefully...";
+        }
+      }, 1600);
+    });
+  }
+
+  if (btnClearWorry && worryInput) {
+    btnClearWorry.addEventListener("click", () => {
+      worryInput.value = "";
+      worryInput.placeholder = "e.g. Stress about tomorrow's presentation, busy thoughts, unfinished tasks...";
+    });
+  }
+
+  intentionChips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const intention = chip.dataset.text;
+      if (worryInput) {
+        worryInput.value = intention;
+        worryInput.focus();
+      }
+    });
+  });
+
+  /* =========================================================================
+     15. Circadian 90-Minute REM Sleep Cycle Calculator
+     ========================================================================= */
+  const cycleTimesGrid = document.getElementById("cycle-times-grid");
+
+  function calculateAndRenderSleepCycles() {
+    if (!cycleTimesGrid) return;
+
+    // Bedtime base: right now + 14 minutes latency to drift off
+    const now = new Date();
+    const sleepLatencyMinutes = 14;
+
+    const cycles = [
+      { count: 3, mins: 270, label: "3 Cycles", desc: "4.5 hrs sleep • Power recharge" },
+      { count: 4, mins: 360, label: "4 Cycles", desc: "6.0 hrs sleep • Adequate rest" },
+      { count: 5, mins: 450, label: "5 Cycles", desc: "7.5 hrs sleep • Optimal REM & Repair", optimal: true },
+      { count: 6, mins: 540, label: "6 Cycles", desc: "9.0 hrs sleep • Full recovery" }
+    ];
+
+    let html = "";
+    cycles.forEach((c) => {
+      const wakeTime = new Date(now.getTime() + (sleepLatencyMinutes + c.mins) * 60 * 1000);
+      let hours = wakeTime.getHours();
+      const minutes = wakeTime.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes} ${ampm}`;
+
+      html += `
+        <div class="cycle-time-card ${c.optimal ? "optimal" : ""}">
+          <span class="cycle-badge">${c.label}${c.optimal ? " ★ Optimal" : ""}</span>
+          <span class="cycle-time">${formattedTime}</span>
+          <span class="cycle-meta">${c.desc}</span>
+        </div>
+      `;
+    });
+
+    cycleTimesGrid.innerHTML = html;
+  }
+
+  calculateAndRenderSleepCycles();
+  // Recalculate every minute to keep current
+  setInterval(calculateAndRenderSleepCycles, 60000);
 });
+

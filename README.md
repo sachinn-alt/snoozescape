@@ -26,12 +26,17 @@ SnoozeScape generates an original, calming bedtime story using local open-weight
 
 ## ✨ Rich Interactive Experiences
 
-- 🌌 **Interactive Celestial Sky:** Move your cursor or finger across the night sky to connect glowing constellations in real time. Click or tap anywhere in the heavens to summon a shooting star.
+- 🧠 **Sleep Neuro-Lab & Mind Release Sanctuary:**
+  - **Binaural Brainwave Tuning Station:** Fine-tune target brainwave frequencies in real time across **Deep Delta (2.5 Hz)**, **Theta REM (5.5 Hz)**, **Schumann Resonance (7.83 Hz)**, and **Twilight Alpha (10.0 Hz)** with harmonic carrier frequency selection (196 Hz G3, 432 Hz Verdi, 528 Hz Solfeggio).
+  - **Dissolve Worries to Stardust:** Type any lingering daily anxieties and tap "Dissolve to Stardust" to watch thoughts disintegrate into glowing particles drifting into the night sky, accompanied by a resonant 432 Hz Tibetan bronze singing bowl and soothing bedtime affirmations.
+  - **Circadian 90-Minute REM Cycle Guide:** Real-time sleep cycle math calculating optimal wake times based on natural REM rhythm (90 min cycles + 14 min sleep latency) so you wake up refreshed and free of sleep inertia.
+- 🌌 **Interactive Celestial Sky Canvas:** Ambient drifting and softly pulsing starfield with real-time stardust particle physics.
 - 🫧 **Interactive Breathing Pacer:** Choose between **4-7-8 Deep Sleep**, **4-4-4 Box Breathing**, or **4-6 Ocean Flow** with optional harmonic acoustic cues and tap-to-sync feedback.
 - 📊 **Multi-Mode Live Audio Visualizer:** Cycle in real-time between **Spectrum Equalizer Bars**, **Fluid Sine Oscilloscope Wave**, and **Concentric Nebula Pulse Rings**.
 - 🎛️ **Procedural Mixer with "Randomize Mix 🎲":** Blend your 6 ambient generators or let the engine roll a balanced, calming mix with animated slider transitions.
 - 🔔 **Tibetan Singing Bowl (432 Hz):** Synthesized physical acoustics using harmonic sine wave decay to center the mind before sleep.
 - 📖 **Interactive Bedtime Tale Companion:** Click any paragraph to read aloud from that exact line with golden glowing tracking, generate randomized dream inspiration, and toggle candlelight eye-comfort reading mode.
+
 
 ---
 

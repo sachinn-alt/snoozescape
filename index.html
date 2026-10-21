@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=1.0.3">
 </head>
 <body class="theme-midnight">
   <!-- Dynamic Celestial Canvas Background -->
@@ -429,68 +429,127 @@
 
     </div>
 
-    <!-- Bottom Open Innovation & Diagnostics Drawer (Expandable) -->
-    <section class="open-innovation-section glass-panel spotlight-card" aria-labelledby="open-tech-heading">
-      <div class="section-toggle-header" id="btn-toggle-diagnostics">
-        <div class="toggle-title-wrap">
-          <span class="tech-icon">🛡️</span>
+    <!-- Sleep Neuro-Lab & Mind Release Sanctuary (Unique Interactive Feature) -->
+    <section class="sanctuary-lab-section glass-panel spotlight-card border-beam" aria-labelledby="lab-heading">
+      <div class="sanctuary-header">
+        <div class="sanctuary-title-wrap">
+          <div class="sanctuary-icon-halo">
+            <span class="sanctuary-icon">🧠</span>
+          </div>
           <div>
-            <h2 id="open-tech-heading" class="toggle-title">Why Open-Source AI Matters for SnoozeScape</h2>
-            <p class="toggle-sub">Private local inference, airplane mode freedom, and zero cloud surveillance</p>
+            <div class="section-eyebrow">
+              <span class="sparkle">✦</span>
+              <span>Neuro-Acoustic Sleep Science &amp; Mind Unwind</span>
+            </div>
+            <h2 id="lab-heading" class="sanctuary-title">Sleep Neuro-Lab &amp; Mind Release Sanctuary</h2>
+            <p class="sanctuary-sub">Interactive binaural brainwave tuner, worry-to-stardust release, and circadian sleep cycle calculator</p>
           </div>
         </div>
-        <button class="btn btn-ghost btn-sm" id="btn-expand-diagnostics" aria-expanded="false" aria-controls="diagnostics-body">
-          <span id="expand-icon">▼</span> Details
-        </button>
       </div>
 
-      <div class="diagnostics-content" id="diagnostics-body">
-        <div class="comparison-grid">
-          
-          <!-- Closed Cloud Voice/AI -->
-          <div class="comparison-card card-closed">
-            <div class="card-badge badge-closed">Closed Cloud APIs (OpenAI / ElevenLabs)</div>
-            <h3 class="card-heading">The Closed-Source Approach</h3>
-            <ul class="comparison-list">
-              <li>❌ <strong>Requires Constant Wi-Fi:</strong> Nightstand laptop emits radio signals and risks disconnections.</li>
-              <li>❌ <strong>Intimate Data Harvested:</strong> Bedtime thoughts, emotional state, and sleep hours are logged on third-party servers.</li>
-              <li>❌ <strong>Subscription & Rate Limits:</strong> Wake up to billing surprise or get cut off mid-story by 429 quota exhaustion.</li>
-              <li>❌ <strong>Heavy Carbon & Network Footprint:</strong> Streams megabytes of audio every night across power-hungry data centers.</li>
-            </ul>
+      <div class="sanctuary-grid">
+        
+        <!-- Left Column: Binaural Brainwave Tuning Station -->
+        <div class="sanctuary-card brainwave-card">
+          <div class="card-top-row">
+            <span class="feature-tag">Binaural Entrainment</span>
+            <span class="live-hz-tag" id="live-hz-readout">4.50 Hz Delta</span>
+          </div>
+          <h3 class="card-title">Brainwave Frequency Station</h3>
+          <p class="card-desc">Tune your brain's natural electrical oscillations to induce deep restorative sleep phases.</p>
+
+          <!-- Brainwave State Selector -->
+          <div class="brainwave-chips" role="radiogroup" aria-label="Target Brainwave States">
+            <button class="bw-chip active" data-hz="2.5" data-name="Delta" data-desc="Deep restorative sleep &amp; cell recovery">
+              😴 Deep Delta (2.5 Hz)
+            </button>
+            <button class="bw-chip" data-hz="5.5" data-name="Theta" data-desc="REM dreaming &amp; subconscious processing">
+              🧘 Theta REM (5.5 Hz)
+            </button>
+            <button class="bw-chip" data-hz="7.83" data-name="Schumann" data-desc="Earth electromagnetic frequency resonance">
+              🌿 Schumann (7.83 Hz)
+            </button>
+            <button class="bw-chip" data-hz="10.0" data-name="Alpha" data-desc="Twilight pre-sleep relaxation">
+              🕯️ Twilight Alpha (10.0 Hz)
+            </button>
           </div>
 
-          <!-- SnoozeScape Open Source -->
-          <div class="comparison-card card-open">
-            <div class="card-badge badge-open">Open-Source AI & WebGPU Core</div>
-            <h3 class="card-heading">The SnoozeScape Sloth Approach</h3>
-            <ul class="comparison-list">
-              <li>✅ <strong>100% Airplane Mode:</strong> Shut down Wi-Fi, silence notifications, sleep without EMF or midnight pings.</li>
-              <li>✅ <strong>Absolute Bedroom Privacy:</strong> Zero bytes leave your machine. Your sleep patterns belong only to you.</li>
-              <li>✅ <strong>Mathematical Audio Synthesis:</strong> All 6 soundscapes are synthesized mathematically with Web Audio—zero asset downloads.</li>
-              <li>✅ <strong>Free & Hackable Forever:</strong> Powered by open-weights (SmolLM2 / Transformers.js) with zero recurring token fees.</li>
-            </ul>
+          <!-- Fine-Tuning Frequency Slider -->
+          <div class="tuning-slider-wrap">
+            <div class="slider-header-row">
+              <label for="brainwave-slider" class="tuning-label">Target Beat Frequency:</label>
+              <span class="tuning-val" id="bw-slider-display">4.50 Hz</span>
+            </div>
+            <input type="range" id="brainwave-slider" class="range-slider" min="0.5" max="14.0" step="0.1" value="4.5" aria-label="Binaural Beat Target Frequency">
+            <div class="slider-ticks">
+              <span>0.5 Hz (Delta)</span>
+              <span>4.0 Hz</span>
+              <span>8.0 Hz (Theta)</span>
+              <span>14.0 Hz (Alpha)</span>
+            </div>
           </div>
 
+          <!-- Harmonic Carrier Frequency Selector -->
+          <div class="carrier-selection-row">
+            <span class="tuning-label">Carrier Pitch:</span>
+            <div class="carrier-buttons">
+              <button class="carrier-btn active" data-carrier="196.0">G3 (196 Hz)</button>
+              <button class="carrier-btn" data-carrier="432.0">Verdi (432 Hz)</button>
+              <button class="carrier-btn" data-carrier="528.0">Solfeggio (528 Hz)</button>
+            </div>
+          </div>
         </div>
 
-        <!-- System Diagnostics Table -->
-        <div class="engine-metrics-bar">
-          <div class="metric-item">
-            <span class="metric-label">Execution Environment:</span>
-            <span class="metric-val" id="diag-env">Browser Client (Local CPU/WebGPU)</span>
+        <!-- Right Column: Night Mind Release & Affirmations -->
+        <div class="sanctuary-card mind-release-card">
+          <div class="card-top-row">
+            <span class="feature-tag">Bedtime Emotional Release</span>
+            <span class="sparkle-tag">✨ Private Mind Sanctuary</span>
           </div>
-          <div class="metric-item">
-            <span class="metric-label">Network Outbound Calls:</span>
-            <span class="metric-val text-success" id="diag-network">0 Requests (100% Offline)</span>
+          <h3 class="card-title">Dissolve Daily Worries into Stardust</h3>
+          <p class="card-desc">Empty your mind before sleep. Type what's lingering, and watch it dissolve into celestial stardust.</p>
+
+          <div class="worry-input-wrap">
+            <textarea id="worry-text-input" class="worry-textarea" placeholder="e.g. Stress about tomorrow's presentation, busy thoughts, unfinished tasks..." rows="3" aria-label="Bedtime thought to release"></textarea>
+            <div class="worry-actions">
+              <button id="btn-dissolve-worry" class="btn btn-primary btn-shimmer" aria-label="Dissolve worry into celestial stars">
+                <span class="btn-icon">✨</span>
+                <span>Dissolve to Stardust</span>
+              </button>
+              <button id="btn-clear-worry" class="btn btn-ghost btn-sm" aria-label="Clear input">Clear</button>
+            </div>
           </div>
-          <div class="metric-item">
-            <span class="metric-label">Audio Synth Engine:</span>
-            <span class="metric-val" id="diag-audio">Web Audio Native (6 Synthesizers)</span>
+
+          <!-- Calming Bedtime Reassurance Box -->
+          <div class="affirmation-container" id="affirmation-container">
+            <span class="quote-mark">“</span>
+            <p id="affirmation-text" class="affirmation-text">Your day is complete. Everything you did was enough. Tomorrow has its own light.</p>
           </div>
-          <div class="metric-item">
-            <span class="metric-label">Open Source Model:</span>
-            <span class="metric-val" id="diag-model">Hugging Face Transformers.js / Local Weights</span>
+
+          <!-- Quick Calming Intentions -->
+          <div class="intentions-chips">
+            <span class="intentions-label">Or select a soothing intention:</span>
+            <div class="intentions-row">
+              <button class="intention-chip" data-text="I give my mind and body full permission to rest now.">Permission to Rest</button>
+              <button class="intention-chip" data-text="Nothing requires my urgency until the morning sun.">No Urgency</button>
+              <button class="intention-chip" data-text="I breathe in peaceful stillness and let all tension drift away.">Peaceful Stillness</button>
+            </div>
           </div>
+        </div>
+
+      </div>
+
+      <!-- 90-Minute REM Sleep Cycle Calculator Bar -->
+      <div class="sleep-cycles-bar">
+        <div class="cycle-clock-wrap">
+          <span class="clock-icon">🌙</span>
+          <div>
+            <div class="clock-label">Circadian Sleep Cycle Guide</div>
+            <div class="clock-desc">Sleep occurs in 90-minute REM cycles. Waking between cycles prevents morning grogginess.</div>
+          </div>
+        </div>
+        <div class="cycle-times-grid" id="cycle-times-grid">
+          <!-- Populated by JS based on current bedtime -->
         </div>
       </div>
     </section>
@@ -506,7 +565,7 @@
       <div class="footer-links">
         <span class="mit-license">MIT Open Source</span>
         <span>•</span>
-        <a href="#diagnostics-body" id="footer-privacy-link">Privacy Manifesto</a>
+        <a href="#lab-heading" id="footer-privacy-link">Sleep Neuro-Lab</a>
         <span>•</span>
         <button id="btn-reset-app" class="footer-btn-link">Reset Defaults</button>
       </div>
@@ -538,8 +597,8 @@
   </nav>
 
   <!-- Audio Synthesis & Local AI Scripts -->
-  <script src="audio-engine.js"></script>
-  <script src="ai-engine.js"></script>
-  <script src="app.js"></script>
+  <script src="audio-engine.js?v=1.0.3"></script>
+  <script src="ai-engine.js?v=1.0.3"></script>
+  <script src="app.js?v=1.0.3"></script>
 </body>
 </html>
