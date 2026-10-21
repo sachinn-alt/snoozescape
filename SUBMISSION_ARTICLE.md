@@ -120,11 +120,22 @@ SnoozeScape contains **zero audio files**. Every sound wave is calculated on the
 - **Canopy Wind:** Resonant bandpass filter modulated by a 0.12Hz sinusoidal LFO, producing gentle forest wind gusts.
 - **Ocean Swell:** 0.08Hz infrasonic LFO modulating gain and frequency, mimicking the natural 12-second rhythm of breaking ocean tides.
 
-### 3. 100% Offline PWA & Mobile Action Dock
-SnoozeScape is equipped with a full Progressive Web App manifest and pre-caching Service Worker (`sw.js`). It can be added to your mobile home screen (iOS and Android) for instantaneous bedtime access in Airplane Mode. 
-On mobile handhelds, SnoozeScape renders a Skiper UI-inspired **Floating Action Dock** anchored with safe-area insets (`env(safe-area-inset-bottom)`), providing thumb-friendly triggers for instant sleep mode, audio toggles, and calming 4-7-8 breathing pacers.
+### 3. Sleep Neuro-Lab & Mind Release Sanctuary
+A dedicated, interactive neuroscience and emotional wind-down lab built into the Bento Box:
+- **Binaural Brainwave Tuning Station:** Real-time frequency entrainment targeting Delta (2.5 Hz deep sleep), Theta (5.5 Hz REM dreaming), Schumann Resonance (7.83 Hz Earth electromagnetic alignment), and Twilight Alpha (10.0 Hz). Users can fine-tune beat frequencies (0.5–14.0 Hz) and harmonic carrier pitches (196 Hz G3, 432 Hz Verdi, 528 Hz Solfeggio).
+- **Worry-to-Stardust Celestial Dissolution:** A private, therapeutic text interface where users write what's lingering in their mind. Clicking "Dissolve to Stardust" animates and dissolves the thoughts into glowing celestial particles with calming bedtime affirmations. Zero text is saved, stored, or transmitted anywhere.
+- **90-Minute REM Circadian Sleep Architecture:** Visualizes natural 90-minute ultradian sleep waves (Light NREM → Deep Slow-Wave Delta → REM) and automatically calculates optimal wake-up times to prevent morning sleep inertia.
 
-### 4. Sloth Pacing & Auto-Fade
+### 4. Bento Box Design System & Bespoke SVG Vector Art
+- **Six Bespoke Nocturnal SVG Vector Illustrations:** Embedded directly into the Bento Box banners and inner cards without any external bitmap images (`vector-sloth-moon.svg`, `vector-dream-nebula.svg`, `vector-sound-waves.svg`, `vector-neurolab-frequencies.svg`, `vector-stardust-dissolve.svg`, and `vector-circadian-clock.svg`).
+- **Aceternity & Framer Micro-Interactions:** Cursor-following spotlight glow gradients (`.spotlight-card`), conic-gradient animated border beams (`.border-beam`), and tactile shimmer buttons (`.btn-shimmer`).
+- **Iconly Two-Tone Vector System:** Lightweight, scalable SVG vector icons for every sound layer, status pill, and action tool.
+
+### 5. 100% Offline PWA & Mobile Action Dock
+SnoozeScape is equipped with a full Progressive Web App manifest and pre-caching Service Worker (`sw.js`). It can be added to your mobile home screen (iOS and Android) for instantaneous bedtime access in Airplane Mode. 
+On mobile handhelds, SnoozeScape renders a Skiper UI-inspired **Floating Action Dock** anchored with safe-area insets (`env(safe-area-inset-bottom)`), providing thumb-friendly triggers for instant sleep mode, audio toggles, 432Hz bell rings, and calming 4-7-8 breathing pacers.
+
+### 6. Sloth Pacing & Auto-Fade
 The audio engine includes a progressive exponential fader. Over 15, 30, 45, or 60 minutes, the audio imperceptibly eases down to silence while CSS transitions smoothly dim the screen brightness to pitch black.
 
 ---
