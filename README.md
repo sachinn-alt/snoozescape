@@ -36,6 +36,7 @@ SnoozeScape generates an original, calming bedtime story using local open-weight
 - 🎛️ **Procedural Mixer with "Randomize Mix 🎲":** Blend your 6 ambient generators or let the engine roll a balanced, calming mix with animated slider transitions.
 - 🔔 **Tibetan Singing Bowl (432 Hz):** Synthesized physical acoustics using harmonic sine wave decay to center the mind before sleep.
 - 📖 **Interactive Bedtime Tale Companion:** Click any paragraph to read aloud from that exact line with golden glowing tracking, generate randomized dream inspiration, and toggle candlelight eye-comfort reading mode.
+- 💎 **Iconly Pro Vector Icon System:** Integrated official free vector iconography from [Iconly Pro](https://web.iconly.pro/?is_free=1) across the header, soundscape controls, ambient generators, breathing pacer, and floating action dock for a cohesive, ultra-refined UI.
 
 
 ---

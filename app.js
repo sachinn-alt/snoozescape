@@ -334,12 +334,12 @@ document.addEventListener("DOMContentLoaded", () => {
     btnToggleChime.addEventListener("click", () => {
       window.snoozeAudio.chimeEnabled = !window.snoozeAudio.chimeEnabled;
       if (window.snoozeAudio.chimeEnabled) {
-        chimeBtnIcon.textContent = "🔔";
+        chimeBtnIcon.innerHTML = '<svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-notification"></use></svg>';
         chimeBtnLabel.textContent = "Chime On";
         btnToggleChime.classList.add("active");
         window.snoozeAudio.playBreathingChime("inhale");
       } else {
-        chimeBtnIcon.textContent = "🔇";
+        chimeBtnIcon.innerHTML = '<svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-volume-off"></use></svg>';
         chimeBtnLabel.textContent = "Chime Off";
         btnToggleChime.classList.remove("active");
       }
@@ -357,13 +357,13 @@ document.addEventListener("DOMContentLoaded", () => {
     btnToggleBreathing.addEventListener("click", () => {
       breathingActive = !breathingActive;
       if (breathingActive) {
-        breathingBtnIcon.textContent = "⏸";
-        breathingBtnLabel.textContent = "Pause Breathing Guide";
+        breathingBtnIcon.innerHTML = '<svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-pause"></use></svg>';
+        breathingBtnLabel.textContent = "Pause Guide";
         if (breathingIndicator) breathingIndicator.style.animationPlayState = "running";
         startBreathingGuide();
       } else {
-        breathingBtnIcon.textContent = "▶";
-        breathingBtnLabel.textContent = "Resume Breathing Guide";
+        breathingBtnIcon.innerHTML = '<svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-play"></use></svg>';
+        breathingBtnLabel.textContent = "Resume Guide";
         if (breathingIndicator) breathingIndicator.style.animationPlayState = "paused";
         clearTimeout(breathingInterval);
         breathingGuideText.textContent = "Breathing guide paused. Breathe at your own comfortable, natural pace.";
@@ -497,16 +497,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnMobileSound = document.getElementById("btn-mobile-sound");
     if (isPlaying) {
       btnMasterPlay.classList.add("playing");
-      masterPlayIcon.textContent = "⏸";
+      masterPlayIcon.innerHTML = '<svg class="iconly-icon iconly-icon-md" id="master-play-iconly" aria-hidden="true"><use href="#iconly-pause"></use></svg>';
       masterPlayText.textContent = "Pause Soundscape";
-      if (mobileSoundIcon) mobileSoundIcon.textContent = "⏸";
+      if (mobileSoundIcon) mobileSoundIcon.innerHTML = '<svg class="iconly-icon" id="mobile-sound-iconly" aria-hidden="true"><use href="#iconly-pause"></use></svg>';
       if (mobileSoundLabel) mobileSoundLabel.textContent = "Pause";
       if (btnMobileSound) btnMobileSound.classList.add("is-playing");
     } else {
       btnMasterPlay.classList.remove("playing");
-      masterPlayIcon.textContent = "▶";
+      masterPlayIcon.innerHTML = '<svg class="iconly-icon iconly-icon-md" id="master-play-iconly" aria-hidden="true"><use href="#iconly-play"></use></svg>';
       masterPlayText.textContent = "Start Soundscape";
-      if (mobileSoundIcon) mobileSoundIcon.textContent = "▶";
+      if (mobileSoundIcon) mobileSoundIcon.innerHTML = '<svg class="iconly-icon" id="mobile-sound-iconly" aria-hidden="true"><use href="#iconly-play"></use></svg>';
       if (mobileSoundLabel) mobileSoundLabel.textContent = "Sound";
       if (btnMobileSound) btnMobileSound.classList.remove("is-playing");
     }

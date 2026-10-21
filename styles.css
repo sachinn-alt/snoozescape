@@ -125,6 +125,59 @@ body {
   filter: blur(60px);
 }
 
+/* ==========================================================================
+   Iconly Pro Vector Icon System (Free Set)
+   ========================================================================== */
+.iconly-icon {
+  width: 1.22em;
+  height: 1.22em;
+  vertical-align: -0.22em;
+  fill: currentColor;
+  stroke: currentColor;
+  display: inline-block;
+  flex-shrink: 0;
+  pointer-events: none;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.iconly-icon-xs {
+  width: 0.95em;
+  height: 0.95em;
+  vertical-align: -0.12em;
+}
+
+.iconly-icon-sm {
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.18em;
+}
+
+.iconly-icon-md {
+  width: 1.35em;
+  height: 1.35em;
+  vertical-align: -0.25em;
+}
+
+.iconly-icon-lg {
+  width: 1.7em;
+  height: 1.7em;
+  vertical-align: -0.32em;
+}
+
+.iconly-icon-xl {
+  width: 2.2em;
+  height: 2.2em;
+}
+
+button:hover .iconly-icon {
+  transform: scale(1.08);
+}
+
+.btn-primary:hover .iconly-icon {
+  filter: drop-shadow(0 0 6px rgba(245, 183, 38, 0.5));
+}
+
+
 /* Ambient Radial Glows */
 .ambient-glow {
   position: fixed;
@@ -707,6 +760,9 @@ body {
 
 .panel-icon {
   font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .panel-title {
@@ -1167,6 +1223,9 @@ body {
 
 .layer-emoji {
   font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .layer-name {
@@ -2034,6 +2093,9 @@ body {
   .mobile-dock-btn .dock-icon {
     font-size: 1.25rem;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .mobile-dock-btn:hover,
