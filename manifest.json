@@ -2,7 +2,7 @@
   "id": "./index.html?source=pwa",
   "name": "SnoozeScape 🦥 — 100% Offline Bedtime AI & Soundscape Companion",
   "short_name": "SnoozeScape",
-  "description": "100% Offline Ambient Bedtime AI & Procedural Soundscapes for International Sloth Day (Hacktoberfest Slow and Steady)",
+  "description": "100% Offline Ambient Bedtime AI & Procedural Soundscapes. Drift into restful sleep with local AI tales and mathematical soundscapes.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

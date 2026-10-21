@@ -1,7 +1,7 @@
 # SnoozeScape 🦥
 ### *100% Offline Ambient Bedtime AI & Procedural Soundscape Companion*
 
-> Built for **International Sloth Day** (October 20) & the **[Hacktoberfest Open-Source AI Challenge (Week 3: Slow and Steady)](https://dev.to/challenges/hacktoberfest-week3-2026-10-19)**.
+> *Drift into deep, restorative sleep with mathematical soundscapes and private local AI bedtime tales.*
 
 ![SnoozeScape Banner](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/on69ffi3qy5oi08zekrf.png)
 

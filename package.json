@@ -1,7 +1,7 @@
 {
   "name": "snoozescape",
   "version": "1.0.0",
-  "description": "100% Offline Ambient Bedtime AI & Procedural Soundscape Companion for International Sloth Day (Hacktoberfest Slow and Steady)",
+  "description": "100% Offline Ambient Bedtime AI & Procedural Soundscape Companion",
   "main": "index.html",
   "scripts": {
     "start": "npx serve -l 3000 .",
@@ -9,13 +9,13 @@
   },
   "keywords": [
     "open-source-ai",
-    "hacktoberfest",
-    "sloth-day",
+    "ambient-soundscape",
+    "binaural-beats",
     "web-audio-api",
     "transformers-js",
-    "offline-ai",
+    "offline-pwa",
     "sleep-companion"
   ],
-  "author": "Hacktoberfest Builder",
+  "author": "sachinn-alt",
   "license": "MIT"
 }
