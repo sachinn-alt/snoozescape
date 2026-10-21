@@ -164,11 +164,7 @@ Cloud AI providers charge per million tokens or per audio minute. If an app runs
 
 ## My Agent Session
 
-This entire application—from the mathematical Web Audio synthesizers to the midnight glassmorphic design system and the local AI story engine—was co-developed pair-programming with Google DeepMind's Antigravity agent and recorded with **DevRelay**:
-
-{% agent_session 0267115f-a217-4169-9a64-92922f2a6407 %}
-
-*(You can explore the full session transcript, design decisions, and tool calls in the embedded interactive DevRelay viewer above!)*
+This entire application—from the procedural Web Audio synthesizers to the Sleep Neuro-Lab and Bento Box vector art—was co-developed pair-programming with Google DeepMind's Antigravity AI coding assistant.
 
 ---
 
