@@ -7,6 +7,26 @@
   <img src="icon-192.png" alt="SnoozeScape Logo" width="120" height="120">
 </p>
 
+<p align="center">
+  <a href="https://snoozescape.onrender.com" target="_blank">
+    <img src="https://img.shields.io/badge/🌐_Live_Demo-snoozescape.onrender.com-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo on Render">
+  </a>
+  <a href="https://render.com/deploy?repo=https://github.com/sachinn-alt/snoozescape">
+    <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License">
+  </a>
+  <a href="CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome">
+  </a>
+</p>
+
+<p align="center">
+  👉 <strong><a href="https://snoozescape.onrender.com">Try the Live Web App on Render: https://snoozescape.onrender.com</a></strong> 👈<br>
+  <em>(100% Client-Side • Runs seamlessly in any modern browser on Desktop, Tablet, and Mobile)</em>
+</p>
+
 ---
 
 ## 🌟 What is SnoozeScape?
@@ -164,14 +184,75 @@ SnoozeScape is a full-featured **Progressive Web App (PWA)**:
 
 ---
 
-## ☁️ Deploy to Render (1-Click)
+---
 
-This project includes a `render.yaml` blueprint for 1-click deployment on Render:
+## ☁️ Live Demo & 1-Click Deploy on Render
 
-1. Push this repository to GitHub.
-2. Log into [Render.com](https://render.com).
-3. Click **New +** > **Blueprint** and connect your repository.
-4. Render will automatically detect `render.yaml` and deploy your static web application worldwide with automated SSL and CDN caching!
+### 🌐 Live Production URL
+Experience SnoozeScape instantly in your browser:
+**[https://snoozescape.onrender.com](https://snoozescape.onrender.com)**
+
+### Deploy Your Own Copy in 60 Seconds
+This project includes a ready-to-use [`render.yaml`](render.yaml) Blueprint for instant 1-click deployment on [Render](https://render.com):
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/sachinn-alt/snoozescape)
+
+1. Click the **Deploy to Render** button above (or connect your GitHub repository in the Render dashboard).
+2. Render automatically detects `render.yaml` and deploys SnoozeScape as an ultra-fast static web app worldwide with free automated SSL and global CDN edge caching!
+
+---
+
+## 🤝 How to Contribute
+
+We love contributions! Whether you're fixing a typo, designing a new soundscape generator, expanding wellness rituals, or translating stories, your help makes healthy bedtime rest accessible to everyone.
+
+### 🌟 Why Contributing is Easy
+- **Zero Heavy Toolchains:** Built with pure vanilla HTML5, CSS3, and modern JavaScript (ES Modules). No Node.js build steps, no Webpack/Vite bundlers, and no giant `node_modules` folder to download!
+- **100% Offline Development:** You can build, debug, and test features completely offline in Airplane Mode.
+
+### ⚡ Quick 3-Step Setup
+```bash
+# 1. Clone your fork
+git clone https://github.com/<your-username>/snoozescape.git
+cd snoozescape
+
+# 2. Run locally (choose whichever you prefer):
+# Instant: Double-click index.html
+# Or run with Python:
+python -m http.server 3000
+# Or run with Node:
+npx serve -l 3000 .
+
+# 3. Open in your browser:
+# http://localhost:3000
+```
+
+### 🗺️ Project Architecture at a Glance
+| File | Role & Technology |
+| :--- | :--- |
+| [`index.html`](index.html) | Semantic UI markup, Bento grid sections, accessible SVG icon sprite |
+| [`styles.css`](styles.css) | Aceternity-inspired midnight glassmorphism, responsive dock, animations |
+| [`app.js`](app.js) | App orchestrator, canvas starfield particles, UI event binding |
+| [`audio-engine.js`](audio-engine.js) | Pure Web Audio API procedural synthesizers + CC0 public domain audio players |
+| [`ai-engine.js`](ai-engine.js) | 100% local client-side bedtime storytelling heuristics & Transformers.js |
+| [`sw.js`](sw.js) | Offline Service Worker with Cache-First + Stale-While-Revalidate caching |
+| [`render.yaml`](render.yaml) | Infrastructure-as-code Blueprint for automated 1-click Render deployment |
+
+### 💡 Great Areas to Contribute
+- 🌿 **Health & Mental Wellness Sanctuary:** Add new bedtime somatic rituals, reflection check-ins, or new concepts to the **Cognitive Shuffle** engine (`app.js`).
+- 🎵 **Procedural Audio Synthesis:** Create new mathematical Web Audio sound layers (e.g., gentle mountain brook, summer night crickets, cat purring) in `audio-engine.js`.
+- 📖 **Bedtime Story Themes:** Write calming new story prompts and dream tropes in `ai-engine.js`.
+- 🎨 **Aesthetic Themes:** Add new calming color palettes (e.g., *Aurora Borealis*, *Warm Amber Dusk*) in `styles.css`.
+- 🌐 **Translations (i18n):** Help translate UI labels, bedtime tales, and wellness guidance into other languages.
+- ♿ **Accessibility & Performance:** Enhance keyboard navigation, ARIA announcements, and canvas battery efficiency.
+
+### 📜 Contribution Process
+1. Create a feature branch: `git checkout -b feat/your-feature-name`
+2. Test your changes and ensure zero syntax errors: `node --check app.js`
+3. Commit with clear messages: `git commit -m "feat(audio): add mountain brook procedural stream"`
+4. Push to your fork and submit a Pull Request!
+
+👉 For full details, coding standards, and community guidelines, check out our **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ---
 
