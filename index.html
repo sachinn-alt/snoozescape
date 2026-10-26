@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="styles.css?v=1.0.7">
+  <link rel="stylesheet" href="styles.css?v=1.0.8">
 </head>
 <body class="theme-midnight">
   <!-- Iconly Pro Free Icon Sprite -->
@@ -442,13 +442,29 @@
             <span class="panel-icon"><svg class="iconly-icon iconly-icon-lg" style="color: var(--accent-amber);" aria-hidden="true"><use href="#iconly-volume"></use></svg></span>
             <div>
               <h2 id="soundscape-heading" class="panel-title">Procedural Soundscape Synth</h2>
-              <p class="panel-subtitle">Synthesized mathematically via Web Audio — Zero MP3s, Zero Network</p>
+              <p id="soundscape-subtitle" class="panel-subtitle">Synthesized mathematically via Web Audio — Zero MP3s, Zero Network</p>
             </div>
           </div>
           <button id="btn-master-play" class="btn btn-primary btn-play-all btn-shimmer" aria-label="Play or Pause Soundscape Engine">
             <span class="play-icon" id="master-play-icon"><svg class="iconly-icon iconly-icon-md" id="master-play-iconly" aria-hidden="true"><use href="#iconly-play"></use></svg></span>
             <span id="master-play-text">Start Soundscape</span>
           </button>
+        </div>
+
+        <!-- Audio Engine Mode Switcher: Pure Math Synth vs Studio CC0 Recordings -->
+        <div class="audio-mode-selector-wrap">
+          <div class="audio-mode-selector" role="radiogroup" aria-label="Audio Generation Mode">
+            <button class="mode-pill active" id="btn-mode-procedural" data-mode="procedural" role="radio" aria-checked="true" title="Pure real-time Web Audio mathematical synthesis (0 MB downloads)">
+              <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-activity"></use></svg>
+              <span>Pure Math Synth</span>
+              <span class="mode-tag">0 MB</span>
+            </button>
+            <button class="mode-pill" id="btn-mode-studio" data-mode="studio" role="radio" aria-checked="false" title="Organic high-fidelity CC0 studio and field acoustic recordings">
+              <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-volume"></use></svg>
+              <span>Studio CC0 Recordings</span>
+              <span class="mode-tag">Acoustic</span>
+            </button>
+          </div>
         </div>
 
         <!-- Bento Box Vector Art: Acoustic Waves -->
@@ -511,8 +527,8 @@
                 <div class="layer-title-wrap">
                   <div class="layer-icon-badge" style="background: rgba(167, 139, 250, 0.12); border-color: rgba(167, 139, 250, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #a78bfa;" aria-hidden="true"><use href="#iconly-activity"></use></svg></div>
                   <div>
-                    <h3 class="layer-name">Binaural Delta Beats</h3>
-                    <span class="layer-sub">4.5 Hz Deep Sleep Frequency</span>
+                    <h3 class="layer-name" id="name-binaural">Binaural Delta Beats</h3>
+                    <span class="layer-sub" id="sub-binaural">4.5 Hz Deep Sleep Frequency</span>
                   </div>
                 </div>
                 <button class="layer-toggle-btn active" data-layer="binaural" aria-label="Toggle Binaural Beats">ON</button>
@@ -529,8 +545,8 @@
                 <div class="layer-title-wrap">
                   <div class="layer-icon-badge" style="background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #38bdf8;" aria-hidden="true"><use href="#iconly-filter"></use></svg></div>
                   <div>
-                    <h3 class="layer-name">Nocturnal Rain</h3>
-                    <span class="layer-sub">Filtered Gentle Precipitation</span>
+                    <h3 class="layer-name" id="name-rain">Nocturnal Rain</h3>
+                    <span class="layer-sub" id="sub-rain">Filtered Gentle Precipitation</span>
                   </div>
                 </div>
                 <button class="layer-toggle-btn active" data-layer="rain" aria-label="Toggle Rain">ON</button>
@@ -547,8 +563,8 @@
                 <div class="layer-title-wrap">
                   <div class="layer-icon-badge" style="background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #f97316;" aria-hidden="true"><use href="#iconly-discovery"></use></svg></div>
                   <div>
-                    <h3 class="layer-name">Cozy Fireplace</h3>
-                    <span class="layer-sub">Procedural Wood Sparkle</span>
+                    <h3 class="layer-name" id="name-fire">Cozy Fireplace</h3>
+                    <span class="layer-sub" id="sub-fire">Procedural Wood Sparkle</span>
                   </div>
                 </div>
                 <button class="layer-toggle-btn active" data-layer="fire" aria-label="Toggle Fireplace">ON</button>
@@ -565,8 +581,8 @@
                 <div class="layer-title-wrap">
                   <div class="layer-icon-badge" style="background: rgba(203, 213, 225, 0.1); border-color: rgba(203, 213, 225, 0.25);"><svg class="iconly-icon iconly-icon-md" style="color: #cbd5e1;" aria-hidden="true"><use href="#iconly-volume"></use></svg></div>
                   <div>
-                    <h3 class="layer-name">Deep Brown Noise</h3>
-                    <span class="layer-sub">Sub-Bass Masking Rumble</span>
+                    <h3 class="layer-name" id="name-brown">Deep Brown Noise</h3>
+                    <span class="layer-sub" id="sub-brown">Sub-Bass Masking Rumble</span>
                   </div>
                 </div>
                 <button class="layer-toggle-btn active" data-layer="brown" aria-label="Toggle Brown Noise">ON</button>
@@ -583,8 +599,8 @@
                 <div class="layer-title-wrap">
                   <div class="layer-icon-badge" style="background: rgba(45, 212, 191, 0.12); border-color: rgba(45, 212, 191, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #2dd4bf;" aria-hidden="true"><use href="#iconly-category"></use></svg></div>
                   <div>
-                    <h3 class="layer-name">Canopy Breeze</h3>
-                    <span class="layer-sub">Modulated Forest Wind</span>
+                    <h3 class="layer-name" id="name-wind">Canopy Breeze</h3>
+                    <span class="layer-sub" id="sub-wind">Modulated Forest Wind</span>
                   </div>
                 </div>
                 <button class="layer-toggle-btn active" data-layer="wind" aria-label="Toggle Wind">ON</button>
@@ -601,8 +617,8 @@
                 <div class="layer-title-wrap">
                   <div class="layer-icon-badge" style="background: rgba(96, 165, 250, 0.12); border-color: rgba(96, 165, 250, 0.3);"><svg class="iconly-icon iconly-icon-md" style="color: #60a5fa;" aria-hidden="true"><use href="#iconly-swap"></use></svg></div>
                   <div>
-                    <h3 class="layer-name">Ocean Swell</h3>
-                    <span class="layer-sub">Slow Tidal Infrasound</span>
+                    <h3 class="layer-name" id="name-ocean">Ocean Swell</h3>
+                    <span class="layer-sub" id="sub-ocean">Slow Tidal Infrasound</span>
                   </div>
                 </div>
                 <button class="layer-toggle-btn" data-layer="ocean" aria-label="Toggle Ocean">OFF</button>
@@ -827,8 +843,8 @@
   </nav>
 
   <!-- Audio Synthesis & Local AI Scripts -->
-  <script src="audio-engine.js?v=1.0.7"></script>
-  <script src="ai-engine.js?v=1.0.7"></script>
-  <script src="app.js?v=1.0.7"></script>
+  <script src="audio-engine.js?v=1.0.8"></script>
+  <script src="ai-engine.js?v=1.0.8"></script>
+  <script src="app.js?v=1.0.8"></script>
 </body>
 </html>

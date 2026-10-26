@@ -4,7 +4,7 @@
  * Cache-First with Stale-While-Revalidate strategy for static assets.
  */
 
-const CACHE_NAME = "snoozescape-v1.0.7";
+const CACHE_NAME = "snoozescape-v1.0.8";
 
 const PRECACHE_ASSETS = [
   "./",
@@ -23,7 +23,15 @@ const PRECACHE_ASSETS = [
   "./assets/vector-art/vector-dream-nebula.svg",
   "./assets/vector-art/vector-neurolab-frequencies.svg",
   "./assets/vector-art/vector-stardust-dissolve.svg",
-  "./assets/vector-art/vector-circadian-clock.svg"
+  "./assets/vector-art/vector-circadian-clock.svg",
+  "./assets/audio/rain.mp3",
+  "./assets/audio/fire.mp3",
+  "./assets/audio/wind.mp3",
+  "./assets/audio/ocean.mp3",
+  "./assets/audio/brown.mp3",
+  "./assets/audio/night.mp3",
+  "./assets/audio/river.mp3",
+  "./assets/audio/tibetan-bowl.mp3"
 ];
 
 // Install: Cache critical assets

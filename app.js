@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const visualizerCanvas = document.getElementById("audio-visualizer-canvas");
   const presetChips = document.querySelectorAll(".preset-chip");
   const layerCards = document.querySelectorAll(".sound-layer-card");
+  const modeProcedural = document.getElementById("btn-mode-procedural");
+  const modeStudio = document.getElementById("btn-mode-studio");
+  const soundscapeHeading = document.getElementById("soundscape-heading");
+  const soundscapeSubtitle = document.getElementById("soundscape-subtitle");
 
   // Story Elements
   const storyThemeSelect = document.getElementById("story-theme-select");
@@ -566,6 +570,73 @@ document.addEventListener("DOMContentLoaded", () => {
       masterVolDisplay.textContent = Math.round(val * 100) + "%";
     });
   }
+
+  // Audio Mode Switcher (Procedural Math Synth vs Studio CC0 Recordings)
+  const layerDescriptions = {
+    procedural: {
+      heading: "Procedural Soundscape Synth",
+      sub: "Synthesized mathematically via Web Audio — Zero MP3s, Zero Network",
+      binaural: { name: "Binaural Delta Beats", sub: "4.5 Hz Deep Sleep Frequency" },
+      rain: { name: "Nocturnal Rain", sub: "Filtered Gentle Precipitation" },
+      fire: { name: "Cozy Fireplace", sub: "Procedural Wood Sparkle" },
+      brown: { name: "Deep Brown Noise", sub: "Sub-Bass Masking Rumble" },
+      wind: { name: "Canopy Breeze", sub: "Modulated Forest Wind" },
+      ocean: { name: "Ocean Swell", sub: "Slow Tidal Infrasound" }
+    },
+    studio: {
+      heading: "Studio Soundscape Acoustic",
+      sub: "High-fidelity CC0 Public Domain field recordings — 100% Offline",
+      binaural: { name: "Nocturnal Crickets", sub: "Midnight Meadow Ambience" },
+      rain: { name: "Nocturnal Rain", sub: "Studio Acoustic Rain Recording" },
+      fire: { name: "Cozy Fireplace", sub: "Real Hearth Campfire Crackle" },
+      brown: { name: "Deep Brown Noise", sub: "Acoustic Brownian Sleep Rumble" },
+      wind: { name: "Canopy Breeze", sub: "Natural Canopy Wind Recording" },
+      ocean: { name: "Ocean Swell", sub: "Pacific Shore Waves Recording" }
+    }
+  };
+
+  function setAudioMode(mode) {
+    if (!window.snoozeAudio) return;
+    window.snoozeAudio.setSoundMode(mode);
+
+    if (modeProcedural && modeStudio) {
+      modeProcedural.classList.toggle("active", mode === "procedural");
+      modeProcedural.setAttribute("aria-checked", mode === "procedural");
+      modeStudio.classList.toggle("active", mode === "studio");
+      modeStudio.setAttribute("aria-checked", mode === "studio");
+    }
+
+    const info = layerDescriptions[mode] || layerDescriptions.procedural;
+    if (soundscapeHeading) soundscapeHeading.textContent = info.heading;
+    if (soundscapeSubtitle) soundscapeSubtitle.textContent = info.sub;
+
+    Object.keys(info).forEach(k => {
+      if (k === "heading" || k === "sub") return;
+      const nameEl = document.getElementById(`name-${k}`);
+      const subEl = document.getElementById(`sub-${k}`);
+      if (nameEl && info[k].name) nameEl.textContent = info[k].name;
+      if (subEl && info[k].sub) subEl.textContent = info[k].sub;
+    });
+
+    try {
+      localStorage.setItem("snoozescape_sound_mode", mode);
+    } catch (e) {}
+  }
+
+  if (modeProcedural) {
+    modeProcedural.addEventListener("click", () => setAudioMode("procedural"));
+  }
+  if (modeStudio) {
+    modeStudio.addEventListener("click", () => setAudioMode("studio"));
+  }
+
+  // Restore saved audio mode if present
+  try {
+    const savedMode = localStorage.getItem("snoozescape_sound_mode");
+    if (savedMode === "studio") {
+      setAudioMode("studio");
+    }
+  } catch (e) {}
 
   // Layer Controls (Sliders & Toggle Buttons)
   layerCards.forEach(card => {

@@ -100,16 +100,29 @@ Closed-source AI products (commercial meditation apps, proprietary LLM APIs, and
 
 ---
 
-## 🎵 Real-Time Procedural Sound Synthesizers
+## 🎵 Dual-Engine Soundscape Architecture: Math Synth & Studio CC0 Recordings
 
-SnoozeScape contains **zero MP3 or WAV audio assets**. All sounds are generated via the browser's native **Web Audio API**:
+SnoozeScape features a **hybrid dual-engine audio architecture** offering seamless switching between pure mathematical real-time synthesis and organic CC0 acoustic field recordings:
 
+### Mode 1: Pure Math Synth (0 MB Downloads)
+All 6 sleep layers synthesized mathematically in real time via the browser's native **Web Audio API**:
 - **Binaural Delta Beats:** Dual stereo-panned sine wave oscillators (Left: 196.0 Hz, Right: 200.5 Hz) generating a 4.5 Hz frequency differential to trigger deep restorative slow-wave sleep.
 - **Nocturnal Rain:** Dual-filtered noise generator (Highpass at 280Hz, Lowpass at 1200Hz) simulating steady rain falling onto tropical canopy foliage.
 - **Cozy Fireplace:** Low-frequency 140Hz rumble coupled with stochastic bandpass Poisson impulses (2400Hz, Q=4.0) to emulate snapping embers.
 - **Deep Brown Noise:** Cascading 12dB/octave lowpass-filtered Brownian noise providing acoustic masking against sudden ambient room noises.
 - **Canopy Wind:** Resonant bandpass filter modulated by a 0.12Hz sinusoidal LFO, producing gentle forest wind gusts.
 - **Ocean Swell:** 0.08Hz infrasonic LFO modulating gain and frequency, mimicking the natural 12-second rhythm of breaking ocean tides.
+
+### Mode 2: Studio CC0 Field Recordings (100% Copyright-Free & Offline)
+High-fidelity, loopable acoustic recordings dedicated to the **Public Domain (CC0 / Open Source)**. Pre-cached by the Service Worker for complete offline playback without streaming or data usage:
+- **Nocturnal Rain (`rain.mp3`):** High-fidelity microphone capture of gentle nocturnal precipitation.
+- **Campfire Hearth (`fire.mp3`):** Real wood embers crackling in an open brick hearth.
+- **Forest Wind (`wind.mp3`):** Gentle wind whistling through mountain pine canopy.
+- **Pacific Ocean (`ocean.mp3`):** Natural rhythmic coastal swells and breaking shore waves.
+- **Deep Brown Noise (`brown.mp3`):** Authentic analog Brownian noise sleep masking.
+- **Nocturnal Crickets (`night.mp3`):** Peaceful midnight meadow insects and evening breeze.
+- **432Hz Tibetan Singing Bowl (`tibetan-bowl.mp3`):** Acoustic bronze singing bowl strike with natural physical overtones.
+*(See [AUDIO_LICENSES.md](assets/audio/AUDIO_LICENSES.md) for full provenance and license details).*
 
 ---
 

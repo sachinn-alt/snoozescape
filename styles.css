@@ -1192,6 +1192,72 @@ button:hover .iconly-icon {
    Soundscape Column & Mixer
    ========================================================================== */
 
+/* Sound Engine Mode Switcher (Procedural vs Studio CC0) */
+.audio-mode-selector-wrap {
+  padding: 0.75rem 1.75rem 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.audio-mode-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.mode-pill:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mode-pill.active {
+  background: rgba(245, 183, 38, 0.18);
+  border-color: rgba(245, 183, 38, 0.45);
+  color: var(--accent-amber);
+  box-shadow: 0 0 16px rgba(245, 183, 38, 0.28);
+}
+
+.mode-pill .mode-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.mode-pill.active .mode-tag {
+  background: rgba(245, 183, 38, 0.28);
+  color: #fde68a;
+}
+
 .presets-bar {
   padding: 0.85rem 1.75rem;
   display: flex;

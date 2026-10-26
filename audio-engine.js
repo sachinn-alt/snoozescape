@@ -12,7 +12,10 @@ class SnoozeAudioEngine {
     this.masterVolume = 0.75;
     this.analyser = null;
     this.isPlaying = false;
-    
+
+    // Sound Generation Mode: 'procedural' (Math Synth) or 'studio' (Real CC0 Field Recordings)
+    this.soundMode = 'procedural';
+
     // Sound Layers State
     this.layers = {
       binaural: { active: true, volume: 0.45, nodes: {} },
@@ -22,6 +25,21 @@ class SnoozeAudioEngine {
       wind: { active: true, volume: 0.40, nodes: {} },
       ocean: { active: false, volume: 0.00, nodes: {} }
     };
+
+    // Studio Acoustic Tracks (High-Fidelity CC0 / Public Domain recordings)
+    this.studioTracks = {
+      binaural: { src: 'assets/audio/night.mp3', audio: null, sourceNode: null, gainNode: null },
+      rain: { src: 'assets/audio/rain.mp3', audio: null, sourceNode: null, gainNode: null },
+      fire: { src: 'assets/audio/fire.mp3', audio: null, sourceNode: null, gainNode: null },
+      brown: { src: 'assets/audio/brown.mp3', audio: null, sourceNode: null, gainNode: null },
+      wind: { src: 'assets/audio/wind.mp3', audio: null, sourceNode: null, gainNode: null },
+      ocean: { src: 'assets/audio/ocean.mp3', audio: null, sourceNode: null, gainNode: null }
+    };
+
+    // Reusable Tibetan Bronze Singing Bowl audio nodes
+    this.tibetanBowlAudio = null;
+    this.tibetanBowlSource = null;
+    this.tibetanBowlGain = null;
 
     // Shared Noise Buffer Cache (5 seconds of looping white noise)
     this.noiseBuffer = null;
@@ -33,6 +51,41 @@ class SnoozeAudioEngine {
 
     // Interactive Chime & Bowl state
     this.chimeEnabled = false;
+  }
+
+  /**
+   * Lazily initializes HTML5 Audio elements and routes them into the Web Audio graph
+   */
+  initStudioAudio() {
+    this.initContext();
+    if (!this.ctx) return;
+
+    Object.keys(this.studioTracks).forEach(key => {
+      const track = this.studioTracks[key];
+      if (!track.audio) {
+        try {
+          const audio = new Audio(track.src);
+          audio.loop = true;
+          audio.preload = 'auto';
+          audio.crossOrigin = 'anonymous';
+
+          const sourceNode = this.ctx.createMediaElementSource(audio);
+          const gainNode = this.ctx.createGain();
+          const layer = this.layers[key];
+          const targetGain = (layer && layer.active) ? layer.volume * 0.4 : 0;
+          gainNode.gain.setValueAtTime(targetGain, this.ctx.currentTime);
+
+          sourceNode.connect(gainNode);
+          gainNode.connect(this.masterGain);
+
+          track.audio = audio;
+          track.sourceNode = sourceNode;
+          track.gainNode = gainNode;
+        } catch (err) {
+          console.warn(`[AudioEngine] Failed to initialize studio track ${key}:`, err);
+        }
+      }
+    });
   }
 
   /**
@@ -350,12 +403,27 @@ class SnoozeAudioEngine {
       this.masterGain.gain.setValueAtTime(this.masterVolume, this.ctx.currentTime);
     }
 
-    this.startBinauralLayer();
-    this.startRainLayer();
-    this.startFireLayer();
-    this.startBrownNoiseLayer();
-    this.startWindLayer();
-    this.startOceanLayer();
+    if (this.soundMode === 'studio') {
+      this.initStudioAudio();
+      Object.keys(this.studioTracks).forEach(key => {
+        const track = this.studioTracks[key];
+        const layer = this.layers[key];
+        if (track && track.audio && track.gainNode) {
+          const targetGain = (layer && layer.active) ? layer.volume * 0.4 : 0;
+          track.gainNode.gain.setValueAtTime(targetGain, this.ctx.currentTime);
+          if (layer && layer.active) {
+            track.audio.play().catch(e => console.warn('Studio play error:', e));
+          }
+        }
+      });
+    } else {
+      this.startBinauralLayer();
+      this.startRainLayer();
+      this.startFireLayer();
+      this.startBrownNoiseLayer();
+      this.startWindLayer();
+      this.startOceanLayer();
+    }
 
     this.isPlaying = true;
     this.startFadeTimer();
@@ -364,6 +432,7 @@ class SnoozeAudioEngine {
   stopAll() {
     if (!this.ctx) return;
 
+    // Stop procedural nodes
     Object.values(this.layers).forEach(layer => {
       if (layer.nodes) {
         Object.values(layer.nodes).forEach(node => {
@@ -378,6 +447,17 @@ class SnoozeAudioEngine {
         layer.nodes = {};
       }
     });
+
+    // Pause studio tracks
+    if (this.studioTracks) {
+      Object.values(this.studioTracks).forEach(track => {
+        if (track.audio) {
+          try {
+            track.audio.pause();
+          } catch (e) {}
+        }
+      });
+    }
 
     this.isPlaying = false;
     clearInterval(this.fadeTimerInterval);
@@ -394,6 +474,25 @@ class SnoozeAudioEngine {
     }
   }
 
+  /**
+   * Switches sound engine between 'procedural' (synthesized math) and 'studio' (real CC0 recordings)
+   */
+  setSoundMode(mode) {
+    if (mode !== 'procedural' && mode !== 'studio') return;
+    if (this.soundMode === mode) return;
+
+    const wasPlaying = this.isPlaying;
+    if (wasPlaying) {
+      this.stopAll();
+    }
+
+    this.soundMode = mode;
+
+    if (wasPlaying) {
+      this.startAll();
+    }
+  }
+
   setMasterVolume(val) {
     this.masterVolume = Math.max(0, Math.min(1, val));
     if (this.masterGain && this.ctx) {
@@ -405,9 +504,16 @@ class SnoozeAudioEngine {
     const layer = this.layers[layerKey];
     if (layer) {
       layer.volume = volume;
+      const targetGain = layer.active ? volume * 0.4 : 0;
+
+      // Update procedural gain
       if (layer.nodes && layer.nodes.gainNode && this.ctx) {
-        const targetGain = layer.active ? volume * 0.4 : 0;
         layer.nodes.gainNode.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);
+      }
+
+      // Update studio track gain
+      if (this.studioTracks && this.studioTracks[layerKey] && this.studioTracks[layerKey].gainNode && this.ctx) {
+        this.studioTracks[layerKey].gainNode.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);
       }
     }
   }
@@ -417,6 +523,19 @@ class SnoozeAudioEngine {
     if (layer) {
       layer.active = !layer.active;
       this.setLayerVolume(layerKey, layer.volume);
+
+      // In studio mode while playing, play or pause the audio element
+      if (this.isPlaying && this.soundMode === 'studio' && this.studioTracks && this.studioTracks[layerKey]) {
+        const track = this.studioTracks[layerKey];
+        if (track && track.audio) {
+          if (layer.active) {
+            track.audio.play().catch(e => console.warn('Studio play error:', e));
+          } else {
+            track.audio.pause();
+          }
+        }
+      }
+
       return layer.active;
     }
     return false;
@@ -506,13 +625,38 @@ class SnoozeAudioEngine {
   }
 
   /**
-   * Synthesizes a resonant 432Hz Tibetan Bronze Singing Bowl chime
-   * with natural physical acoustic overtones and exponential ring-down.
+   * Rings resonant Tibetan Bronze Singing Bowl chime.
+   * Uses real studio recording in studio mode, or mathematical 432Hz overtone physical synthesis in procedural mode.
    */
   playTibetanBowl(baseFreq = 432, duration = 4.5) {
     this.initContext();
     if (!this.ctx) return;
 
+    if (this.soundMode === 'studio') {
+      try {
+        if (!this.tibetanBowlAudio) {
+          this.tibetanBowlAudio = new Audio('assets/audio/tibetan-bowl.mp3');
+          this.tibetanBowlSource = this.ctx.createMediaElementSource(this.tibetanBowlAudio);
+          this.tibetanBowlGain = this.ctx.createGain();
+          this.tibetanBowlGain.gain.setValueAtTime(0.75, this.ctx.currentTime);
+          this.tibetanBowlSource.connect(this.tibetanBowlGain);
+          this.tibetanBowlGain.connect(this.masterGain);
+        }
+        this.tibetanBowlAudio.currentTime = 0;
+        this.tibetanBowlAudio.play().catch(() => {
+          this.synthesizeTibetanBowl(baseFreq, duration);
+        });
+        return;
+      } catch (e) {
+        // Fallback to synthesis
+      }
+    }
+
+    this.synthesizeTibetanBowl(baseFreq, duration);
+  }
+
+  synthesizeTibetanBowl(baseFreq = 432, duration = 4.5) {
+    if (!this.ctx) return;
     const now = this.ctx.currentTime;
     const bowlGain = this.ctx.createGain();
     bowlGain.gain.setValueAtTime(0.001, now);
