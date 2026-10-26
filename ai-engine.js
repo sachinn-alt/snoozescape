@@ -15,6 +15,8 @@ class SnoozeAIEngine {
     this.isNarrating = false;
     this.currentParagraphIndex = -1;
     this.narrationRate = 0.8; // Relaxing, slow bedtime cadence
+    this.pauseTimer = null;
+    this.currentSessionId = 0;
 
     // Story Themes Repository
     this.themes = {
@@ -124,18 +126,20 @@ class SnoozeAIEngine {
       return;
     }
 
-    // If currently speaking, stop
-    if (this.isNarrating) {
-      this.stopNarration();
-      return;
-    }
+    // Fully halt any active speech, timers, and previous session callbacks
+    this.stopNarration();
 
-    this.speechSynth.cancel();
     this.isNarrating = true;
     this.currentParagraphIndex = 0;
+    const sessionId = ++this.currentSessionId;
 
     const playNext = (index) => {
-      if (!this.isNarrating || index >= paragraphs.length) {
+      // Discard execution if narration was stopped or a newer session began
+      if (sessionId !== this.currentSessionId || !this.isNarrating) {
+        return;
+      }
+
+      if (index >= paragraphs.length) {
         this.isNarrating = false;
         if (onComplete) onComplete();
         return;
@@ -161,13 +165,28 @@ class SnoozeAIEngine {
       if (preferredVoice) utterance.voice = preferredVoice;
 
       utterance.onend = () => {
-        // Natural 1.2s pause between bedtime paragraphs
-        setTimeout(() => {
-          if (this.isNarrating) playNext(index + 1);
+        if (sessionId !== this.currentSessionId || !this.isNarrating) return;
+
+        // If the story has finished all paragraphs, complete immediately with no lingering timer
+        if (index + 1 >= paragraphs.length) {
+          this.isNarrating = false;
+          if (onComplete) onComplete();
+          return;
+        }
+
+        // Natural 1.1s pause between bedtime paragraphs
+        this.pauseTimer = setTimeout(() => {
+          this.pauseTimer = null;
+          if (sessionId === this.currentSessionId && this.isNarrating) {
+            playNext(index + 1);
+          }
         }, 1100);
       };
 
-      utterance.onerror = () => {
+      utterance.onerror = (e) => {
+        if (sessionId !== this.currentSessionId) return;
+        // Ignore normal interruptions when cancel() was invoked by stopNarration()
+        if (e && (e.error === "canceled" || e.error === "interrupted")) return;
         this.isNarrating = false;
         if (onComplete) onComplete();
       };
@@ -180,6 +199,11 @@ class SnoozeAIEngine {
 
   stopNarration() {
     this.isNarrating = false;
+    this.currentSessionId++;
+    if (this.pauseTimer) {
+      clearTimeout(this.pauseTimer);
+      this.pauseTimer = null;
+    }
     if (this.speechSynth) {
       this.speechSynth.cancel();
     }
