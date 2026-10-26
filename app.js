@@ -64,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================================================================
      1. Celestial Starfield Background Canvas
      ========================================================================= */
+  let triggerStardustBurst = null;
+
   function initCelestialCanvas() {
     if (!celestialCanvas) return;
     const ctx = celestialCanvas.getContext("2d");
@@ -76,10 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
       createStars();
     });
 
-    const starCount = Math.floor((width * height) / 4500);
+    const starCount = Math.floor((width * height) / 5000);
     let stars = [];
-    let shootingStars = [];
-    let stardustParticles = [];
+    const shootingStars = [];
+    const stardustParticles = [];
     let pointerX = -1000;
     let pointerY = -1000;
     let pointerActive = false;
@@ -110,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Click anywhere in celestial sky to summon shooting star
     window.addEventListener("click", (e) => {
-      // Ignore interactive clicks on buttons/inputs
       if (e.target.closest("button, input, select, .preset-chip, .tool-btn")) return;
       spawnShootingStar(e.clientX, e.clientY);
     });
@@ -144,24 +145,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Spontaneous gentle shooting star
     setInterval(() => {
-      if (Math.random() > 0.3) {
+      if (Math.random() > 0.3 && !document.hidden) {
         spawnShootingStar();
       }
     }, 7000);
 
+    triggerStardustBurst = function(originX, originY, count = 70) {
+      const colors = ["#f5b726", "#a78bfa", "#38bdf8", "#ffffff"];
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4.2 + 0.8;
+        const col = colors[Math.floor(Math.random() * colors.length)];
+        stardustParticles.push({
+          x: originX + (Math.random() - 0.5) * 40,
+          y: originY + (Math.random() - 0.5) * 20,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.2,
+          size: Math.random() * 3.0 + 1.0,
+          opacity: 1.0,
+          color: col
+        });
+      }
+    };
+
     function animateStars() {
+      if (document.hidden) {
+        requestAnimationFrame(animateStars);
+        return;
+      }
+
       ctx.clearRect(0, 0, width, height);
 
       // Render Interactive Constellation Lines Near Cursor
       if (pointerActive) {
         const nearbyStars = [];
+        const maxDistSq = 110 * 110;
         for (let i = 0; i < stars.length; i++) {
           const dx = stars[i].x - pointerX;
           const dy = stars[i].y - pointerY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 110) {
+          const distSq = dx * dx + dy * dy;
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
             nearbyStars.push(stars[i]);
-            // Line from star to pointer
             const alpha = (1 - dist / 110) * 0.35;
             ctx.strokeStyle = `rgba(245, 183, 38, ${alpha})`;
             ctx.lineWidth = 0.8;
@@ -172,13 +197,14 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // Connect nearby stars with each other to form celestial asterisms
+        const maxPairDistSq = 90 * 90;
         for (let i = 0; i < nearbyStars.length; i++) {
           for (let j = i + 1; j < nearbyStars.length; j++) {
             const dx = nearbyStars[i].x - nearbyStars[j].x;
             const dy = nearbyStars[i].y - nearbyStars[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 90) {
+            const distSq = dx * dx + dy * dy;
+            if (distSq < maxPairDistSq) {
+              const dist = Math.sqrt(distSq);
               const alpha = (1 - dist / 90) * 0.25;
               ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
               ctx.lineWidth = 0.6;
@@ -191,9 +217,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Render Stars
-      stars.forEach(star => {
-        star.opacity += Math.sin(Date.now() * star.twinkleSpeed) * 0.008;
+      // Render Stars (Single Date.now call)
+      const now = Date.now();
+      for (let i = 0; i < stars.length; i++) {
+        const star = stars[i];
+        star.opacity += Math.sin(now * star.twinkleSpeed) * 0.008;
         star.opacity = Math.max(0.15, Math.min(0.95, star.opacity));
 
         ctx.fillStyle = star.color;
@@ -201,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
-      });
+      }
 
       // Render Stardust particles
       for (let i = stardustParticles.length - 1; i >= 0; i--) {
@@ -403,9 +431,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const height = visualizerCanvas.height;
 
     let rippleRadius = 0;
+    let freqDataArray = null;
+    let timeDataArray = null;
+
+    // Pre-create gradients once instead of 1,920 times per second
+    const barGradient = ctx.createLinearGradient(0, height, 0, 0);
+    barGradient.addColorStop(0, "#f5b726");
+    barGradient.addColorStop(1, "#38bdf8");
+
+    const waveGradient = ctx.createLinearGradient(0, 0, width, 0);
+    waveGradient.addColorStop(0, "#f5b726");
+    waveGradient.addColorStop(0.5, "#38bdf8");
+    waveGradient.addColorStop(1, "#f5b726");
 
     function drawSpectrum() {
       requestAnimationFrame(drawSpectrum);
+      if (document.hidden) return;
+
       ctx.clearRect(0, 0, width, height);
 
       if (!window.snoozeAudio || !window.snoozeAudio.analyser || !window.snoozeAudio.isPlaying) {
@@ -418,39 +460,35 @@ document.addEventListener("DOMContentLoaded", () => {
       if (visualizerMode === 0) {
         // Mode 0: Spectrum Frequency Bars
         const bufferLength = window.snoozeAudio.analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-        window.snoozeAudio.analyser.getByteFrequencyData(dataArray);
+        if (!freqDataArray || freqDataArray.length !== bufferLength) {
+          freqDataArray = new Uint8Array(bufferLength);
+        }
+        window.snoozeAudio.analyser.getByteFrequencyData(freqDataArray);
 
         const barWidth = (width / bufferLength) * 1.5;
         let x = 0;
+        ctx.fillStyle = barGradient;
         for (let i = 0; i < bufferLength; i++) {
-          const barHeight = (dataArray[i] / 255) * height;
-          const grad = ctx.createLinearGradient(0, height, 0, 0);
-          grad.addColorStop(0, "#f5b726");
-          grad.addColorStop(1, "#38bdf8");
-
-          ctx.fillStyle = grad;
+          const barHeight = (freqDataArray[i] / 255) * height;
           ctx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
           x += barWidth;
         }
       } else if (visualizerMode === 1) {
         // Mode 1: Liquid Sine Oscilloscope Wave
         const bufferLength = window.snoozeAudio.analyser.fftSize;
-        const timeArray = new Uint8Array(bufferLength);
-        window.snoozeAudio.analyser.getByteTimeDomainData(timeArray);
+        if (!timeDataArray || timeDataArray.length !== bufferLength) {
+          timeDataArray = new Uint8Array(bufferLength);
+        }
+        window.snoozeAudio.analyser.getByteTimeDomainData(timeDataArray);
 
         ctx.lineWidth = 2;
-        const grad = ctx.createLinearGradient(0, 0, width, 0);
-        grad.addColorStop(0, "#f5b726");
-        grad.addColorStop(0.5, "#38bdf8");
-        grad.addColorStop(1, "#f5b726");
-        ctx.strokeStyle = grad;
+        ctx.strokeStyle = waveGradient;
         ctx.beginPath();
 
         const sliceWidth = width / bufferLength;
         let x = 0;
         for (let i = 0; i < bufferLength; i++) {
-          const v = timeArray[i] / 128.0;
+          const v = timeDataArray[i] / 128.0;
           const y = (v * height) / 2;
           if (i === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
@@ -460,11 +498,13 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (visualizerMode === 2) {
         // Mode 2: Concentric Nebula Pulse Rings
         const bufferLength = window.snoozeAudio.analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-        window.snoozeAudio.analyser.getByteFrequencyData(dataArray);
+        if (!freqDataArray || freqDataArray.length !== bufferLength) {
+          freqDataArray = new Uint8Array(bufferLength);
+        }
+        window.snoozeAudio.analyser.getByteFrequencyData(freqDataArray);
 
         let sum = 0;
-        for (let i = 0; i < bufferLength; i++) sum += dataArray[i];
+        for (let i = 0; i < bufferLength; i++) sum += freqDataArray[i];
         const avg = sum / bufferLength;
         const pulseFactor = avg / 255;
 
@@ -637,6 +677,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btn) {
       btn.style.transform = "scale(0.92)";
       setTimeout(() => { btn.style.transform = ""; }, 200);
+      const rect = btn.getBoundingClientRect();
+      if (typeof triggerStardustBurst === "function") {
+        triggerStardustBurst(rect.left + rect.width / 2, rect.top, 45);
+      }
     }
   }
 
@@ -966,12 +1010,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Border Beam rotating angle animation
   let beamAngle = 0;
+  const borderBeams = document.querySelectorAll(".border-beam");
   function animateBorderBeam() {
-    beamAngle = (beamAngle + 1.2) % 360;
-    const borderBeams = document.querySelectorAll(".border-beam");
-    borderBeams.forEach(b => {
-      b.style.setProperty("--beam-angle", `${beamAngle}deg`);
-    });
+    if (!document.hidden && borderBeams.length > 0) {
+      beamAngle = (beamAngle + 1.2) % 360;
+      for (let i = 0; i < borderBeams.length; i++) {
+        borderBeams[i].style.setProperty("--beam-angle", `${beamAngle}deg`);
+      }
+    }
     requestAnimationFrame(animateBorderBeam);
   }
   animateBorderBeam();
@@ -1057,8 +1103,6 @@ document.addEventListener("DOMContentLoaded", () => {
      11. Mobile Floating Action Dock Wiring
      ========================================================================= */
   const btnMobileSloth = document.getElementById("btn-mobile-sloth");
-  const btnMobileSound = document.getElementById("btn-mobile-sound");
-  const mobileSoundIcon = document.getElementById("mobile-sound-icon");
   const btnMobileBreathe = document.getElementById("btn-mobile-breathe");
   const btnMobileStory = document.getElementById("btn-mobile-story");
 
@@ -1071,22 +1115,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnMobileSound && btnMasterPlay) {
     btnMobileSound.addEventListener("click", () => {
       btnMasterPlay.click();
-      if (mobileSoundIcon) {
-        mobileSoundIcon.textContent = window.snoozeAudio.isPlaying ? "⏸" : "▶";
-      }
-    });
-  }
-
-  const btnMobileBowl = document.getElementById("btn-mobile-bowl");
-  if (btnMobileBowl) {
-    btnMobileBowl.addEventListener("click", () => {
-      if (window.snoozeAudio) {
-        window.snoozeAudio.playTibetanBowl(432, 5.0);
-      }
-      const rect = btnMobileBowl.getBoundingClientRect();
-      if (typeof triggerStardustBurst === "function") {
-        triggerStardustBurst(rect.left + rect.width / 2, rect.top, 45);
-      }
     });
   }
 
@@ -1102,120 +1130,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.getElementById("story-heading");
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-  }
-
-  /* =========================================================================
-     12. Celestial Sky Canvas & Stardust Particles Engine
-     ========================================================================= */
-  const celestialCanvas = document.getElementById("celestial-canvas");
-  let starCtx = null;
-  let canvasWidth = 0;
-  let canvasHeight = 0;
-  const stars = [];
-  const stardustParticles = [];
-
-  if (celestialCanvas) {
-    starCtx = celestialCanvas.getContext("2d");
-
-    function resizeCelestialCanvas() {
-      canvasWidth = window.innerWidth;
-      canvasHeight = window.innerHeight;
-      celestialCanvas.width = canvasWidth;
-      celestialCanvas.height = canvasHeight;
-
-      // Seed ambient stars
-      stars.length = 0;
-      const count = Math.min(130, Math.floor((canvasWidth * canvasHeight) / 10000));
-      for (let i = 0; i < count; i++) {
-        stars.push({
-          x: Math.random() * canvasWidth,
-          y: Math.random() * canvasHeight,
-          radius: Math.random() * 1.4 + 0.5,
-          alpha: Math.random() * 0.7 + 0.2,
-          speed: Math.random() * 0.008 + 0.003,
-          phase: Math.random() * Math.PI * 2,
-          color: Math.random() > 0.4 ? "rgba(255, 255, 255," : (Math.random() > 0.5 ? "rgba(167, 139, 250," : "rgba(245, 183, 38,")
-        });
-      }
-    }
-
-    resizeCelestialCanvas();
-    window.addEventListener("resize", resizeCelestialCanvas);
-
-    function animateCelestialSky() {
-      if (!starCtx) return;
-      starCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-      // Render ambient background stars
-      const nowTime = Date.now();
-      for (let i = 0; i < stars.length; i++) {
-        const s = stars[i];
-        const pulse = 0.5 + 0.5 * Math.sin(nowTime * s.speed + s.phase);
-        const currentAlpha = s.alpha * (0.4 + 0.6 * pulse);
-
-        starCtx.beginPath();
-        starCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-        starCtx.fillStyle = s.color + currentAlpha + ")";
-        starCtx.fill();
-      }
-
-      // Render dynamic stardust burst particles
-      for (let i = stardustParticles.length - 1; i >= 0; i--) {
-        const p = stardustParticles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy -= 0.035; // gentle upward buoyancy
-        p.vx *= 0.985;
-        p.alpha -= p.fadeSpeed;
-        p.size *= 0.992;
-
-        if (p.alpha <= 0 || p.size <= 0.1) {
-          stardustParticles.splice(i, 1);
-          continue;
-        }
-
-        starCtx.save();
-        starCtx.beginPath();
-        starCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        starCtx.fillStyle = p.color.replace("__A__", p.alpha.toFixed(3));
-        starCtx.shadowBlur = p.glow;
-        starCtx.shadowColor = p.glowColor;
-        starCtx.fill();
-        starCtx.restore();
-      }
-
-      requestAnimationFrame(animateCelestialSky);
-    }
-
-    requestAnimationFrame(animateCelestialSky);
-  }
-
-  function triggerStardustBurst(originX, originY, count = 70) {
-    if (!celestialCanvas) return;
-    const colors = [
-      { fill: "rgba(245, 183, 38, __A__)", glow: "rgba(245, 183, 38, 0.8)", glowColor: "#f5b726" },
-      { fill: "rgba(167, 139, 250, __A__)", glow: "rgba(167, 139, 250, 0.8)", glowColor: "#a78bfa" },
-      { fill: "rgba(56, 189, 248, __A__)", glow: "rgba(56, 189, 248, 0.8)", glowColor: "#38bdf8" },
-      { fill: "rgba(255, 255, 255, __A__)", glow: "rgba(255, 255, 255, 0.9)", glowColor: "#ffffff" }
-    ];
-
-    for (let i = 0; i < count; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 4.2 + 0.8;
-      const col = colors[Math.floor(Math.random() * colors.length)];
-      stardustParticles.push({
-        x: originX + (Math.random() - 0.5) * 40,
-        y: originY + (Math.random() - 0.5) * 20,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 1.2,
-        size: Math.random() * 3.2 + 1.2,
-        alpha: 1.0,
-        fadeSpeed: Math.random() * 0.012 + 0.007,
-        color: col.fill,
-        glow: Math.random() * 12 + 6,
-        glowColor: col.glowColor
-      });
-    }
   }
 
   /* =========================================================================

@@ -9,6 +9,7 @@ class SnoozeAudioEngine {
   constructor() {
     this.ctx = null;
     this.masterGain = null;
+    this.masterVolume = 0.75;
     this.analyser = null;
     this.isPlaying = false;
     
@@ -44,7 +45,7 @@ class SnoozeAudioEngine {
 
       // Master Gain Node
       this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.setValueAtTime(0.75, this.ctx.currentTime);
+      this.masterGain.gain.setValueAtTime(this.masterVolume, this.ctx.currentTime);
 
       // Spectrum Analyser Node for Visualizer
       this.analyser = this.ctx.createAnalyser();
@@ -131,7 +132,7 @@ class SnoozeAudioEngine {
     oscRight.start();
     subOsc.start();
 
-    l.nodes = { oscLeft, oscRight, subOsc, gainNode: l.gainNode };
+    l.nodes = { oscLeft, oscRight, subOsc, panLeft, panRight, subGain, gainNode: l.gainNode };
   }
 
   setBinauralFrequencies(beatFreq, carrierFreq = null) {
@@ -180,7 +181,7 @@ class SnoozeAudioEngine {
     lowpass.connect(l.gainNode);
 
     noiseSource.start();
-    l.nodes = { noiseSource, gainNode: l.gainNode };
+    l.nodes = { noiseSource, lowpass, highpass, gainNode: l.gainNode };
   }
 
   /* =========================================================================
@@ -223,7 +224,7 @@ class SnoozeAudioEngine {
     crackleGain.connect(l.gainNode);
     crackleSource.start();
 
-    l.nodes = { rumbleSource, crackleSource, gainNode: l.gainNode };
+    l.nodes = { rumbleSource, lowpass, crackleSource, crackleBand, crackleGain, gainNode: l.gainNode };
   }
 
   /* =========================================================================
@@ -253,7 +254,7 @@ class SnoozeAudioEngine {
     filter2.connect(l.gainNode);
     source.start();
 
-    l.nodes = { source, gainNode: l.gainNode };
+    l.nodes = { source, filter1, filter2, gainNode: l.gainNode };
   }
 
   /* =========================================================================
@@ -292,7 +293,7 @@ class SnoozeAudioEngine {
     source.start();
     lfo.start();
 
-    l.nodes = { source, lfo, gainNode: l.gainNode };
+    l.nodes = { source, filter, lfo, lfoGain, gainNode: l.gainNode };
   }
 
   /* =========================================================================
@@ -333,7 +334,7 @@ class SnoozeAudioEngine {
     source.start();
     swellLfo.start();
 
-    l.nodes = { source, swellLfo, gainNode: l.gainNode };
+    l.nodes = { source, filter, swellLfo, swellGain, waveVolume, gainNode: l.gainNode };
   }
 
   /* =========================================================================
@@ -342,6 +343,12 @@ class SnoozeAudioEngine {
   startAll() {
     this.initContext();
     if (this.isPlaying) return;
+
+    // Restore master volume back to user level in case it faded out previously
+    if (this.masterGain && this.ctx) {
+      this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+      this.masterGain.gain.setValueAtTime(this.masterVolume, this.ctx.currentTime);
+    }
 
     this.startBinauralLayer();
     this.startRainLayer();
@@ -355,11 +362,12 @@ class SnoozeAudioEngine {
   }
 
   stopAll() {
-    if (!this.isPlaying || !this.ctx) return;
+    if (!this.ctx) return;
 
     Object.values(this.layers).forEach(layer => {
       if (layer.nodes) {
         Object.values(layer.nodes).forEach(node => {
+          if (!node) return;
           try {
             if (node.stop) node.stop();
             if (node.disconnect) node.disconnect();
@@ -373,6 +381,7 @@ class SnoozeAudioEngine {
 
     this.isPlaying = false;
     clearInterval(this.fadeTimerInterval);
+    this.fadeTimerInterval = null;
   }
 
   togglePlay() {
@@ -386,8 +395,9 @@ class SnoozeAudioEngine {
   }
 
   setMasterVolume(val) {
+    this.masterVolume = Math.max(0, Math.min(1, val));
     if (this.masterGain && this.ctx) {
-      this.masterGain.gain.setTargetAtTime(val, this.ctx.currentTime, 0.05);
+      this.masterGain.gain.setTargetAtTime(this.masterVolume, this.ctx.currentTime, 0.05);
     }
   }
 
@@ -481,10 +491,10 @@ class SnoozeAudioEngine {
         this.onTimerTick(remainingRatio, Math.max(0, this.fadeDurationMs - elapsed));
       }
 
-      // In the final 10% of duration, gently taper master gain
+      // In the final 15% of duration, gently taper master gain
       if (remainingRatio < 0.15 && this.masterGain && this.ctx) {
-        const softGain = remainingRatio / 0.15;
-        this.masterGain.gain.setTargetAtTime(softGain * 0.75, this.ctx.currentTime, 0.5);
+        const softGain = (remainingRatio / 0.15) * this.masterVolume;
+        this.masterGain.gain.setTargetAtTime(softGain, this.ctx.currentTime, 0.5);
       }
 
       if (remainingRatio <= 0) {

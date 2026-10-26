@@ -4,7 +4,7 @@
  * Cache-First with Stale-While-Revalidate strategy for static assets.
  */
 
-const CACHE_NAME = "snoozescape-v1.0.6";
+const CACHE_NAME = "snoozescape-v1.0.7";
 
 const PRECACHE_ASSETS = [
   "./",
