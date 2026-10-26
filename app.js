@@ -758,6 +758,56 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnTibetanBowl) btnTibetanBowl.addEventListener("click", () => triggerSingingBowl(btnTibetanBowl));
   if (btnMobileBowl) btnMobileBowl.addEventListener("click", () => triggerSingingBowl(btnMobileBowl));
 
+  // Sound Download Modal Controls
+  const btnOpenDownloadModal = document.getElementById("btn-open-download-modal");
+  const btnCloseDownloadModal = document.getElementById("btn-close-download-modal");
+  const downloadSoundsModal = document.getElementById("download-sounds-modal");
+  const btnDownloadAllBatch = document.getElementById("btn-download-all-batch");
+
+  if (btnOpenDownloadModal && downloadSoundsModal) {
+    btnOpenDownloadModal.addEventListener("click", () => {
+      downloadSoundsModal.classList.remove("hidden");
+    });
+  }
+
+  if (btnCloseDownloadModal && downloadSoundsModal) {
+    btnCloseDownloadModal.addEventListener("click", () => {
+      downloadSoundsModal.classList.add("hidden");
+    });
+  }
+
+  if (downloadSoundsModal) {
+    downloadSoundsModal.addEventListener("click", (e) => {
+      if (e.target === downloadSoundsModal) {
+        downloadSoundsModal.classList.add("hidden");
+      }
+    });
+  }
+
+  if (btnDownloadAllBatch && downloadSoundsModal) {
+    btnDownloadAllBatch.addEventListener("click", () => {
+      const items = downloadSoundsModal.querySelectorAll(".download-sound-item");
+      btnDownloadAllBatch.disabled = true;
+      btnDownloadAllBatch.textContent = "Downloading...";
+      items.forEach((item, index) => {
+        setTimeout(() => {
+          const a = document.createElement("a");
+          a.href = item.getAttribute("href");
+          a.download = item.getAttribute("download");
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          if (index === items.length - 1) {
+            setTimeout(() => {
+              btnDownloadAllBatch.disabled = false;
+              btnDownloadAllBatch.innerHTML = '<svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-download"></use></svg> <span>Downloaded All Sounds</span>';
+            }, 600);
+          }
+        }, index * 250);
+      });
+    });
+  }
+
   /* =========================================================================
      5. Story Generation, Surprise Generator & Paragraph Interaction
      ========================================================================= */
