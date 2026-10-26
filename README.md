@@ -36,6 +36,10 @@ SnoozeScape generates an original, calming bedtime story using local open-weight
 - 🎛️ **Procedural Mixer with "Randomize Mix 🎲":** Blend your 6 ambient generators or let the engine roll a balanced, calming mix with animated slider transitions.
 - 🔔 **Tibetan Singing Bowl (432 Hz):** Synthesized physical acoustics using harmonic sine wave decay to center the mind before sleep.
 - 📖 **Interactive Bedtime Tale Companion:** Click any paragraph to read aloud from that exact line with golden glowing tracking, generate randomized dream inspiration, and toggle candlelight eye-comfort reading mode.
+- 🌿 **Bedtime Health & Mental Wellness Sanctuary (Interactive):**
+  - **Evening Nervous System Down-Shift (Interactive Somatic Checklist):** 4 actionable micro-steps (jaw/shoulder de-armoring, guided 3x physiological sigh with interactive live timer, screen sunset & bedroom cooling, good-enough permission slip) with live sleep-readiness percentage tracker (`0% -> 100% Primed for Sleep`), particle stardust bursts upon completion, and local storage state persistence.
+  - **Cognitive Shuffle Mind Calmer (Dr. Luc Beaudoin):** Clinically proven cognitive science technique that disrupts bedtime anxiety loops by cycling through randomized, peaceful sensory concepts every 3.5 seconds to trigger natural hypnagogic sleep onset.
+  - **Actionable Bedtime Wellness Prescriptions:** Categorized evidence-based step-by-step guidance across *Racing Mind*, *Body Tension*, *Melatonin Biology*, and *Self-Compassion*, with direct one-tap action triggers (`Dissolve Worries`, `Start Guided 4-7-8 Breathing`, `Ring 432Hz Bowl`, `Toggle Candlelight Mode`, `Start 30-Min Sleep Fade`).
 - 💎 **Iconly Pro Vector Icon System:** Integrated official free vector iconography from [Iconly Pro](https://web.iconly.pro/?is_free=1) across the header, soundscape controls, ambient generators, breathing pacer, and floating action dock for a cohesive, ultra-refined UI.
 
 

@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="styles.css?v=1.0.8">
+  <link rel="stylesheet" href="styles.css?v=1.0.9">
 </head>
 <body class="theme-midnight">
   <!-- Iconly Pro Free Icon Sprite -->
@@ -662,6 +662,306 @@
 
     </div>
 
+    <!-- Bedtime Health & Mental Wellness Sanctuary (Interactive Wind-Down & Mental De-clutter) -->
+    <section class="wellness-sanctuary-section glass-panel spotlight-card border-beam" aria-labelledby="wellness-heading" id="wellness-sanctuary">
+      <div class="sanctuary-header">
+        <div class="sanctuary-title-wrap">
+          <div class="sanctuary-icon-halo" style="background: radial-gradient(circle, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.6)); border-color: rgba(56, 189, 248, 0.45); box-shadow: 0 0 24px rgba(56, 189, 248, 0.28);">
+            <span class="sanctuary-icon"><svg class="iconly-icon iconly-icon-lg" style="color: #38bdf8;" aria-hidden="true"><use href="#iconly-heart"></use></svg></span>
+          </div>
+          <div>
+            <div class="section-eyebrow">
+              <span class="sparkle">✦</span>
+              <span>Somatic Health &amp; Mindful Psychology</span>
+            </div>
+            <h2 id="wellness-heading" class="sanctuary-title">Bedtime Health &amp; Mental Wellness Sanctuary</h2>
+            <p class="sanctuary-sub">Interactive somatic wind-down checklist, cognitive shuffle anxiety disrupter, and actionable sleep hygiene guidance</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Box Vector Art: Dream Nebula -->
+      <div class="bento-art-banner bento-art-wellness" aria-hidden="true">
+        <img src="assets/vector-art/vector-dream-nebula.svg" class="bento-vector-art" alt="" aria-hidden="true">
+      </div>
+
+      <div class="wellness-grid">
+        
+        <!-- Bento Card 1: Interactive Somatic Wind-Down Ritual Checklist -->
+        <div class="sanctuary-card wellness-checklist-card">
+          <div class="card-top-row">
+            <span class="feature-tag">Somatic Wind-Down</span>
+            <span class="readiness-pill" id="readiness-status-pill">
+              <span class="readiness-dot"></span> <span id="readiness-percentage">0%</span> Primed for Sleep
+            </span>
+          </div>
+          <h3 class="card-title">Evening Nervous System Down-Shift</h3>
+          <p class="card-desc">Complete these 4 evidence-based micro-actions to shift your body from sympathetic ("alert") to parasympathetic ("rest & digest").</p>
+
+          <!-- Interactive Ritual Steps Checklist -->
+          <div class="ritual-checklist" role="group" aria-label="Bedtime somatic ritual steps">
+            
+            <div class="ritual-item" data-step="1" id="ritual-step-1">
+              <button class="ritual-checkbox-btn" aria-label="Step 1: Release Jaw & Shoulders">
+                <span class="ritual-check-icon"><svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-check"></use></svg></span>
+              </button>
+              <div class="ritual-text-wrap">
+                <div class="ritual-title-row">
+                  <span class="ritual-step-num">Step 1</span>
+                  <h4 class="ritual-name">Unclench Jaw &amp; Drop Shoulders</h4>
+                </div>
+                <p class="ritual-instruction">Separate your molars, drop your tongue from the roof of your mouth, and let your shoulders melt away from your ears.</p>
+              </div>
+            </div>
+
+            <div class="ritual-item" data-step="2" id="ritual-step-2">
+              <button class="ritual-checkbox-btn" aria-label="Step 2: 3x Physiological Sighs">
+                <span class="ritual-check-icon"><svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-check"></use></svg></span>
+              </button>
+              <div class="ritual-text-wrap">
+                <div class="ritual-title-row">
+                  <span class="ritual-step-num">Step 2</span>
+                  <h4 class="ritual-name">The 3x Physiological Sigh</h4>
+                  <button class="mini-practice-btn" id="btn-practice-sigh" title="Play calming somatic breath guidance">
+                    <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-activity"></use></svg> <span id="sigh-btn-label">Try It (10s)</span>
+                  </button>
+                </div>
+                <p class="ritual-instruction">Take two quick sniffs in through your nose, then one long, slow sigh out your mouth. Activates the vagal brake on heart rate.</p>
+              </div>
+            </div>
+
+            <div class="ritual-item" data-step="3" id="ritual-step-3">
+              <button class="ritual-checkbox-btn" aria-label="Step 3: Screen Sunset & Cool Room">
+                <span class="ritual-check-icon"><svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-check"></use></svg></span>
+              </button>
+              <div class="ritual-text-wrap">
+                <div class="ritual-title-row">
+                  <span class="ritual-step-num">Step 3</span>
+                  <h4 class="ritual-name">Screen Sunset &amp; Bedroom Climate</h4>
+                  <button class="mini-practice-btn" id="btn-candlelight-shortcut" title="Dim reader to candlelight comfort">
+                    🕯️ Candlelight
+                  </button>
+                </div>
+                <p class="ritual-instruction">Turn device face down or dim to candlelight. Target a cool bedroom temperature of 65°–68°F (18°–20°C) for melatonin surge.</p>
+              </div>
+            </div>
+
+            <div class="ritual-item" data-step="4" id="ritual-step-4">
+              <button class="ritual-checkbox-btn" aria-label="Step 4: The Good-Enough Permission Slip">
+                <span class="ritual-check-icon"><svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-check"></use></svg></span>
+              </button>
+              <div class="ritual-text-wrap">
+                <div class="ritual-title-row">
+                  <span class="ritual-step-num">Step 4</span>
+                  <h4 class="ritual-name">The "Good Enough" Permission Slip</h4>
+                </div>
+                <p class="ritual-instruction">Whisper to yourself: "Today's work is finished. What wasn't done can wait. My rest tonight is essential and earned."</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Ritual Progress & Reward Feedback -->
+          <div class="ritual-reward-bar" id="ritual-reward-bar">
+            <div class="ritual-progress-track">
+              <div class="ritual-progress-fill" id="ritual-progress-fill" style="width: 0%;"></div>
+            </div>
+            <div class="ritual-status-msg" id="ritual-status-msg">
+              <span id="ritual-feedback-text">Tap each micro-step as you settle into bed</span>
+              <button id="btn-reset-ritual" class="ritual-reset-btn hidden">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento Card 2: Interactive Cognitive Shuffle (Mental Wellness Anxiety Disrupter) -->
+        <div class="sanctuary-card cognitive-shuffle-card">
+          <div class="card-top-row">
+            <span class="feature-tag">Cognitive Science Tool</span>
+            <span class="science-tag">🧠 Insomnia Loop Disrupter</span>
+          </div>
+          <h3 class="card-title">Cognitive Shuffle Mind Calmer</h3>
+          <p class="card-desc">Dr. Luc Beaudoin's clinically proven technique to derail racing bedtime thoughts. Picture each random, peaceful concept for 3 seconds.</p>
+
+          <!-- Interactive Card Display with Word & Visual Cue -->
+          <div class="shuffle-display-box" id="shuffle-display-box">
+            <div class="shuffle-word-halo" id="shuffle-word-halo">
+              <span class="shuffle-emoji" id="shuffle-emoji">⛵</span>
+              <span class="shuffle-word" id="shuffle-word">Wooden Sailboat</span>
+            </div>
+            <p class="shuffle-cue" id="shuffle-cue">Picture its gentle rocking in warm calm water. Hold it gently, then let it float away.</p>
+          </div>
+
+          <!-- Shuffle Controls -->
+          <div class="shuffle-controls-row">
+            <button id="btn-toggle-shuffle" class="btn btn-primary btn-sm btn-shimmer" aria-label="Start or pause automated cognitive shuffle">
+              <span class="btn-icon" id="shuffle-play-icon"><svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-play"></use></svg></span>
+              <span id="shuffle-play-label">Start Auto-Shuffle</span>
+            </button>
+            <button id="btn-next-shuffle" class="btn btn-ghost btn-sm" aria-label="Next random concept">
+              <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-swap"></use></svg> <span>Next Concept</span>
+            </button>
+          </div>
+          <div class="shuffle-helper-note">
+            <svg class="iconly-icon iconly-icon-xs" style="color: var(--accent-amber);" aria-hidden="true"><use href="#iconly-info"></use></svg>
+            <span>Serial random imagery signals the primal brain that no real threat exists, triggering the natural sleep switch.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Actionable Health & Mental Wellness Prescriptions Tabs Bar -->
+      <div class="wellness-prescriptions-bar">
+        <div class="prescriptions-header">
+          <div class="prescriptions-title-group">
+            <span class="prescriptions-icon"><svg class="iconly-icon iconly-icon-md" style="color: #a78bfa;" aria-hidden="true"><use href="#iconly-bookmark"></use></svg></span>
+            <div>
+              <h3 class="prescriptions-title">Actionable Bedtime Wellness Prescriptions</h3>
+              <p class="prescriptions-sub">Concrete, direct instructions on what to do when your mind or body resists sleep</p>
+            </div>
+          </div>
+          <!-- Prescriptions Category Selector -->
+          <div class="prescriptions-tabs" role="tablist" aria-label="Wellness Prescriptions">
+            <button class="rx-tab active" data-tab="racing-mind" role="tab" aria-selected="true">🧠 Racing Mind</button>
+            <button class="rx-tab" data-tab="body-tension" role="tab" aria-selected="false">🫀 Body Tension</button>
+            <button class="rx-tab" data-tab="circadian-light" role="tab" aria-selected="false">🧬 Melatonin Biology</button>
+            <button class="rx-tab" data-tab="self-compassion" role="tab" aria-selected="false">💖 Self-Compassion</button>
+          </div>
+        </div>
+
+        <div class="prescriptions-content-wrap">
+          <!-- Tab 1: Racing Mind -->
+          <div class="rx-panel active" id="rx-panel-racing-mind">
+            <div class="rx-layout">
+              <div class="rx-action-box">
+                <span class="rx-badge">Immediate Action:</span>
+                <h4 class="rx-action-title">The 20-Minute Sleep Rule &amp; Brain Dump</h4>
+                <p class="rx-action-body">If you've been in bed with eyes open for more than 20 minutes, <strong>stop trying to sleep</strong>. Tossing and turning trains your brain that the bed is a stressful arena. Sit up, keep lights dim, and release those thoughts.</p>
+              </div>
+              <div class="rx-step-list">
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">1</span>
+                  <span>Open the <strong>Stardust Worry Dissolver</strong> below and type out whatever is cycling in your mind.</span>
+                </div>
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">2</span>
+                  <span>Tell yourself: <em>"My brain has registered this. I am now filing it away until morning."</em></span>
+                </div>
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">3</span>
+                  <span>Listen to a peaceful bedtime story at 0.8x whisper rate to shift attention from internal worries to narrative absorption.</span>
+                </div>
+              </div>
+              <div class="rx-action-buttons">
+                <button class="btn btn-ghost btn-xs rx-action-trigger" data-action="scroll-worry">
+                  <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-send"></use></svg> Go to Stardust Dissolver
+                </button>
+                <button class="btn btn-ghost btn-xs rx-action-trigger" data-action="play-story">
+                  <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-document"></use></svg> Generate Soothing Tale
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Body Tension -->
+          <div class="rx-panel" id="rx-panel-body-tension">
+            <div class="rx-layout">
+              <div class="rx-action-box">
+                <span class="rx-badge">Immediate Action:</span>
+                <h4 class="rx-action-title">Progressive Muscle Relaxation (Somatic Scan)</h4>
+                <p class="rx-action-body">Stress stores physically as trapped tension in the trapezoid muscles, pelvic floor, and facial nerves. Deliberately tensing and releasing muscles triggers deep muscular vasodilation.</p>
+              </div>
+              <div class="rx-step-list">
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">1</span>
+                  <span>Point your toes hard down for 5 seconds. Now release and feel the flood of warmth into your calves.</span>
+                </div>
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">2</span>
+                  <span>Pull your belly button toward your spine for 5 seconds, then let your abdomen completely inflate and soften.</span>
+                </div>
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">3</span>
+                  <span>Synchronize with the <strong>4-7-8 Breathing Pacer</strong> at the top of the page for 4 cycles to slow your resting heart rate.</span>
+                </div>
+              </div>
+              <div class="rx-action-buttons">
+                <button class="btn btn-ghost btn-xs rx-action-trigger" data-action="start-breathing">
+                  <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-activity"></use></svg> Start Guided 4-7-8 Breathing
+                </button>
+                <button class="btn btn-ghost btn-xs rx-action-trigger" data-action="ring-bowl">
+                  <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-notification"></use></svg> Ring 432Hz Bell
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Melatonin Biology -->
+          <div class="rx-panel" id="rx-panel-circadian-light">
+            <div class="rx-layout">
+              <div class="rx-action-box">
+                <span class="rx-badge">Immediate Action:</span>
+                <h4 class="rx-action-title">The Dark &amp; Cool Pineal Gland Protocol</h4>
+                <p class="rx-action-body">Melatonin synthesis is violently suppressed by melanopsin retinal ganglion cells responding to blue-green wavelengths (460–490 nm). Even tiny LED standby lights can degrade REM sleep quality by 22%.</p>
+              </div>
+              <div class="rx-step-list">
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">1</span>
+                  <span>Eliminate overhead fluorescent lights; rely solely on amber/warm floor-level lighting.</span>
+                </div>
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">2</span>
+                  <span>Cool your core body temperature: drop your feet outside the blanket for 3 minutes to radiate heat through arteriovenous anastomoses.</span>
+                </div>
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">3</span>
+                  <span>Let SnoozeScape's <strong>Auto-Fade Timer</strong> handle audio and pitch-black dimming so you never wake up to glaring screens.</span>
+                </div>
+              </div>
+              <div class="rx-action-buttons">
+                <button class="btn btn-ghost btn-xs rx-action-trigger" data-action="toggle-candlelight">
+                  🕯️ Toggle Amber Candlelight Mode
+                </button>
+                <button class="btn btn-ghost btn-xs rx-action-trigger" data-action="quick-sleep">
+                  <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-time"></use></svg> Start 30-Min Sleep Fade
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Self-Compassion -->
+          <div class="rx-panel" id="rx-panel-self-compassion">
+            <div class="rx-layout">
+              <div class="rx-action-box">
+                <span class="rx-badge">Immediate Action:</span>
+                <h4 class="rx-action-title">Release Sleep Performance Anxiety</h4>
+                <p class="rx-action-body">Worrying about not sleeping produces the exact noradrenaline spike that keeps you awake. Remember: <strong>quiet wakeful resting with eyes closed provides ~80% of the cognitive recovery of sleep</strong>.</p>
+              </div>
+              <div class="rx-step-list">
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">1</span>
+                  <span>Stop looking at the clock. Knowing it's 3:14 AM does not help you sleep—it only triggers time-urgency cortisol.</span>
+                </div>
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">2</span>
+                  <span>Frame your time in bed as a <em>cozy sanctuary</em> rather than a task to accomplish. Rest is already a gift.</span>
+                </div>
+                <div class="rx-step-item">
+                  <span class="rx-step-bullet">3</span>
+                  <span>Immerse yourself in gentle ambient sounds (rain, forest canopy, or ocean) to soothe auditory vigilance.</span>
+                </div>
+              </div>
+              <div class="rx-action-buttons">
+                <button class="btn btn-ghost btn-xs rx-action-trigger" data-action="start-soundscape">
+                  <svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-volume"></use></svg> Start Cozy Rain &amp; Hearth
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- Sleep Neuro-Lab & Mind Release Sanctuary (Unique Interactive Feature) -->
     <section class="sanctuary-lab-section glass-panel spotlight-card border-beam" aria-labelledby="lab-heading">
       <div class="sanctuary-header">
@@ -843,6 +1143,10 @@
       <span class="dock-icon"><svg class="iconly-icon" aria-hidden="true"><use href="#iconly-document"></use></svg></span>
       <span class="dock-label">Story</span>
     </button>
+    <button id="btn-mobile-wellness" class="mobile-dock-btn" aria-label="Bedtime Health & Mental Wellness">
+      <span class="dock-icon"><svg class="iconly-icon" aria-hidden="true"><use href="#iconly-heart"></use></svg></span>
+      <span class="dock-label">Wellness</span>
+    </button>
   </nav>
 
   <!-- Sound Download Modal (100% CC0 Offline Sounds) -->
@@ -926,8 +1230,8 @@
   </div>
 
   <!-- Audio Synthesis & Local AI Scripts -->
-  <script src="audio-engine.js?v=1.0.8"></script>
-  <script src="ai-engine.js?v=1.0.8"></script>
-  <script src="app.js?v=1.0.8"></script>
+  <script src="audio-engine.js?v=1.0.9"></script>
+  <script src="ai-engine.js?v=1.0.9"></script>
+  <script src="app.js?v=1.0.9"></script>
 </body>
 </html>

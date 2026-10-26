@@ -1115,6 +1115,318 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================================================================
+     8.5 Bedtime Health & Mental Wellness Sanctuary Controller
+     ========================================================================= */
+  
+  // 1. Interactive Somatic Wind-Down Ritual Checklist
+  const ritualItems = document.querySelectorAll(".ritual-item");
+  const readinessPercentage = document.getElementById("readiness-percentage");
+  const readinessStatusPill = document.getElementById("readiness-status-pill");
+  const ritualProgressFill = document.getElementById("ritual-progress-fill");
+  const ritualFeedbackText = document.getElementById("ritual-feedback-text");
+  const btnResetRitual = document.getElementById("btn-reset-ritual");
+  const btnPracticeSigh = document.getElementById("btn-practice-sigh");
+  const sighBtnLabel = document.getElementById("sigh-btn-label");
+  const btnCandlelightShortcut = document.getElementById("btn-candlelight-shortcut");
+  const btnMobileWellness = document.getElementById("btn-mobile-wellness");
+  const wellnessSection = document.getElementById("wellness-sanctuary");
+
+  const feedbackMessages = {
+    0: "Tap each micro-step as you settle into bed",
+    1: "Jaw unclasped & shoulders soft. Vagus nerve signaling safety.",
+    2: "Physiological sigh completed. Resting heart rate lowering.",
+    3: "Melatonin protected from blue light. Body cooling for sleep.",
+    4: "🌟 Sloth Sleep Sanctuary Complete: Your nervous system is primed for delta sleep."
+  };
+
+  function updateRitualProgress() {
+    const completedItems = document.querySelectorAll(".ritual-item.completed");
+    const count = completedItems.length;
+    const pct = Math.round((count / 4) * 100);
+
+    if (readinessPercentage) readinessPercentage.textContent = `${pct}%`;
+    if (ritualProgressFill) ritualProgressFill.style.width = `${pct}%`;
+    if (ritualFeedbackText) ritualFeedbackText.textContent = feedbackMessages[count] || feedbackMessages[0];
+
+    if (readinessStatusPill) {
+      readinessStatusPill.classList.toggle("all-done", count === 4);
+    }
+    if (btnResetRitual) {
+      btnResetRitual.classList.toggle("hidden", count === 0);
+    }
+
+    if (count === 4 && typeof triggerStardustBurst === "function") {
+      triggerStardustBurst(window.innerWidth / 2, window.innerHeight * 0.45, 60);
+    }
+
+    // Save state
+    try {
+      const state = Array.from(ritualItems).map(item => item.classList.contains("completed"));
+      localStorage.setItem("snooze_ritual_checklist", JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  ritualItems.forEach(item => {
+    item.addEventListener("click", (e) => {
+      // Don't toggle if user clicked a mini-practice button directly
+      if (e.target.closest(".mini-practice-btn")) return;
+      
+      const isCompleted = item.classList.toggle("completed");
+      if (isCompleted) {
+        if (typeof triggerStardustBurst === "function") {
+          triggerStardustBurst(e.clientX || (item.offsetLeft + 20), e.clientY || (item.offsetTop + 20), 20);
+        }
+        if (window.snoozeAudio && window.snoozeAudio.playBreathingChime) {
+          window.snoozeAudio.playBreathingChime("exhale");
+        }
+      }
+      updateRitualProgress();
+    });
+  });
+
+  if (btnResetRitual) {
+    btnResetRitual.addEventListener("click", () => {
+      ritualItems.forEach(item => item.classList.remove("completed"));
+      updateRitualProgress();
+    });
+  }
+
+  // Restore saved checklist
+  try {
+    const savedRitual = JSON.parse(localStorage.getItem("snooze_ritual_checklist") || "[]");
+    if (Array.isArray(savedRitual)) {
+      ritualItems.forEach((item, idx) => {
+        if (savedRitual[idx]) item.classList.add("completed");
+      });
+      updateRitualProgress();
+    }
+  } catch (e) {}
+
+  // 3x Physiological Sigh Guided Practice (10s Micro-guide)
+  if (btnPracticeSigh) {
+    let sighActive = false;
+    btnPracticeSigh.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (sighActive) return;
+      sighActive = true;
+      const step2 = document.getElementById("ritual-step-2");
+
+      if (sighBtnLabel) sighBtnLabel.textContent = "Sniff in (1)...";
+      if (window.snoozeAudio && window.snoozeAudio.playBreathingChime) {
+        window.snoozeAudio.playBreathingChime("inhale");
+      }
+
+      setTimeout(() => {
+        if (sighBtnLabel) sighBtnLabel.textContent = "Second quick sniff (2)...";
+      }, 1600);
+
+      setTimeout(() => {
+        if (sighBtnLabel) sighBtnLabel.textContent = "Long, slow sigh out...";
+        if (window.snoozeAudio && window.snoozeAudio.playBreathingChime) {
+          window.snoozeAudio.playBreathingChime("exhale");
+        }
+      }, 3000);
+
+      setTimeout(() => {
+        if (sighBtnLabel) sighBtnLabel.textContent = "Done ✓";
+        if (step2) step2.classList.add("completed");
+        updateRitualProgress();
+        setTimeout(() => {
+          if (sighBtnLabel) sighBtnLabel.textContent = "Try It (10s)";
+          sighActive = false;
+        }, 2000);
+      }, 7500);
+    });
+  }
+
+  // Candlelight Shortcut
+  if (btnCandlelightShortcut) {
+    btnCandlelightShortcut.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (btnToggleCandlelight) btnToggleCandlelight.click();
+      const step3 = document.getElementById("ritual-step-3");
+      if (step3) step3.classList.add("completed");
+      updateRitualProgress();
+    });
+  }
+
+  // Mobile Wellness Button Smooth Scroll
+  if (btnMobileWellness && wellnessSection) {
+    btnMobileWellness.addEventListener("click", () => {
+      wellnessSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  // 2. Interactive Cognitive Shuffle Mind Calmer
+  const shuffleConcepts = [
+    { emoji: "⛵", word: "Wooden Sailboat", cue: "Picture its gentle rocking in warm calm water. Hold it gently, then let it float away." },
+    { emoji: "🌲", word: "Pine Needle", cue: "Notice the soft green scent in cool crisp mountain air. Picture a high quiet forest canopy." },
+    { emoji: "☕", word: "Warm Mug", cue: "Feel the soothing ceramic warmth resting between your palms. Breathe in the gentle steam." },
+    { emoji: "🌕", word: "Distant Moon", cue: "Watch the silver light reflected on a perfectly still lake with no ripples." },
+    { emoji: "🍇", word: "Wild Blueberry", cue: "Picture small ripe berries on a sunlit mountain bush. Deep, quiet summer peace." },
+    { emoji: "🕯️", word: "Candle Flame", cue: "Gaze at the steady golden teardrop dancing softly against dark velvet shadows." },
+    { emoji: "🧶", word: "Soft Wool Blanket", cue: "Feel the comforting weight tucked gently around your shoulders as you sink into bed." },
+    { emoji: "🌿", word: "Mossy Forest Stone", cue: "Smooth velvet green cushion resting quietly under gentle morning mist." },
+    { emoji: "🕊️", word: "Floating Feather", cue: "Drifting weightlessly on a silent, warm updraft in an open twilight sky." },
+    { emoji: "🍞", word: "Warm Hearth Bread", cue: "The comforting, golden aroma of quiet night baking. Safety and nourishment." },
+    { emoji: "🐚", word: "Sea Shell", cue: "A smooth spiral shell resting quietly on cool, damp shore sand." },
+    { emoji: "🏔️", word: "Snowy Mountain Peak", cue: "Pure silent granite dusted with powdery white snow under a canopy of stars." },
+    { emoji: "🍵", word: "Chamomile Tea", cue: "Pale golden steam swirling into quiet evening air with notes of honey." },
+    { emoji: "🌌", word: "Starry Nebula", cue: "Vast clouds of purple and sapphire stardust billions of miles away in absolute stillness." },
+    { emoji: "🍂", word: "Golden Autumn Leaf", cue: "Fluttering slowly in lazy spirals down to a quiet forest floor." },
+    { emoji: "🛋️", word: "Plush Velvet Chair", cue: "Sinking deeply into generous, quiet support with nowhere you need to be." },
+    { emoji: "🌧️", word: "Rain on Windowpane", cue: "Small droplets tracing peaceful paths down cool glass in the quiet night." },
+    { emoji: "🪵", word: "Glowing Fire Ember", cue: "Soft orange warmth pulsing rhythmically in a stone fireplace hearth." },
+    { emoji: "☁️", word: "Sunset Cloud", cue: "Peach and lavender cotton drifting across the horizon as night falls." },
+    { emoji: "🪻", word: "Lavender Bush", cue: "Purple blossoms swaying in an evening meadow breeze. Sweet calm relaxation." }
+  ];
+
+  let currentShuffleIdx = 0;
+  let shuffleTimer = null;
+  let shuffleRunning = false;
+
+  const shuffleEmoji = document.getElementById("shuffle-emoji");
+  const shuffleWord = document.getElementById("shuffle-word");
+  const shuffleCue = document.getElementById("shuffle-cue");
+  const shuffleWordHalo = document.getElementById("shuffle-word-halo");
+  const btnToggleShuffle = document.getElementById("btn-toggle-shuffle");
+  const btnNextShuffle = document.getElementById("btn-next-shuffle");
+  const shufflePlayLabel = document.getElementById("shuffle-play-label");
+  const shufflePlayIcon = document.getElementById("shuffle-play-icon");
+
+  function renderShuffleConcept(idx) {
+    const item = shuffleConcepts[idx % shuffleConcepts.length];
+    if (!item) return;
+
+    if (shuffleWordHalo && shuffleCue) {
+      shuffleWordHalo.style.opacity = "0";
+      shuffleWordHalo.style.transform = "scale(0.92)";
+      shuffleCue.style.opacity = "0";
+
+      setTimeout(() => {
+        if (shuffleEmoji) shuffleEmoji.textContent = item.emoji;
+        if (shuffleWord) shuffleWord.textContent = item.word;
+        if (shuffleCue) shuffleCue.textContent = item.cue;
+
+        shuffleWordHalo.style.opacity = "1";
+        shuffleWordHalo.style.transform = "scale(1)";
+        shuffleCue.style.opacity = "1";
+      }, 200);
+    }
+  }
+
+  function advanceShuffle() {
+    currentShuffleIdx = (currentShuffleIdx + 1) % shuffleConcepts.length;
+    renderShuffleConcept(currentShuffleIdx);
+  }
+
+  if (btnNextShuffle) {
+    btnNextShuffle.addEventListener("click", () => {
+      advanceShuffle();
+      const displayBox = document.getElementById("shuffle-display-box");
+      if (displayBox && typeof triggerStardustBurst === "function") {
+        const rect = displayBox.getBoundingClientRect();
+        triggerStardustBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 12);
+      }
+    });
+  }
+
+  if (btnToggleShuffle) {
+    btnToggleShuffle.addEventListener("click", () => {
+      shuffleRunning = !shuffleRunning;
+      if (shuffleRunning) {
+        if (shufflePlayLabel) shufflePlayLabel.textContent = "Pause Shuffle";
+        if (shufflePlayIcon) shufflePlayIcon.innerHTML = `<svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-pause"></use></svg>`;
+        btnToggleShuffle.classList.add("playing");
+        advanceShuffle();
+        shuffleTimer = setInterval(advanceShuffle, 3500);
+      } else {
+        clearInterval(shuffleTimer);
+        shuffleTimer = null;
+        if (shufflePlayLabel) shufflePlayLabel.textContent = "Start Auto-Shuffle";
+        if (shufflePlayIcon) shufflePlayIcon.innerHTML = `<svg class="iconly-icon iconly-icon-xs" aria-hidden="true"><use href="#iconly-play"></use></svg>`;
+        btnToggleShuffle.classList.remove("playing");
+      }
+    });
+  }
+
+  // 3. Actionable Wellness Prescriptions Tabs
+  const rxTabs = document.querySelectorAll(".rx-tab");
+  const rxPanels = document.querySelectorAll(".rx-panel");
+  const rxActionTriggers = document.querySelectorAll(".rx-action-trigger");
+
+  rxTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      const targetTab = tab.dataset.tab;
+      rxTabs.forEach(t => {
+        t.classList.toggle("active", t === tab);
+        t.setAttribute("aria-selected", t === tab);
+      });
+      rxPanels.forEach(p => {
+        p.classList.toggle("active", p.id === `rx-panel-${targetTab}`);
+      });
+    });
+  });
+
+  rxActionTriggers.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const action = btn.dataset.action;
+      switch (action) {
+        case "scroll-worry": {
+          const worryInput = document.getElementById("worry-text-input");
+          if (worryInput) {
+            worryInput.scrollIntoView({ behavior: "smooth", block: "center" });
+            worryInput.focus();
+            worryInput.style.borderColor = "#38bdf8";
+            setTimeout(() => { worryInput.style.borderColor = ""; }, 1500);
+          }
+          break;
+        }
+        case "play-story": {
+          if (btnGenerateStory) {
+            btnGenerateStory.click();
+            storyDisplayContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          break;
+        }
+        case "start-breathing": {
+          const breathingSection = document.querySelector(".sloth-breathing-section");
+          if (breathingSection) {
+            breathingSection.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          if (!breathingActive && btnToggleBreathing) {
+            btnToggleBreathing.click();
+          }
+          break;
+        }
+        case "ring-bowl": {
+          if (btnTibetanBowl) btnTibetanBowl.click();
+          break;
+        }
+        case "toggle-candlelight": {
+          if (btnToggleCandlelight) {
+            btnToggleCandlelight.click();
+            storyDisplayContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          break;
+        }
+        case "quick-sleep": {
+          if (btnQuickSleep) btnQuickSleep.click();
+          break;
+        }
+        case "start-soundscape": {
+          const rainyPreset = document.querySelector('.preset-chip[data-preset="rainy-cabin"]');
+          if (rainyPreset) rainyPreset.click();
+          if (!window.snoozeAudio.isPlaying && btnMasterPlay) {
+            btnMasterPlay.click();
+          }
+          break;
+        }
+      }
+    });
+  });
+
+  /* =========================================================================
      9. Aceternity & Skiper UI Spotlight & Border-Beam Animation Physics
      ========================================================================= */
   // Aceternity Spotlight cursor tracking on all spotlight cards

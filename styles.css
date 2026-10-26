@@ -1656,6 +1656,498 @@ button:hover .iconly-icon {
 }
 
 /* ==========================================================================
+   Bedtime Health & Mental Wellness Sanctuary
+   ========================================================================== */
+
+.wellness-sanctuary-section {
+  padding: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-top: 1px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 40px rgba(56, 189, 248, 0.08);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.bento-art-wellness {
+  height: 80px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wellness-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.75rem 2rem;
+  margin-bottom: 0;
+  align-items: stretch;
+}
+
+.readiness-pill {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.readiness-pill.all-done {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.45);
+  color: #34d399;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
+}
+
+.readiness-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38bdf8;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+.readiness-pill.all-done .readiness-dot {
+  background: #34d399;
+}
+
+.ritual-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.ritual-item {
+  display: flex;
+  gap: 0.95rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ritual-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(56, 189, 248, 0.35);
+  transform: translateX(3px);
+}
+
+.ritual-item.completed {
+  background: rgba(16, 185, 129, 0.06);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.ritual-checkbox-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+  margin-top: 2px;
+}
+
+.ritual-item:hover .ritual-checkbox-btn {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+}
+
+.ritual-item.completed .ritual-checkbox-btn {
+  background: #10b981;
+  border-color: #10b981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+}
+
+.ritual-check-icon {
+  color: #ffffff;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ritual-item.completed .ritual-check-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ritual-text-wrap {
+  flex: 1;
+}
+
+.ritual-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.ritual-step-num {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.ritual-item.completed .ritual-step-num {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+}
+
+.ritual-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.ritual-instruction {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.mini-practice-btn {
+  font-size: 0.72rem;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.mini-practice-btn:hover {
+  background: rgba(56, 189, 248, 0.25);
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.ritual-reward-bar {
+  margin-top: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ritual-progress-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ritual-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #10b981);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 999px;
+}
+
+.ritual-status-msg {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.ritual-reset-btn {
+  background: transparent;
+  border: none;
+  color: var(--accent-amber);
+  font-size: 0.76rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.ritual-reset-btn:hover {
+  color: #ffffff;
+}
+
+/* Cognitive Shuffle Box */
+.cognitive-shuffle-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.shuffle-display-box {
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.12), rgba(15, 23, 42, 0.85));
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  margin: 1rem 0;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  min-height: 155px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.shuffle-word-halo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 0.65rem;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.shuffle-emoji {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 0 14px rgba(245, 183, 38, 0.4));
+  line-height: 1;
+}
+
+.shuffle-word {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.shuffle-cue {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 360px;
+  transition: opacity 0.3s ease;
+}
+
+.shuffle-controls-row {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+.shuffle-helper-note {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+  text-align: center;
+  line-height: 1.45;
+}
+
+/* Actionable Prescriptions Tabs */
+.wellness-prescriptions-bar {
+  padding: 1.75rem 2rem;
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.prescriptions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.35rem;
+}
+
+.prescriptions-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.prescriptions-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.prescriptions-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.prescriptions-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0.2rem 0 0;
+}
+
+.prescriptions-tabs {
+  display: flex;
+  gap: 0.35rem;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 0.28rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.rx-tab {
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+}
+
+.rx-tab:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.rx-tab.active {
+  background: rgba(167, 139, 250, 0.2);
+  border-color: rgba(167, 139, 250, 0.45);
+  color: #c4b5fd;
+  box-shadow: 0 0 14px rgba(167, 139, 250, 0.25);
+}
+
+.rx-panel {
+  display: none;
+}
+
+.rx-panel.active {
+  display: block;
+  animation: rxFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes rxFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rx-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.rx-action-box {
+  background: rgba(56, 189, 248, 0.04);
+  border-left: 3px solid #38bdf8;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+}
+
+.rx-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.rx-action-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.35rem;
+}
+
+.rx-action-body {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.rx-step-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.rx-step-item {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  font-size: 0.83rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.rx-step-bullet {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.rx-action-buttons {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
    Sleep Neuro-Lab & Mind Release Sanctuary
    ========================================================================== */
 
@@ -2263,6 +2755,20 @@ button:hover .iconly-icon {
   }
 
   .sound-layers-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wellness-grid {
+    grid-template-columns: 1fr;
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .wellness-prescriptions-bar {
+    padding: 1.25rem 1rem;
+  }
+
+  .rx-step-list {
     grid-template-columns: 1fr;
   }
 
